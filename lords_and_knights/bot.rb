@@ -70,7 +70,7 @@ module LordsAndKnights
       end
 
       within "#buildinglist > table:last-child" do
-        first(".building:first-child .upgradebutton").click
+        first(".upgradebutton:last-child").click
       end
 
       timeout
