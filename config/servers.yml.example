@@ -1,0 +1,10 @@
+miry_us:
+  :email: miry@gmail.com
+  :password: changeme
+  :server_id: 33
+
+miry_ru:
+  :email: miry@gmail.com
+  :password: changeme
+  :server_id: 45
+
