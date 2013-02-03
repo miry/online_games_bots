@@ -64,7 +64,7 @@ module LordsAndKnights
       choose_page "Castle"
       timeout 
 
-      if all("#buildinglist > table:first-child .building").size == 2
+      if all("#buildinglist > table:first-child .building").size > 0
         puts "Nothing todo. Workers are busy"
         return
       end
