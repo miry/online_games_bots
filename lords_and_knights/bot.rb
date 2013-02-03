@@ -70,7 +70,12 @@ module LordsAndKnights
       end
 
       within "#buildinglist > table:last-child" do
-        first(".upgradebutton:last-child").click
+        building = first(".upgradebutton:last-child")
+        if building
+          building.click 
+        else
+          puts "There are buildings to upgrade"
+        end
       end
 
       timeout
