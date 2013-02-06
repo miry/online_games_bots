@@ -1,4 +1,5 @@
 miry_us:
+  :bot: lords_and_kinghts
   :email: miry@gmail.com
   :password: changeme
   :server_id: 33
@@ -8,3 +9,10 @@ miry_ru:
   :password: changeme
   :server_id: 45
 
+miry_ts5_com:
+  :bot: travian
+  :server: http://ts1.travian.com
+  :email: miry.sof@gmail.com
+  :name: miry
+  :password: changeme
+  :timeout: 5
