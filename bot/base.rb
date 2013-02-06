@@ -27,6 +27,11 @@ module Bot
       login
       run_commands
       logout
+    rescue Capybara::ElementNotFound => e
+      puts "FAILED: #{self.class.inspect}"
+      screenshot_and_save_page
+      puts e
+      puts e.backtrace.join("\n")
     end
 
     def timeout val=nil
