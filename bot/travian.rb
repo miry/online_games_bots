@@ -40,7 +40,8 @@ module Bot
         return
       end
 
-      1.upto(40) do |building_index|
+      buildings_range = options[:buildings] || (1..18)
+      buildings_range.each do |building_index|
         return if upgrade_building(building_index)
       end
 
@@ -50,6 +51,8 @@ module Bot
 
     def upgrade_building(building_index)
       choose_building(building_index)
+
+      return false unless has_selector?("#build #contract")
       scope = find("#build #contract")
 
       return false unless scope.has_selector?("button.build")

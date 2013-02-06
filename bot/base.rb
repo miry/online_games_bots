@@ -20,7 +20,6 @@ module Bot
     end
 
     def run_commands
-
     end
 
     def run

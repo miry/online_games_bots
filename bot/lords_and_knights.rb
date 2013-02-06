@@ -48,13 +48,13 @@ module Bot
       choose_page "Castle"
       timeout 
 
-      if all("#buildinglist > table:first-child .building").size > 0
+      if all("#buildinglist > table").size > 1
         puts "Nothing todo. Workers are busy"
         return
       end
 
       within "#buildinglist > table:last-child" do
-        building = first(".upgradebutton:last-child")
+        building = all(".upgradebutton").last
         if building
           building.click 
         else

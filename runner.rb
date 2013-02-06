@@ -21,7 +21,7 @@ end
 servers = YAML.load_file('config/servers.yml')
 
 servers.each do |name, opts|
-  puts ">>> Started bot on #{name}"
+  puts ">>> Started bot:#{opts[:bot]} on #{name}"
   bot = case opts[:bot]
         when 'travian'
           bot = Bot::Travian.new opts
