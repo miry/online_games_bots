@@ -6,19 +6,26 @@ require 'yaml'
 
 Bundler.require
 
-require_relative 'lords_and_knights/bot'
+require_relative 'bot/base'
+require_relative 'bot/lords_and_knights'
+require_relative 'bot/travian'
 
-Capybara.current_driver = :webkit
-Capybara.app_host = 'http://www.lordsandknights.com'
+
+Capybara.configure do |config|
+  config.asset_root = "tmp"
+  config.save_and_open_page_path = "tmp"
+  config.run_server = false
+  config.current_driver = :webkit
+end
 
 servers = YAML.load_file('config/servers.yml')
 
 servers.each do |name, opts|
   bot = case opts[:bot]
         when 'travian'
-          bot = Travian::Bot.new opts
+          bot = Bot::Travian.new opts
         when 'lords_and_kinghts'
-          bot = LordsAndKnights::Bot.new opts
+          bot = Bot::LordsAndKnights.new opts
         else
           puts "Could not detect the bot"
         end

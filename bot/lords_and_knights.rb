@@ -1,18 +1,8 @@
-module LordsAndKnights
-  class Bot
-
-    include Capybara::DSL
-
-    attr_reader :options
-
-    def initialize(options)
-      @options = options
-      @timeout = options[:timeout] || 5
-    end
+module Bot
+  class LordsAndKnights < Bot::Base
 
     def login
       visit "/"
-
       click_link "openLoginButton"
 
       within "form#loginForm" do
@@ -47,12 +37,6 @@ module LordsAndKnights
         find("a.#{title}").click
       end
       timeout
-    end
-
-    def run
-      login
-      run_commands
-      logout
     end
 
     def logout
@@ -98,10 +82,6 @@ module LordsAndKnights
       timeout(10)
       build_first
       send_troops_to_missions
-    end
-
-    def timeout val=nil
-      sleep(val || @timeout)
     end
   end
 end

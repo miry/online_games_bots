@@ -1,21 +1,11 @@
-module Travian
-  class Bot
+module Bot
+  class Travian < Bot::Base
 
-    PAGES = { buildings: '/dorf2.php',
-              resources: '/dorf1.php',
-              building: "/build.php?id=%d",
-              hero_adventure: "/hero_adventure.php"
+    PAGES = {buildings: '/dorf2.php',
+             resources: '/dorf1.php',
+             building: "/build.php?id=%d",
+             hero_adventure: "/hero_adventure.php"
     }
-    include Capybara::DSL
-
-    attr_reader :options
-
-    def initialize(options)
-      Capybara.app_host = options[:server]
-
-      @options = options
-      @timeout = options[:timeout] || 5
-    end
 
     def login
       visit "/"
@@ -37,12 +27,6 @@ module Travian
       visit (PAGES[:building] % number)
     end
 
-    def run
-      login
-      run_commands
-      logout
-    end
-
     def logout
       find("#logout").click
     end
@@ -57,29 +41,33 @@ module Travian
       end
 
       1.upto(40) do |building_index|
-
-        choose_building(building_index)
-
-        scope = find("#build #contract")
-
-        if scope.has_selector?("button.build")
-          scope.find("button.build").click
-          puts ">> Started building: #{find("h1").text} \n#{options[:server]}/#{PAGES[:building] % number}"
-          return
-        end
-
+        return if upgrade_building(index)
       end
 
       puts "There are no buildings to upgrade"
       timeout
     end
 
+    def upgrade_building(index)
+      choose_building(building_index)
+      scope = find("#build #contract")
+
+      return false unless scope.has_selector?("button.build")
+
+      scope.find("button.build").click
+      puts ">> Started building: #{find("h1").text} \n#{options[:server]}/#{PAGES[:building] % number}"
+      true
+    end
+
     def send_troops_to_missions
       puts "Sending troops to missions"
       choose_page :hero_adventure
+      unless has_selector?("td.goTo")
+        puts "There are no advantures available"
+        return
+      end
       first("td.goTo").find("a").click
       click_button ""
-      screenshot_and_open_image
     end
 
     def run_commands
