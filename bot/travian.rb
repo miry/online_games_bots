@@ -41,22 +41,28 @@ module Bot
       end
 
       1.upto(40) do |building_index|
-        return if upgrade_building(index)
+        return if upgrade_building(building_index)
       end
 
       puts "There are no buildings to upgrade"
       timeout
     end
 
-    def upgrade_building(index)
+    def upgrade_building(building_index)
       choose_building(building_index)
       scope = find("#build #contract")
 
       return false unless scope.has_selector?("button.build")
 
       scope.find("button.build").click
-      puts ">> Started building: #{find("h1").text} \n#{options[:server]}/#{PAGES[:building] % number}"
+
+      save_and_open_page
+      puts ">> Started building: #{first("h1").text} \n#{options[:server]}/#{PAGES[:building] % building_index}"
       true
+    rescue Capybara::ElementNotFound) => e
+      puts "ERROR: Find bug in action upgrade_building"
+      screenshot_and_save_page
+      puts e.backtrace.join("\n")
     end
 
     def send_troops_to_missions
