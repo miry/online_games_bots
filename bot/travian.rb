@@ -59,7 +59,7 @@ module Bot
       save_and_open_page
       puts ">> Started building: #{first("h1").text} \n#{options[:server]}/#{PAGES[:building] % building_index}"
       true
-    rescue Capybara::ElementNotFound) => e
+    rescue Capybara::ElementNotFound => e
       puts "ERROR: Find bug in action upgrade_building"
       screenshot_and_save_page
       puts e.backtrace.join("\n")
