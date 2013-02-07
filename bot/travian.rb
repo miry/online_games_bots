@@ -57,10 +57,11 @@ module Bot
 
       return false unless scope.has_selector?("button.build")
 
+      title = first("h1").text
+
       scope.find("button.build").click
 
-      save_and_open_page
-      puts ">> Started building: #{first("h1").text} \n#{options[:server]}/#{PAGES[:building] % building_index}"
+      puts ">> Started building: #{title} \n#{options[:server]}/#{PAGES[:building] % building_index}"
       true
     rescue Capybara::ElementNotFound => e
       puts "ERROR: Find bug in action upgrade_building"

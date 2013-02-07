@@ -26,9 +26,7 @@ module Bot
     def choose_page(title)
       within "#gameContainer > .bottombar > .main" do
         link_node = first("a[title=\"#{title}\"]")
-        if link_node && !link_node[:class].include?("active")
-          link_node.click
-        end
+        link_node.click if link_node
       end
     end
 
@@ -44,7 +42,6 @@ module Bot
     end
 
     def build_first
-      screenshot_and_open_image
       puts "Building first"
       choose_page "Castle"
       timeout
@@ -93,7 +90,7 @@ module Bot
 
     def run_commands
       puts "Run commands"
-      timeout(10)
+      timeout(5)
       build_first
       send_troops_to_missions
 
