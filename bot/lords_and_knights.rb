@@ -44,10 +44,15 @@ module Bot
     end
 
     def build_first
+      screenshot_and_open_image
       puts "Building first"
       choose_page "Castle"
-      timeout 
+      timeout
 
+      build_next
+    end
+
+    def build_next
       if all("#buildinglist > table").size > 1
         puts "Nothing todo. Workers are busy"
         return
@@ -56,13 +61,22 @@ module Bot
       within "#buildinglist > table:last-child" do
         building = all(".upgradebutton").last
         if building
-          building.click 
+          building.click
         else
           puts "There are buildings to upgrade"
         end
       end
 
       timeout
+    end
+
+    def choose_next_castle
+      unless has_selector?("#nextHabitat.disabled")
+        puts ">>> chosen next castle"
+        find("#nextHabitat").click
+        return true
+      end
+      false
     end
 
     def send_troops_to_missions
@@ -82,6 +96,8 @@ module Bot
       timeout(10)
       build_first
       send_troops_to_missions
+
+      run_commands if choose_next_castle
     end
   end
 end

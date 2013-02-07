@@ -79,10 +79,16 @@ module Bot
       click_button ""
     end
 
+    def choose_next_castle
+      false
+    end
+
     def run_commands
       puts "Run commands"
       build_first
       send_troops_to_missions
+
+      run_commands if choose_next_castle
     end
 
     def timeout val=nil
