@@ -15,7 +15,7 @@ module Bot
 
       locator = nil
       if options[:server_id]
-        locator = all("#worldswithlogin .worldlink").select{|i| i[:class] =~ /{worldId: '#{options[:server_id]}'}/}.first
+        locator = all("#worldswithlogin .worldlink").select { |i| i[:class] =~ /{worldId: '#{options[:server_id]}'}/ }.first
       end
       locator ||= first("#worldswithlogin .worldlink")
       puts "Chose #{locator.text}"
@@ -42,11 +42,13 @@ module Bot
     end
 
     def build_first
-      puts "Building first"
+      puts ">> Building first"
       choose_page "Castle"
       timeout
 
       build_next
+
+      puts "<< Finished Building"
     end
 
     def build_next
@@ -68,16 +70,15 @@ module Bot
     end
 
     def choose_next_castle
-      unless has_selector?("#nextHabitat.disabled")
-        puts ">>> chosen next castle"
-        find("#nextHabitat").click
-        return true
-      end
-      false
+      return false if has_selector?("#nextHabitat.disabled")
+
+      puts ">>> Choose next castle"
+      find("#nextHabitat").click
+      true
     end
 
     def send_troops_to_missions
-      puts "Sending troops to missions"
+      puts ">>> Sending troops to missions"
       choose_building 'tavern'
 
       all("div.div_checkbox_missions input").each do |node|
@@ -86,15 +87,6 @@ module Bot
 
       find("#btn_missions_start").click()
       timeout
-    end
-
-    def run_commands
-      puts "Run commands"
-      timeout(5)
-      build_first
-      send_troops_to_missions
-
-      run_commands if choose_next_castle
     end
   end
 end

@@ -9,6 +9,7 @@ module Bot
 
       @options = options
       @timeout = options[:timeout] || 5
+      @actions = options[:actions] || [:build_first, :send_troops_to_missions]
     end
 
     def login
@@ -19,8 +20,29 @@ module Bot
       raise NotImplementedError
     end
 
-    def run_commands
+    def build_first
+      raise NotImplementedError
     end
+
+    def send_troops_to_missions
+      raise NotImplementedError
+    end
+
+    def choose_next_castle
+      false
+    end
+
+    def run_commands
+      puts ">> Running actions"
+
+      @actions.each do |action|
+        self.send action
+      end
+
+      puts "<< Finished"
+      run_commands if choose_next_castle
+    end
+
 
     def run
       login
