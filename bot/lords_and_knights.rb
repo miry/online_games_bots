@@ -52,10 +52,10 @@ module Bot
     end
 
     def build_next
-      #if all("#buildinglist > table").size > 1
-      #  puts "Nothing todo. Workers are busy"
-      #  return
-      #end
+      if all("#buildinglist > table").size > 1
+        puts "Nothing todo. Workers are busy"
+        return
+      end
 
       within "#buildinglist > table:last-child" do
 
