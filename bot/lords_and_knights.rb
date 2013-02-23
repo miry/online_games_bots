@@ -84,9 +84,8 @@ module Bot
 
     def get_selected_castle
       within ".navigation" do
-        result = find(".habitatesSelect #btn_hab_name").text rescue "--"
+        return find(".habitatesSelect #btn_hab_name").text rescue "--"
       end
-      result
     end
 
     def send_troops_to_missions
