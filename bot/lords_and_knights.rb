@@ -52,13 +52,17 @@ module Bot
     end
 
     def build_next
-      if all("#buildinglist > table").size > 1
-        puts "Nothing todo. Workers are busy"
-        return
-      end
+      #if all("#buildinglist > table").size > 1
+      #  puts "Nothing todo. Workers are busy"
+      #  return
+      #end
 
       within "#buildinglist > table:last-child" do
-        building = all(".upgradebutton").last
+
+        buildings_range = options[:buildings] || (13..1)
+
+        buildings_selector = buildings_range.map { |b| "table:nth-child(#{b}) .upgradebutton" }.join(",")
+        building = all(buildings_selector).first
         if building
           building.click
         else
@@ -72,9 +76,17 @@ module Bot
     def choose_next_castle
       return false if has_selector?("#nextHabitat.disabled")
 
-      puts ">>> Choose next castle"
       find("#nextHabitat").click
+      puts ">>> Selected castle: #{get_selected_castle}"
+
       true
+    end
+
+    def get_selected_castle
+      within ".navigation" do
+        result = find(".habitatesSelect #btn_hab_name").text rescue "--"
+      end
+      result
     end
 
     def send_troops_to_missions
