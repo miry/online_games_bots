@@ -32,7 +32,7 @@ module Bot
     end
 
     def build_first
-      puts "Building first"
+      puts ">> Building first"
       choose_page :resources
 
       if has_selector?(".boxes.buildingList", visible: true)
@@ -86,6 +86,10 @@ module Bot
 
     def timeout val=nil
       sleep(val || @timeout)
+    end
+
+    def get_selected_castle
+      find("#villageNameField").text rescue "--"
     end
   end
 end
