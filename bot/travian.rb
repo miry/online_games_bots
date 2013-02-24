@@ -81,7 +81,12 @@ module Bot
     end
 
     def choose_next_castle
-      false
+
+      return false unless has_selector?("#villageListLinks li.entry.active + li.entry")
+      first("#villageListLinks li.entry.active + li.entry > a").click
+      puts ">>> Selected castle: #{get_selected_castle}"
+
+      true
     end
 
     def timeout val=nil
