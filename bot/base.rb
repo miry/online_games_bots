@@ -43,10 +43,15 @@ module Bot
       run_commands if choose_next_castle
     end
 
+    def choose_first_castle
+      true
+    end
 
     def run
       login
+      choose_first_castle
       run_commands
+      screenshot_and_open_image
       logout
     rescue Capybara::ElementNotFound => e
       puts "FAILED: #{self.class.inspect}"

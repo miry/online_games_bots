@@ -80,6 +80,14 @@ module Bot
       click_button ""
     end
 
+    def choose_first_castle
+      return false unless has_selector?("#villageListLinks")
+      first("#villageListLinks li.entry > a").click
+      puts ">>> Selected castle: #{get_selected_castle}"
+
+      true
+    end
+
     def choose_next_castle
 
       return false unless has_selector?("#villageListLinks li.entry.active + li.entry")
