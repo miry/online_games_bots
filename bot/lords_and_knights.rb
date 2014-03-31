@@ -18,7 +18,6 @@ module Bot
         locator.click
       end
 
-      timeout
       find('div.version', text: '2.0.8 / build on: Tue, 21 Jan 2014 16:49:24 +0100')
     end
 

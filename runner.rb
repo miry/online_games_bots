@@ -10,7 +10,6 @@ require_relative 'bot/base'
 require_relative 'bot/lords_and_knights'
 require_relative 'bot/travian'
 
-
 Capybara.configure do |config|
   # config.asset_root = 'tmp'
   config.save_and_open_page_path = 'tmp'

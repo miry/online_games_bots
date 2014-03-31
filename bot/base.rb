@@ -61,10 +61,6 @@ module Bot
       puts e
       puts e.backtrace.join("\n")
       puts '----'
-
-      p page.driver.console_messages
-      p page.driver.error_messages
-
     end
 
     def timeout val=nil
