@@ -12,10 +12,11 @@ require_relative 'bot/travian'
 
 
 Capybara.configure do |config|
-  config.asset_root = "tmp"
-  config.save_and_open_page_path = "tmp"
+  # config.asset_root = 'tmp'
+  config.save_and_open_page_path = 'tmp'
   config.run_server = false
-  config.current_driver = :webkit
+  # config.current_driver = :webkit
+  config.current_driver = :selenium
 end
 
 servers = YAML.load_file('config/servers.yml')
@@ -29,8 +30,10 @@ servers.each do |name, opts|
         when 'lords_and_kinghts'
           bot = Bot::LordsAndKnights.new opts
         else
-          puts "Could not detect the bot"
+          puts 'Could not detect the bot'
+          nil
         end
+
 
   bot.run
   sleep 10

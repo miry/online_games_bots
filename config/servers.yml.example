@@ -1,17 +1,24 @@
 miry_us:
   :bot: lords_and_kinghts
-  :email: miry@gmail.com
+  :email: miry@example.com
   :password: changeme
-  :server_id: 33
+  :server_url: http://lordsandknights.com/en/
+  :server_id: 96
+  :actions:
+    - build_first
+  :buildings:
+    - 1..12
 
 miry_ru:
-  :email: miry@gmail.com
+  :bot: lords_and_kinghts
+  :email: miry@example.com
   :password: changeme
+  :server_url: http://lordsandknights.com/en/
   :server_id: 45
 
 miry_ts5_com:
   :bot: travian
-  :server: http://ts1.travian.com
+  :server_url: http://ts1.travian.com
   :email: miry.sof@gmail.com
   :name: miry
   :password: changeme
