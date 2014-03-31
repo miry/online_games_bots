@@ -31,7 +31,6 @@ module Bot
 
     def choose_tab(title)
       find(".habitat .#{title}.tab").click()
-      timeout
     end
 
     def choose_building(title)
@@ -45,7 +44,8 @@ module Bot
     end
 
     def logout
-      find("#logmeout").click
+      find(".Logout").click
+      find('.win.dialog.frame-container .button', text: 'OK').click
     end
 
     def build_first
@@ -105,8 +105,8 @@ module Bot
       puts ">>> Sending troops to missions"
       choose_building 'tavern'
 
-      all(".missionContainer .missionListItem button").each do |node|
-        node.click()
+      all(".missionContainer .missionListItem .button").each do |node|
+        node.click() unless node['class'].include?('speedup')
       end
     end
   end
