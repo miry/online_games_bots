@@ -53,7 +53,6 @@ module Bot
       login
       choose_first_castle
       run_commands
-      screenshot_and_open_image
       logout
     rescue => e
     # rescue Capybara::ElementNotFound => e
