@@ -13,6 +13,8 @@ module Bot
       find('#world-selection')
       find('label', text: 'Use old version').click
 
+      screenshot_and_save_page
+
       locator = nil
       within '#connected-worlds' do
         locator = find('a', text: options[:server_name]) if options[:server_name]
@@ -20,6 +22,7 @@ module Bot
         puts "Chose #{locator.text}"
         locator.click
       end
+
     end
 
     def choose_page(title)
