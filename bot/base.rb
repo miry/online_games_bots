@@ -9,7 +9,8 @@ module Bot
       Capybara.default_wait_time = options[:timeout]
       page.driver.browser.manage.window.maximize rescue nil
       page.driver.resize_window(1440, 900) rescue nil
-      page.driver.browser.timeout = 120
+      page.driver.browser.timeout = 1320
+      page.driver.browser.set_skip_image_loading(true)
 
       @options = options
       @timeout = options[:timeout] || 5

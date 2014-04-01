@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'capybara-webkit'
+gem 'capybara-webkit', '~> 1.1.1'
 #gem 'poltergeist'
 #gem 'phantomjs', :require => 'phantomjs/poltergeist'
 gem 'capybara-screenshot'
