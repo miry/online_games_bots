@@ -61,7 +61,7 @@ module Bot
     rescue => e
     # rescue Capybara::ElementNotFound => e
       puts "FAILED: #{self.class.inspect}"
-      # screenshot_and_save_page
+      screenshot_and_save_page rescue nil
       puts e
       puts e.backtrace.join("\n")
       puts '----'
