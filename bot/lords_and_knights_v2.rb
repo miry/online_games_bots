@@ -1,5 +1,5 @@
 module Bot
-  class LordsAndKnights < Bot::Base
+  class LordsAndKnightsV2 < Bot::Base
 
     def login
       visit '/'
@@ -10,9 +10,6 @@ module Bot
         click_on 'Play Now'
       end
 
-      find('#world-selection')
-      find('label', text: 'Use old version').click
-
       locator = nil
       within '#connected-worlds' do
         locator = find('a', text: options[:server_name]) if options[:server_name]
@@ -20,6 +17,8 @@ module Bot
         puts "Chose #{locator.text}"
         locator.click
       end
+
+      find('div.version', text: '2.0.8 / build on: Tue, 21 Jan 2014 16:49:24 +0100')
     end
 
     def choose_page(title)
@@ -29,43 +28,56 @@ module Bot
       end
     end
 
+    def choose_tab(title)
+      find(".habitat .#{title}.tab").click()
+    end
+
     def choose_building(title)
-      within "div#habitatView" do
+      choose_tab('visitCastle')
+      timeout
+
+      within ".habitat .habitatView.contentCurrentView" do
         find("a.#{title}").click
       end
       timeout
     end
 
     def logout
-      find("#logmeout").click
+      find(".Logout").click
+      find('.win.dialog.frame-container .button', text: 'OK').click
     end
 
     def build_first
       puts ">> Building first"
-      choose_page "Castle"
+
+      choose_tab('buildingList')
       timeout
 
       build_next
-
       puts "<< Finished Building"
     end
 
     def build_next
-      if all("#buildinglist > table").size > 1
-        puts "Nothing todo. Workers are busy"
-        return
-      end
+      # if all("#buildinglist > table").size > 1
+      #   puts "Nothing todo. Workers are busy"
+      #   return
+      # end
 
-      within "#buildinglist > table:last-child" do
+      within '.habitat .buildingList.contentCurrentView' do
 
-        buildings_range = options[:buildings] || (13..1)
+        buildings_range = options[:buildings].map(&:to_i) || (12..0)
+        buildings = []
+        available_buildings = all('.fixedBuildingList > .building .button.buildbutton')
 
-        buildings_selector = buildings_range.map { |b| "table:nth-child(#{b}) .upgradebutton" }.join(",")
-        building = all(buildings_selector).first
-        if building
-          building.click
+        buildings_range.each do |i|
+          building = available_buildings[i]
+          buildings << building unless building['class'].include?('disabled')
+        end
+
+        if buildings.empty?
+          puts 'There are no buildings to upgrade'
         else
-          puts "There are buildings to upgrade"
+          buildings.first.click
         end
       end
 
@@ -73,6 +85,7 @@ module Bot
     end
 
     def choose_next_castle
+      return false
       return false if has_selector?("#nextHabitat.disabled")
 
       find("#nextHabitat").click
@@ -91,12 +104,9 @@ module Bot
       puts ">>> Sending troops to missions"
       choose_building 'tavern'
 
-      all("div.div_checkbox_missions input").each do |node|
-        node.set(true)
+      all(".missionContainer .missionListItem .button").each do |node|
+        node.click() unless node['class'].include?('speedup')
       end
-
-      find("#btn_missions_start").click()
-      timeout
     end
   end
 end

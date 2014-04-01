@@ -8,6 +8,7 @@ Bundler.require
 
 require_relative 'bot/base'
 require_relative 'bot/lords_and_knights'
+require_relative 'bot/lords_and_knights_v2'
 require_relative 'bot/travian'
 
 Capybara.configure do |config|
@@ -28,6 +29,8 @@ servers.each do |name, opts|
           bot = Bot::Travian.new opts
         when 'lords_and_kinghts'
           bot = Bot::LordsAndKnights.new opts
+        when 'lords_and_kinghts_v2'
+          bot = Bot::LordsAndKnightsV2.new opts
         else
           puts 'Could not detect the bot'
           nil

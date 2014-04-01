@@ -11,9 +11,13 @@ GEM
     capybara-screenshot (0.3.17)
       capybara (>= 1.0, < 3)
       launchy
+    capybara-webkit (1.1.0)
+      capybara (~> 2.0, >= 2.0.2)
+      json
     childprocess (0.5.2)
       ffi (~> 1.0, >= 1.0.11)
     ffi (1.9.3)
+    json (1.8.1)
     launchy (2.4.2)
       addressable (~> 2.3)
     mime-types (2.2)
@@ -39,5 +43,6 @@ PLATFORMS
 
 DEPENDENCIES
   capybara-screenshot
+  capybara-webkit
   launchy
   selenium-webdriver (~> 2.41.0)
