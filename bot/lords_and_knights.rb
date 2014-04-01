@@ -4,37 +4,14 @@ module Bot
     def login
       visit '/'
 
-      # timeout(10)
-      # screenshot_and_save_page
-
-
-      puts ""
-      puts ""
-      puts "---- Login  ----"
-      puts ""
-      puts ""
-
       within 'form#login' do
         fill_in 'loginEmail', with: options[:email]
         fill_in 'loginPassword', with: options[:password]
         click_on 'Play Now'
       end
 
-
-      puts ""
-      puts ""
-      puts "---- Servers  ----"
-      puts ""
-      puts ""
-
-      # timeout(20)
-      # screenshot_and_save_page
-
       find('#world-selection')
       find('label', text: 'Use old version').click
-
-      # timeout(20)
-      # screenshot_and_save_page
 
       locator = nil
       within '#connected-worlds' do
@@ -44,15 +21,6 @@ module Bot
         locator.click
       end
 
-      puts ""
-      puts ""
-      puts "---- Game ----"
-      puts ""
-      puts ""
-
-
-      # timeout(20)
-      # screenshot_and_save_page
       find('#gameContainer')
       find('#gameVersion', text: '1.8.8')
     end

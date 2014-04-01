@@ -11,12 +11,11 @@ module Bot
       page.driver.resize_window(1440, 900) rescue nil
       page.driver.browser.timeout = 1320
       page.driver.browser.set_skip_image_loading(true)
+      page.driver.header 'User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.74.9 (KHTML, like Gecko) Version/7.0.2 Safari/537.74.9' rescue nil
 
       @options = options
       @timeout = options[:timeout] || 5
       @actions = options[:actions] || [:build_first, :send_troops_to_missions]
-
-      # page.driver.header 'User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.74.9 (KHTML, like Gecko) Version/7.0.2 Safari/537.74.9'
     end
 
     def login
