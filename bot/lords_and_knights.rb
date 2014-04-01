@@ -10,6 +10,9 @@ module Bot
         click_on 'Play Now'
       end
 
+      timeout
+      screenshot_and_save_page
+
       find('#world-selection')
       find('label', text: 'Use old version').click
 
@@ -23,6 +26,9 @@ module Bot
         locator.click
       end
 
+      timeout
+      screenshot_and_save_page
+      find('#gameContainer')
     end
 
     def choose_page(title)

@@ -17,6 +17,7 @@ Capybara.configure do |config|
   config.run_server = false
   config.current_driver = :webkit
   #config.current_driver = :selenium
+  config.default_wait_time = 10
 end
 
 servers = YAML.load_file('config/servers.yml')

@@ -6,6 +6,7 @@ module Bot
 
     def initialize(options)
       Capybara.app_host = options[:server_url]
+      Capybara.default_wait_time = options[:timeout]
       page.driver.browser.manage.window.maximize rescue nil
 
       @options = options
