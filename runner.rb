@@ -15,8 +15,8 @@ Capybara.configure do |config|
   # config.asset_root = 'tmp'
   config.save_and_open_page_path = 'tmp'
   config.run_server = false
-  # config.current_driver = :webkit
-  config.current_driver = :selenium
+  config.current_driver = :webkit
+  #config.current_driver = :selenium
 end
 
 servers = YAML.load_file('config/servers.yml')
