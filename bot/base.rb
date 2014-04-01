@@ -8,6 +8,7 @@ module Bot
       Capybara.app_host = options[:server_url]
       Capybara.default_wait_time = options[:timeout]
       page.driver.browser.manage.window.maximize rescue nil
+      page.driver.resize_window(1440, 900) rescue nil
 
       @options = options
       @timeout = options[:timeout] || 5
@@ -63,6 +64,8 @@ module Bot
       puts e
       puts e.backtrace.join("\n")
       puts '----'
+
+      p page.driver.console_messages rescue nil
     end
 
     def timeout val=nil
