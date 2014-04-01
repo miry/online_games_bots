@@ -9,6 +9,7 @@ module Bot
       Capybara.default_wait_time = options[:timeout]
       page.driver.browser.manage.window.maximize rescue nil
       page.driver.resize_window(1440, 900) rescue nil
+      page.driver.browser.timeout = 120
 
       @options = options
       @timeout = options[:timeout] || 5
@@ -60,12 +61,19 @@ module Bot
     rescue => e
     # rescue Capybara::ElementNotFound => e
       puts "FAILED: #{self.class.inspect}"
-      screenshot_and_save_page
+      # screenshot_and_save_page
       puts e
       puts e.backtrace.join("\n")
       puts '----'
 
+
       p page.driver.console_messages rescue nil
+
+      puts "----"
+
+      p page.body
+
+      puts '-----'
     end
 
     def timeout val=nil
