@@ -1,13 +1,10 @@
 A simple bot for autobuilding and missions.
 
-== TODO
+## Settings
 
-- Hooks to teamcity via https://github.com/github/github-services/pull/47/files
-- Add Logger
+The config file located in `config/servers.yml`
 
-== Settings
-
-=== Actions
+### Actions
 
 `build_first` - Create a first building in the list. The order of buidlings get from `:buildings`
 `send_troops_to_missions` - Send troops to missions for each castle
@@ -24,7 +21,7 @@ miry_us:
     - send_troops_to_missions
 ```
 
-=== Buildings
+### Buildings
 
 Setup a list allowed to build buildings and the order. Depends on ui version it could be different number for buildings.
 
@@ -40,3 +37,10 @@ miry_us:
     - 12
     - 11
 ```
+
+## TODO
+
+- Hooks to teamcity via https://github.com/github/github-services/pull/47/files
+- Add Logger
+
+
