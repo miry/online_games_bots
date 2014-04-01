@@ -2,7 +2,24 @@ A simple bot for autobuilding and missions.
 
 ## Settings
 
-The config file located in `config/servers.yml`
+The config file located in `config/servers.yml`. The structure is simple. First you should specify the custom server name example `lak_us` and bot.
+
+```yaml
+lak_us:
+  :bot: lords_and_kinghts
+```
+
+Now we know what kind of game you want to connect. For Lords and Knights we need to specify the server.
+
+```yaml
+lak_us:
+  :bot: lords_and_kinghts
+  :server_name: USA 6
+  :server_url: http://lordsandknights.com/en/
+```
+
+- `server_name` is the text name that you can copy from the login page after you inpuit the credentials.
+- `server_url` is the login url
 
 ### Actions
 
