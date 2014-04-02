@@ -23,6 +23,11 @@ module Bot
 
       find('#gameContainer')
       find('#gameVersion', text: '1.8.8')
+    rescue => e
+      unless @tries
+        @tries = true
+        retry
+      end
     end
 
     def choose_page(title)
