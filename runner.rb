@@ -21,7 +21,6 @@ Capybara.configure do |config|
   config.default_wait_time = 10
 end
 
-
 if Capybara.current_driver == :selenium
   Capybara.current_session.driver.browser.manage.window.maximize rescue nil
 else
@@ -39,19 +38,19 @@ servers.each do |name, opts|
   Capybara.app_host = opts[:server_url]
   Capybara.default_wait_time = opts[:timeout]
 
-  bot = case opts[:bot]
+  bot_factory = case opts[:bot]
         when 'travian'
-          bot = Bot::Travian.new opts
+          Bot::Travian
         when 'lords_and_kinghts'
-          bot = Bot::LordsAndKnights.new opts
+          Bot::LordsAndKnights
         when 'lords_and_kinghts_v2'
-          bot = Bot::LordsAndKnightsV2.new opts
+          Bot::LordsAndKnightsV2
         else
           puts 'Could not detect the bot'
-          nil
+          next
         end
 
-
+  bot = bot_factory.new opts
   bot.run
   sleep 10
 end

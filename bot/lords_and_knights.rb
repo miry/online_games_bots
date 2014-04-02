@@ -108,8 +108,8 @@ module Bot
       all("div.div_checkbox_missions").each do |node|
         check_box = node.find('input', visible: true)
         if check_box
-          p node['class']
-          p node.first(:xpath,".//preceding-sibling::*[1]")['class']
+          prev_node = node.first(:xpath,".//preceding-sibling::*[1]")
+          p prev_node.text
 
           check_box.set(true)
         end
