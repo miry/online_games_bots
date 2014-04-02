@@ -18,14 +18,20 @@ module Bot
         locator = find('a', text: options[:server_name]) if options[:server_name]
         locator ||= first('a')
         puts "Chose #{locator.text}"
+        timeout
         locator.click
       end
+
+      timeout
+      timeout
 
       find('#gameContainer')
       find('#gameVersion', text: '1.8.8')
     rescue => e
-      unless @tries
-        @tries = true
+      @tries ||= 3
+
+      if @tries > 0
+        @tries -= 1
         retry
       end
     end
@@ -99,8 +105,14 @@ module Bot
       puts ">>> Sending troops to missions"
       choose_building 'tavern'
 
-      all("div.div_checkbox_missions input").each do |node|
-        node.set(true)
+      all("div.div_checkbox_missions").each do |node|
+        check_box = node.find('input', visible: true)
+        if check_box
+          p node['class']
+          p node.first(:xpath,".//preceding-sibling::*[1]")['class']
+
+          check_box.set(true)
+        end
       end
 
       find("#btn_missions_start").click()
