@@ -74,10 +74,11 @@ module Bot
 
         buildings_range = options[:buildings] || (13..1)
 
-        buildings_selector = buildings_range.map { |b| "table:nth-child(#{b}) .upgradebutton" }.join(",")
+        buildings_selector = buildings_range.map { |b| "table:nth-child(#{b})" }.join(",")
         building = all(buildings_selector).first
         if building
-          building.click
+          puts "- #{building.text}"
+          building.find(".upgradebutton").click
         else
           puts "There are buildings to upgrade"
         end
