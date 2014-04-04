@@ -2,12 +2,12 @@ module Bot
   class LordsAndKnights < Bot::Base
 
     def login
-      visit '/'
+      visit '/game-login/'
 
       within 'form#login' do
         fill_in 'loginEmail', with: options[:email]
         fill_in 'loginPassword', with: options[:password]
-        click_on 'Play Now'
+        click_on 'Login'
       end
 
       find('#world-selection')
@@ -23,15 +23,15 @@ module Bot
       end
 
       timeout
-      timeout
 
       find('#gameContainer')
       find('#gameVersion', text: '1.8.8')
-    rescue => e
-      @tries ||= 3
+    rescue Capybara::ElementNotFound => e
+      @tries ||= 0
 
-      if @tries > 0
-        @tries -= 1
+      if @tries < Bot::Base::MAX_RETRIES
+        @tries += 1
+        timeout(@timeout*@tries)
         retry
       end
     end
@@ -72,15 +72,19 @@ module Bot
 
       within "#buildinglist > table:last-child" do
 
-        buildings_range = options[:buildings] || (13..1)
+        buildings = options[:buildings] || ['Lumberjack']
 
-        buildings_selector = buildings_range.map { |b| "table:nth-child(#{b})" }.join(",")
-        building = all(buildings_selector).first
-        if building
-          puts "- #{building.text}"
-          building.find(".upgradebutton").click
-        else
-          puts "There are buildings to upgrade"
+        buildings.each do |building_title|
+          building_node = find('.habitatListItemText', text: building_title, visible: false)
+          row_node = building_node.first(:xpath, ".//ancestor::td[1]")
+          button_node = row_node.first('.upgradebutton')
+          p button_node
+          if button_node
+            p button_node['class']
+            button_node.click
+            puts "- #{building_title}"
+            break
+          end
         end
       end
 
@@ -107,12 +111,16 @@ module Bot
       choose_building 'tavern'
 
       all("div.div_checkbox_missions").each do |node|
-        check_box = node.find('input', visible: true)
-        if check_box
-          prev_node = node.first(:xpath,".//preceding-sibling::*[1]")
-          p prev_node.text
+        begin
+          check_box = node.find('input', visible: true)
+          if check_box
+            prev_node = node.first(:xpath, ".//preceding-sibling::*[1]")
+            puts "- #{prev_node.text}"
 
-          check_box.set(true)
+            check_box.set(true)
+          end
+        rescue Capybara::ElementNotFound => e
+          p e.class
         end
       end
 

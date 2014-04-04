@@ -1,5 +1,6 @@
 module Bot
   class Base
+    MAX_RETRIES = 3
     include Capybara::DSL
 
     attr_reader :options
@@ -54,6 +55,7 @@ module Bot
     # rescue Capybara::ElementNotFound => e
       puts "FAILED: #{self.class.inspect}"
       screenshot_and_save_page rescue nil
+      puts e.class
       puts e
       puts e.backtrace.join("\n")
       puts '----'
