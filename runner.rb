@@ -26,7 +26,7 @@ if Capybara.current_driver == :selenium
 else
   Capybara.current_session.driver.resize_window(1440, 900) rescue nil
   Capybara.current_session.driver.browser.timeout = 1320
-  Capybara.current_session.driver.browser.set_skip_image_loading(true)
+#  Capybara.current_session.driver.browser.set_skip_image_loading(true)
   Capybara.current_session.driver.header 'User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.74.9 (KHTML, like Gecko) Version/7.0.2 Safari/537.74.9' rescue nil
 end
 
@@ -36,7 +36,7 @@ servers.each do |name, opts|
   puts ">>> Started bot:#{opts[:bot]} on #{name}"
 
   Capybara.app_host = opts[:server_url]
-  Capybara.default_wait_time = opts[:timeout]
+  Capybara.default_wait_time = opts[:timeout] || 2
 
   bot_factory = case opts[:bot]
         when 'travian'

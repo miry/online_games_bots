@@ -93,8 +93,8 @@ module Bot
 
     def choose_next_castle
       return false if has_selector?("#nextHabitat.disabled")
-
-      find("#nextHabitat").click
+     
+      click_on "nextHabitat"
       puts ">>> Selected castle: #{get_selected_castle}"
 
       true
