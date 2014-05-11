@@ -78,7 +78,6 @@ module Bot
           building_node = find('.habitatListItemText', text: building_title, visible: false)
           row_node = building_node.first(:xpath, ".//ancestor::td[1]")
           button_node = row_node.first('.upgradebutton')
-          p button_node
           if button_node
             p button_node['class']
             button_node.click
