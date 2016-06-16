@@ -1,4 +1,6 @@
-A simple bot for autobuilding and missions.
+**THIS PROJECT IS NOT MAINTAINED ANYMORE**
+
+A simple bot for autobuilding and missions. Tested on Linux and MacOS.
 
 ## Settings
 
