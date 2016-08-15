@@ -55,17 +55,15 @@ module Bot
     # rescue Capybara::ElementNotFound => e
       puts "FAILED: #{self.class.inspect}"
       screenshot_and_save_page rescue nil
+      puts '--- Eception'
       puts e.class
-      puts e
+      puts e.message
       puts e.backtrace.join("\n")
-      puts '----'
-
-
+      puts '---- Console'
       p page.driver.console_messages rescue nil
+      puts "---- Body"
 
-      puts "----"
-
-      p page.body
+      #p page.body
 
       puts '-----'
     end

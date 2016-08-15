@@ -4,10 +4,13 @@ module Bot
     def login
       visit '/'
 
+      play_now_button = find('#header-play-button')
+      play_now_button.click
+
       within 'form#login' do
         fill_in 'loginEmail', with: options[:email]
         fill_in 'loginPassword', with: options[:password]
-        click_on 'Play Now'
+        find('button').click
       end
 
       locator = nil
@@ -18,7 +21,7 @@ module Bot
         locator.click
       end
 
-      find('div.version', text: '2.0.8 / build on: Tue, 21 Jan 2014 16:49:24 +0100')
+      find('div.version', text: '4.4.7 / built on: Wed, 13 Apr 2016 09:33:56 +0800')
     end
 
     def choose_page(title)
@@ -36,20 +39,20 @@ module Bot
       choose_tab('visitCastle')
       timeout
 
-      within ".habitat .habitatView.contentCurrentView" do
-        find("a.#{title}").click
+      within ".habitat" do
+        find("polygon.#{title}").click
       end
       timeout
     end
 
     def logout
-      find(".Logout").click
-      find('.win.dialog.frame-container .button', text: 'OK').click
+      find(".Logout").trigger('click')
+      find('.win.dialog.frame-container .button', text: 'OK').trigger('click')
     end
 
     def build_first
+      timeout
       puts ">> Building first"
-
       choose_tab('buildingList')
       timeout
 
@@ -65,19 +68,37 @@ module Bot
 
       within '.habitat .buildingList.contentCurrentView' do
 
-        buildings_range = options[:buildings].map(&:to_i) || (12..0)
-        buildings = []
-        available_buildings = all('.fixedBuildingList > .building .button.buildbutton')
+        buildings_range = (options[:buildings] || [])
+        p buildings_range
+        buildings = {}
+        available_buildings = all('.fixedBuildingList .building .button.buildbutton:not(.buildbuttondisabled)')
+        available_buildings = all('.fixedBuildingList .building')
 
-        buildings_range.each do |i|
-          building = available_buildings[i]
-          buildings << building unless building['class'].include?('disabled')
+        puts "Available buildings:"
+        p available_buildings
+        p available_buildings.size
+
+        available_buildings.each do |building|
+          p building
+          p building['class']
+          building_name = building.first('.title.buildingName').text
+          p building_name
+          build_link = building.first('.button.buildbutton') 
+          p build_link
+          p build_link['class']
+          buildings[building_name] = build_link unless build_link['class'].include?('disabled')
         end
 
         if buildings.empty?
           puts 'There are no buildings to upgrade'
         else
-          buildings.first.click
+          buildings_range.each do |building_name|
+            if buildings.key?(building_name)
+              puts "Build #{building_name}"
+              buildings[building_name].trigger('click')
+              break
+            end
+          end
         end
       end
 

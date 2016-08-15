@@ -7,7 +7,8 @@ miry_us:
   :actions:
     - build_first
   :buildings:
-    - 1..12
+    - Keep
+    - Lumberjack
 
 miry_ru:
   :bot: lords_and_kinghts
