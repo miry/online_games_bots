@@ -22,6 +22,7 @@ module Bot
       end
 
       find('div.version', text: '4.4.7 / built on: Wed, 13 Apr 2016 09:33:56 +0800')
+      timeout
     end
 
     def choose_page(title)
@@ -40,7 +41,7 @@ module Bot
       timeout
 
       within ".habitat" do
-        find("polygon.#{title}").click
+        find("polygon.#{title}").trigger('click')
       end
       timeout
     end
@@ -61,43 +62,32 @@ module Bot
     end
 
     def build_next
-      # if all("#buildinglist > table").size > 1
-      #   puts "Nothing todo. Workers are busy"
-      #   return
-      # end
-
       within '.habitat .buildingList.contentCurrentView' do
+        if all(".buildingUpgrade > .building").size > 0
+          puts "Nothing todo. Workers are busy"
+          return
+        end
 
         buildings_range = (options[:buildings] || [])
-        p buildings_range
         buildings = {}
-        available_buildings = all('.fixedBuildingList .building .button.buildbutton:not(.buildbuttondisabled)')
         available_buildings = all('.fixedBuildingList .building')
 
-        puts "Available buildings:"
-        p available_buildings
-        p available_buildings.size
-
         available_buildings.each do |building|
-          p building
-          p building['class']
           building_name = building.first('.title.buildingName').text
-          p building_name
           build_link = building.first('.button.buildbutton') 
-          p build_link
-          p build_link['class']
           buildings[building_name] = build_link unless build_link['class'].include?('disabled')
         end
 
         if buildings.empty?
           puts 'There are no buildings to upgrade'
-        else
-          buildings_range.each do |building_name|
-            if buildings.key?(building_name)
-              puts "Build #{building_name}"
-              buildings[building_name].trigger('click')
-              break
-            end
+          return
+        end
+
+        buildings_range.each do |building_name|
+          if buildings.key?(building_name)
+            puts "Build #{building_name}"
+            buildings[building_name].trigger('click')
+            break
           end
         end
       end
@@ -125,8 +115,13 @@ module Bot
       puts ">>> Sending troops to missions"
       choose_building 'tavern'
 
-      all(".missionContainer .missionListItem .button").each do |node|
-        node.click() unless node['class'].include?('speedup')
+      buttons = all(".missionContainer .missionListItem .button:not(.speedup):not(.disabled)")
+        
+      buttons.size.times do |i|
+        node = first(".missionContainer .missionListItem .button:not(.speedup):not(.disabled)")
+        p node
+        node.click()
+        timeout
       end
     end
   end

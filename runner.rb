@@ -11,7 +11,7 @@ require_relative 'bot/lords_and_knights'
 require_relative 'bot/lords_and_knights_v2'
 require_relative 'bot/travian'
 
-choose_driver = ARGV.first || :webkit
+choose_driver = ARGV.first || :poltergeist
 
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, :browser => :chrome)
@@ -36,7 +36,11 @@ Capybara::Webkit.configure do |config|
 end
 
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, {js_errors: false})
+  Capybara::Poltergeist::Driver.new(app, {
+    js_errors: false,
+#    debug: true,
+    url_blacklist: ['http://www.google-analytics.com/ga.js']
+  })
 end
 
 if Capybara.current_driver == :selenium
