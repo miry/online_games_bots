@@ -108,9 +108,7 @@ module Bot
       puts ">> Switch to next castle"
       # The button appears only in specific order.
       choose_tab('buildingList')
-      timeout
       choose_tab('visitCastle')
-      timeout
 
       has_selector?("svg.castle-scene-map")
 
