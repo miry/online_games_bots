@@ -1,0 +1,4 @@
+.git
+vendor/bundle
+tmp
+config/servers.yml

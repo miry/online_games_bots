@@ -32,13 +32,14 @@ module Bot
     end
 
     def run_commands
-      puts ">> Running actions"
+      puts ">> Running actions for selected castle"
 
       @actions.each do |action|
         self.send action
       end
 
-      puts "<< Finished"
+      puts "<< Finished for selected castle"
+
       run_commands if choose_next_castle
     end
 
@@ -47,9 +48,11 @@ module Bot
     end
 
     def run
+      puts "> Login"
       login
       choose_first_castle
       run_commands
+      puts "> Logout"
       logout
     rescue => e
     # rescue Capybara::ElementNotFound => e

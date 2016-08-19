@@ -17,7 +17,7 @@ module Bot
       within '#connected-worlds' do
         locator = find('a', text: options[:server_name]) if options[:server_name]
         locator ||= first('a')
-        puts "Chose #{locator.text}"
+        puts ">>> Chose #{locator.text}"
         locator.click
       end
 
@@ -33,16 +33,20 @@ module Bot
     end
 
     def choose_tab(title)
-      find(".habitat .#{title}.tab").click()
+      puts ">>> Choose Tab: #{title}"
+      tab_selector = ".habitat .#{title}.tab"
+      find(tab_selector).click()
+      timeout
+      has_selector?(tab_selector)
     end
 
     def choose_building(title)
       choose_tab('visitCastle')
-      timeout
 
       within ".habitat" do
         find("polygon.#{title}").trigger('click')
       end
+
       timeout
     end
 
@@ -95,20 +99,31 @@ module Bot
       timeout
     end
 
-    def choose_next_castle
-      return false
-      return false if has_selector?("#nextHabitat.disabled")
+    def choose_first_castle
+      puts ">>> Selected castle: #{get_selected_castle}"
+      true
+    end
 
-      find("#nextHabitat").click
+    def choose_next_castle
+      puts ">> Switch to next castle"
+      # The button appears only in specific order.
+      choose_tab('buildingList')
+      timeout
+      choose_tab('visitCastle')
+      timeout
+
+      has_selector?("svg.castle-scene-map")
+
+      return false unless has_selector?(".habitat .headerButton.paginate.next")
+
+      find(".habitat .headerButton.paginate.next").click
       puts ">>> Selected castle: #{get_selected_castle}"
 
       true
     end
 
     def get_selected_castle
-      within ".navigation" do
-        return find(".habitatesSelect #btn_hab_name").text rescue "--"
-      end
+      return find(".habitat .headline > .title").text rescue "--"
     end
 
     def send_troops_to_missions
@@ -119,7 +134,7 @@ module Bot
         
       buttons.size.times do |i|
         node = first(".missionContainer .missionListItem .button:not(.speedup):not(.disabled)")
-        p node
+        break if node.nil?
         node.click()
         timeout
       end
