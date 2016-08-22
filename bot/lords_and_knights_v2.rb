@@ -59,15 +59,13 @@ module Bot
       timeout
       puts ">> Building first"
       choose_tab('buildingList')
-      timeout
-
       build_next
       puts "<< Finished Building"
     end
 
     def build_next
       within '.habitat .buildingList.contentCurrentView' do
-        if all(".buildingUpgrade > .building").size > 0
+        if all(".buildingUpgrade > .building").size > 1
           puts "Nothing todo. Workers are busy"
           return
         end
@@ -100,7 +98,7 @@ module Bot
     end
 
     def choose_first_castle
-      puts ">>> Selected castle: #{get_selected_castle}"
+      puts ">> Selected castle: #{get_selected_castle}"
       true
     end
 
