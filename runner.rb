@@ -43,6 +43,7 @@ Capybara.register_driver :poltergeist do |app|
     js_errors: false,
 #    debug: true,
 #    inspector: true,
+    phantomjs_options: ['--load-images=no', '--disk-cache=true'],
     url_blacklist: [/.*google.*/]
   })
 end

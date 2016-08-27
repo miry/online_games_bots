@@ -112,7 +112,7 @@ module Bot
 
       return false unless has_selector?(".habitat .headerButton.paginate.next")
 
-      find(".habitat .headerButton.paginate.next").click
+      find(".habitat .headerButton.paginate.next").trigger('click')
       puts ">>> Selected castle: #{get_selected_castle}"
 
       true
