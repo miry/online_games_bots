@@ -77,7 +77,10 @@ module Bot
         available_buildings.each do |building|
           building_name = building.first('.title.buildingName').text
           build_link = building.first('.button.buildbutton') 
-          buildings[building_name] = build_link unless build_link['class'].include?('disabled')
+          break unless build_link
+          unless build_link['class'].include?('disabled')
+            buildings[building_name] = build_link
+          end
         end
 
         if buildings.empty?
