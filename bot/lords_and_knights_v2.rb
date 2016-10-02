@@ -101,8 +101,15 @@ module Bot
     end
 
     def choose_first_castle
-      first('.topbar .container .controls > .topbarImageContainer').trigger('click')
-      timeout(2)
+      unless has_selector?('.win.castleList .content-container .inner-frame .castleHabitatOverview .castleListItem')
+        first('.topbar .container .controls > .topbarImageContainer').trigger('click')
+        timeout
+      end
+
+      if has_selector?('.win.habitat .close')
+        first('.win.habitat .close').trigger('click')
+      end
+
       first('.win.castleList .content-container .inner-frame .castleHabitatOverview .castleListItem').trigger('click')
 
       logger.info ">> Selected castle: #{get_selected_castle}"

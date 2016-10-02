@@ -72,7 +72,7 @@ module Bot
       logger.debug '---- Console'
       logger.debug(page.driver.console_messages) rescue nil
       logger.debug "---- Body"
-      logger.debug page.body
+      # logger.debug page.body
       logger.debug '-----'
     end
 
