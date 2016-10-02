@@ -2,6 +2,8 @@ FROM ruby:2.3.1-alpine
 
 MAINTAINER Michael Nikitochkin <nikitochkin.michael@gmail.com>
 
+LABEL app=online_games_bot
+
 COPY . /app/
 WORKDIR /app
 VOLUME /app/config
@@ -9,6 +11,7 @@ VOLUME /app/config
 RUN apk --update add \
        make \
        g++ \
+       curl \
  && cd / \
  && curl -Ls https://github.com/fgrehm/docker-phantomjs2/releases/download/v2.0.0-20150722/dockerized-phantomjs.tar.gz  |  tar xz -C / \
  && cd /app \

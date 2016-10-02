@@ -66,7 +66,7 @@ module Bot
     def build_next
       within '.habitat .buildingList.contentCurrentView' do
         if all(".buildingUpgrade > .building").size > 1
-          logger.debug "Nothing todo. Workers are busy"
+          logger.info "Nothing todo. Workers are busy."
           return
         end
 
@@ -90,7 +90,7 @@ module Bot
 
         buildings_range.each do |building_name|
           if buildings.key?(building_name)
-            logger.debug "Build #{building_name}"
+            logger.info "* Build #{building_name}"
             buildings[building_name].trigger('click')
             break
           end

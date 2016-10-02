@@ -10,6 +10,7 @@ module Bot
       @timeout = options[:timeout] || 5
       @actions = options[:actions] || [:build_first, :send_troops_to_missions]
       @logger  = options[:logger] || Logger.new(STDOUT)
+      @enable_loop = options[:loop]
     end
 
     def login
@@ -43,8 +44,10 @@ module Bot
 
       run_commands if choose_next_castle
 
-      logger.debug "!!! Started from the First Castle"
-      run_commands if choose_first_castle
+      if @enable_loop
+        logger.debug "!!! Started from the First Castle"
+        run_commands if choose_first_castle
+      end
     end
 
     def choose_first_castle
