@@ -4,11 +4,11 @@ require 'rubygems'
 require 'bundler'
 require 'yaml'
 require 'json'
+require 'logger'
 
 Bundler.require
 
 require_relative 'bot/base'
-require_relative 'bot/lords_and_knights'
 require_relative 'bot/lords_and_knights_v2'
 require_relative 'bot/travian'
 
@@ -64,15 +64,17 @@ elsif File.exists?('config/servers.yml')
   servers = YAML.load_file('config/servers.yml')
 end
 
+logger = Logger.new(STDOUT)
+logger.level = Logger::DEBUG
+
 servers.each do |name, opts|
   opts = opts.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+  opts[:logger] = logger
 
-  puts ">>> Started bot:#{opts[:bot]} on #{name}"
+  logger.info ">>> Started bot:#{opts[:bot]} on #{name}"
 
   Capybara.app_host = opts[:server_url]
   Capybara.default_max_wait_time = opts[:timeout] || 2
-
-
 
   bot_factory = case opts[:bot]
         when 'travian'

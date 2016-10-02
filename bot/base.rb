@@ -9,6 +9,7 @@ module Bot
       @options = options
       @timeout = options[:timeout] || 5
       @actions = options[:actions] || [:build_first, :send_troops_to_missions]
+      @logger  = options[:logger] || Logger.new(STDOUT)
     end
 
     def login
@@ -32,15 +33,18 @@ module Bot
     end
 
     def run_commands
-      puts ">> Running actions for selected castle"
+      logger.debug ">> Running actions for selected castle"
 
       @actions.each do |action|
         self.send action
       end
 
-      puts "<< Finished for selected castle"
+      logger.debug "<< Finished for selected castle"
 
       run_commands if choose_next_castle
+
+      logger.debug "!!! Started from the First Castle"
+      run_commands if choose_first_castle
     end
 
     def choose_first_castle
@@ -48,31 +52,33 @@ module Bot
     end
 
     def run
-      puts "> Login"
+      logger.debug "> Login"
       login
       choose_first_castle
       run_commands
-      puts "> Logout"
+      logger.debug "> Logout"
       logout
     rescue => e
     # rescue Capybara::ElementNotFound => e
-      puts "FAILED: #{self.class.inspect}"
+      logger.debug "FAILED: #{self.class.inspect}"
       screenshot_and_save_page rescue nil
-      puts '--- Eception'
-      puts e.class
-      puts e.message
-      puts e.backtrace.join("\n")
-      puts '---- Console'
-      p page.driver.console_messages rescue nil
-      puts "---- Body"
-
-      #p page.body
-
-      puts '-----'
+      logger.debug '--- Eception'
+      logger.debug e.class
+      logger.debug e.message
+      logger.debug e.backtrace.join("\n")
+      logger.debug '---- Console'
+      logger.debug(page.driver.console_messages) rescue nil
+      logger.debug "---- Body"
+      logger.debug page.body
+      logger.debug '-----'
     end
 
     def timeout val=nil
       sleep(val || @timeout)
+    end
+
+    def logger
+      @logger
     end
 
   end

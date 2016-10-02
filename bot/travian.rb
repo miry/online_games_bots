@@ -32,11 +32,11 @@ module Bot
     end
 
     def build_first
-      puts ">> Building first"
+      logger.debug ">> Building first"
       choose_page :resources
 
       if has_selector?(".boxes.buildingList", visible: true)
-        puts "Nothing todo. Workers are busy"
+        logger.debug "Nothing todo. Workers are busy"
         return
       end
 
@@ -45,7 +45,7 @@ module Bot
         return if upgrade_building(building_index)
       end
 
-      puts "There are no buildings to upgrade"
+      logger.debug "There are no buildings to upgrade"
       timeout
     end
 
@@ -61,19 +61,19 @@ module Bot
 
       scope.find("button.build").click
 
-      puts ">> Started building: #{title} \n#{options[:server]}/#{PAGES[:building] % building_index}"
+      logger.debug ">> Started building: #{title} \n#{options[:server]}/#{PAGES[:building] % building_index}"
       true
     rescue Capybara::ElementNotFound => e
-      puts "ERROR: Find bug in action upgrade_building"
+      logger.debug "ERROR: Find bug in action upgrade_building"
       screenshot_and_save_page
-      puts e.backtrace.join("\n")
+      logger.debug e.backtrace.join("\n")
     end
 
     def send_troops_to_missions
-      puts "Sending troops to missions"
+      logger.debug "Sending troops to missions"
       choose_page :hero_adventure
       unless has_selector?("td.goTo")
-        puts "There are no advantures available"
+        logger.debug "There are no advantures available"
         return
       end
       first("td.goTo").find("a").click
@@ -83,7 +83,7 @@ module Bot
     def choose_first_castle
       return false unless has_selector?("#villageListLinks")
       first("#villageListLinks li.entry > a").click
-      puts ">>> Selected castle: #{get_selected_castle}"
+      logger.debug ">>> Selected castle: #{get_selected_castle}"
 
       true
     end
@@ -92,7 +92,7 @@ module Bot
 
       return false unless has_selector?("#villageListLinks li.entry.active + li.entry")
       first("#villageListLinks li.entry.active + li.entry > a").click
-      puts ">>> Selected castle: #{get_selected_castle}"
+      logger.debug ">>> Selected castle: #{get_selected_castle}"
 
       true
     end

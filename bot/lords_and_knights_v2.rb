@@ -17,7 +17,7 @@ module Bot
       within '#connected-worlds' do
         locator = find('a', text: options[:server_name]) if options[:server_name]
         locator ||= first('a')
-        puts ">>> Chose #{locator.text}"
+        logger.info ">>> Chose #{locator.text}"
         locator.click
       end
 
@@ -33,9 +33,9 @@ module Bot
     end
 
     def choose_tab(title)
-      puts ">>> Choose Tab: #{title}"
+      logger.debug ">>> Choose Tab: #{title}"
       tab_selector = ".habitat .#{title}.tab"
-      find(tab_selector).click()
+      find(tab_selector).click
       timeout
       has_selector?(tab_selector)
     end
@@ -57,16 +57,16 @@ module Bot
 
     def build_first
       timeout
-      puts ">> Building first"
+      logger.debug ">> Building first"
       choose_tab('buildingList')
       build_next
-      puts "<< Finished Building"
+      logger.debug "<< Finished Building"
     end
 
     def build_next
       within '.habitat .buildingList.contentCurrentView' do
         if all(".buildingUpgrade > .building").size > 1
-          puts "Nothing todo. Workers are busy"
+          logger.debug "Nothing todo. Workers are busy"
           return
         end
 
@@ -84,13 +84,13 @@ module Bot
         end
 
         if buildings.empty?
-          puts 'There are no buildings to upgrade'
+          logger.debug 'There are no buildings to upgrade'
           return
         end
 
         buildings_range.each do |building_name|
           if buildings.key?(building_name)
-            puts "Build #{building_name}"
+            logger.debug "Build #{building_name}"
             buildings[building_name].trigger('click')
             break
           end
@@ -101,12 +101,16 @@ module Bot
     end
 
     def choose_first_castle
-      puts ">> Selected castle: #{get_selected_castle}"
+      first('.topbar .container .controls > .topbarImageContainer').trigger('click')
+      timeout(2)
+      first('.win.castleList .content-container .inner-frame .castleHabitatOverview .castleListItem').trigger('click')
+
+      logger.info ">> Selected castle: #{get_selected_castle}"
       true
     end
 
     def choose_next_castle
-      puts ">> Switch to next castle"
+      logger.debug ">> Switch to the next castle"
       # The button appears only in specific order.
       choose_tab('buildingList')
       choose_tab('visitCastle')
@@ -116,7 +120,7 @@ module Bot
       return false unless has_selector?(".habitat .headerButton.paginate.next")
 
       find(".habitat .headerButton.paginate.next").trigger('click')
-      puts ">>> Selected castle: #{get_selected_castle}"
+      logger.info ">> Selected castle: #{get_selected_castle}"
 
       true
     end
@@ -126,7 +130,7 @@ module Bot
     end
 
     def send_troops_to_missions
-      puts ">>> Sending troops to missions"
+      logger.info ">>> Sending troops to missions"
       choose_building 'tavern'
 
       buttons = all(".missionContainer .missionListItem .button:not(.speedup):not(.disabled)")
@@ -134,7 +138,7 @@ module Bot
       buttons.size.times do |i|
         node = first(".missionContainer .missionListItem .button:not(.speedup):not(.disabled)")
         break if node.nil?
-        node.click()
+        node.click
         timeout
       end
     end
