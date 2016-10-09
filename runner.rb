@@ -65,7 +65,9 @@ elsif File.exists?('config/servers.yml')
 end
 
 logger = Logger.new(STDOUT)
-logger.level = Logger::DEBUG
+
+level = ENV['LOG_LEVEL'] || 'INFO'
+logger.level = Logger.const_get level.upcase
 
 servers.each do |name, opts|
   opts = opts.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}

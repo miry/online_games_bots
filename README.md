@@ -57,10 +57,14 @@ miry_us:
     - 11
 ```
 
+## Logging
+
+To increase log level, you need to specify the `LOG_LEVEL` env variable. Possible values: debug, info, warn, error
+
 # Docker
 
 ```
-docker run -v /tmp:/app/tmp -v /tmp/cache:/root/.cache -v /tmp/cache:/var/cache -v /tmp/local:/root/.local -d -e SERVERS_JSON='{"lk_de":{"bot":"lords_and_kinghts_v2","email":"user@example.com","password":"SUPER_PASSWORD","server_name":"Deutsch 17","server_url":"http://lordsandknights.com","timeout":25,"actions":["build_first", "send_troops_to_missions"],"buildings":["Stone store","Quarry","Wood store","Lumberjack","Ore store","Ore mine","Keep","Library","Farm","Tavern","Arsenal","Fortifications"]}}' -it miry/online_games_bot sh -c "while [ true ] ; do bundle exec ruby runner.rb ; date; sleep 60; done"
+docker run -v /tmp:/app/tmp -v /tmp/cache:/root/.cache -v /tmp/cache:/var/cache -v /tmp/local:/root/.local -d -e LOG_LEVEL=debug -e SERVERS_JSON='{"lk_de":{"bot":"lords_and_kinghts_v2","email":"user@example.com","password":"SUPER_PASSWORD","server_name":"Deutsch 17","server_url":"http://lordsandknights.com","timeout":25,"actions":["build_first", "send_troops_to_missions"],"buildings":["Stone store","Quarry","Wood store","Lumberjack","Ore store","Ore mine","Keep","Library","Farm","Tavern","Arsenal","Fortifications"]}}' -it miry/online_games_bot sh -c "while [ true ] ; do bundle exec ruby runner.rb ; date; sleep 60; done"
 ```
 
 ## TODO
