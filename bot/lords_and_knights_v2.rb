@@ -84,7 +84,7 @@ module Bot
         end
 
         if buildings.empty?
-          logger.debug 'There are no buildings to upgrade'
+          logger.info 'There are no buildings to upgrade'
           return
         end
 
