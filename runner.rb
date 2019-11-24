@@ -16,6 +16,7 @@ require_relative 'bot/lords_and_knights_v3'
 require_relative 'bot/travian'
 
 choose_driver = ARGV.first || :chrome_headless
+choose_driver = choose_driver.to_sym
 
 logger = Logger.new(STDOUT)
 level = ENV['LOG_LEVEL'] || 'INFO'

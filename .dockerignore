@@ -1,4 +1,6 @@
 .git
+.bundle
+.gitignore
 vendor/bundle
-tmp
-config/servers.yml
+tmp/
+config/
