@@ -21,6 +21,7 @@ module Bot
         locator.click
       end
 
+      logger.info(">>> Waiting when page is ready")
       timeout
       find('canvas#game-canvas', text: 'Browser strategy game Lords and Knights')
       timeout
@@ -51,37 +52,40 @@ module Bot
       timeout
     end
 
+    def choose_building_list
+      return if has_selector?('.menu--content-section')
+      first('div.top-bar-button--HabitatBuildings').click()
+    end
+
     def logout
       find(".Logout").trigger('click')
       find('.win.dialog.frame-container .button', text: 'OK').trigger('click')
     end
 
     def build_first
-      timeout
       logger.debug ">> Building first"
-      choose_tab('buildingList')
+      choose_building_list
       build_next
       logger.debug "<< Finished Building"
     end
 
     def build_next
-      within '.habitat .buildingList.contentCurrentView' do
-        if all(".buildingUpgrade > .building").size > 1
+      within '.menu--content-section' do
+        current_buildings = all('.widget--upgrades-in-progress--list > .menu-list-element.with-icon-right')
+        if current_buildings.size > 0
           logger.info "Nothing todo. Workers are busy."
           return
         end
 
         buildings_range = (options[:buildings] || [])
         buildings = {}
-        available_buildings = all('.fixedBuildingList .building')
+        available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right')
 
         available_buildings.each do |building|
-          building_name = building.first('.title.buildingName').text
-          build_link = building.first('.button.buildbutton')
-          break unless build_link
-          unless build_link['class'].include?('disabled')
-            buildings[building_name] = build_link
-          end
+          building_name = building.first('.menu-list-element-basic--title').text()
+          build_button = building.first('button')
+          #break unless build_link
+          buildings[building_name] = build_button
         end
 
         if buildings.empty?
@@ -90,9 +94,10 @@ module Bot
         end
 
         buildings_range.each do |building_name|
+          logger.debug("Check if #{building_name} available")
           if buildings.key?(building_name)
             logger.info "* Build #{building_name}"
-            buildings[building_name].trigger('click')
+            buildings[building_name].click()
             break
           end
         end
@@ -102,42 +107,32 @@ module Bot
     end
 
     def choose_first_castle
-      unless has_selector?('.win.castleList .content-container .inner-frame .castleHabitatOverview .castleListItem')
-        first('.topbar .container .controls > .topbarImageContainer').trigger('click')
-        timeout
-      end
-
-      if has_selector?('.win.habitat .close')
-        first('.win.habitat .close').trigger('click')
-      end
-
-      first('.win.castleList .content-container .inner-frame .castleHabitatOverview .castleListItem').trigger('click')
-
+      logger.debug(": choose_first_castle")
+      # Enabled by default
+      # choose_building_list
       logger.info ">> Selected castle: #{get_selected_castle}"
       true
     end
 
     def choose_next_castle
       logger.debug ">> Switch to the next castle"
-      # The button appears only in specific order.
-      choose_tab('buildingList')
-      choose_tab('visitCastle')
 
-      has_selector?("svg.castle-scene-map")
-
-      return false unless has_selector?(".habitat .headerButton.paginate.next")
-
-      find(".habitat .headerButton.paginate.next").trigger('click')
+      locator = first(".habitat-chooser--title-row .arrow-right")
+      locator.click()
+      logger.debug("Locator: #{locator}")
       logger.info ">> Selected castle: #{get_selected_castle}"
 
       true
     end
 
     def get_selected_castle
-      return find(".habitat .headline > .title").text rescue "--"
+      logger.debug(": get_selected_castle")
+      locator = first(".habitat-chooser .habitat-chooser--title span")
+      return locator.text rescue "--"
     end
 
     def send_troops_to_missions
+      return true
       logger.info ">>> Sending troops to missions"
       choose_building 'tavern'
 

@@ -45,13 +45,6 @@ module Bot
       end
 
       logger.debug "<< Finished for selected castle"
-
-      run_commands if choose_next_castle
-
-      if @enable_loop
-        logger.debug "!!! Started from the First Castle"
-        run_commands if choose_first_castle
-      end
     end
 
     def choose_first_castle
@@ -61,8 +54,20 @@ module Bot
     def run
       logger.debug "> Login"
       login
-      choose_first_castle
-      run_commands
+
+      processing = true
+      while processing
+        choose_first_castle
+        run_commands
+
+        while choose_next_castle
+          run_commands
+        end
+
+        processing = @enable_loop
+        timeout
+      end
+
       logger.debug "> Logout"
       logout
     rescue => e
