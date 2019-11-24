@@ -46,7 +46,7 @@ Setup a list allowed to build buildings and the order. Depends on ui version it 
 
 ```yaml
 miry_us:
-  :bot: lords_and_kinghts
+  :bot: lords_and_kinghts_v3
   :server_name: USA 6
   :server_url: http://lordsandknights.com/en/
   :actions:
@@ -71,5 +71,3 @@ docker run -v /tmp:/app/tmp -v /tmp/cache:/root/.cache -v /tmp/cache:/var/cache 
 
 - Hooks to teamcity via https://github.com/github/github-services/pull/47/files
 - Add Logger
-
-

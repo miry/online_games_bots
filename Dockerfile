@@ -1,23 +1,12 @@
-FROM ruby:2.3.1-alpine
+FROM jetthoughts/ruby-chrome:2.6.3-v1
 
-MAINTAINER Michael Nikitochkin <nikitochkin.michael@gmail.com>
-
+LABEL maintainer="Michael Nikitochkin <miry.sof@gmail.com>"
 LABEL app=online_games_bot
 
 COPY . /app/
 WORKDIR /app
 VOLUME /app/config
 
-RUN apk --update add \
-       make \
-       g++ \
-       curl \
- && cd / \
- && curl -Ls https://github.com/fgrehm/docker-phantomjs2/releases/download/v2.0.0-20150722/dockerized-phantomjs.tar.gz  |  tar xz -C / \
- && cd /app \
- && bundle install -j 4 --clean --path vendor/bundle \
- && apk del make g++ curl \
- && rm -rf /var/cache/apk/*
+RUN bundle install -j 4
 
-CMD ruby runner.rb
-
+CMD bundle exec ruby runner.rb
