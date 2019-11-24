@@ -19,22 +19,28 @@ options.add_argument('--disable-infobars')
 options.add_argument('--disable-cache')
 options.add_argument('--disable-web-security')
 options.add_argument('--enable-tracing')
-# options.add_argument('--disable-dev-shm-usage')
+options.add_argument('--disable-dev-shm-usage')
 options.add_argument('--verbose')
+options.add_argument('--disable-site-isolation-trials')
+options.add_argument('--window-size=1440,1050')
 
-chromedriver_opts = {verbose: true}
+chromedriver_opts = {verbose: true, log_path: '/dev/stdout'}
 # chromedriver_opts[:log_path] = File.join(File.expand_path(File.join(__dir__, '..', 'log')), 'chromedriver.log')
-chromedriver_opts[:log_path] = '/dev/stdout'
+# chromedriver_opts[:log_path] = '/dev/stdout'
 
 service = Selenium::WebDriver::Chrome::Service.new(args: chromedriver_opts)
 
 driver = Selenium::WebDriver::Chrome::Driver.new(options: options, service: service)
 
 Selenium::WebDriver.logger.info("APP -> Checking navigation ...")
-driver.navigate.to "http://google.com"
+driver.navigate.to 'https://lordsandknights.com'
 title = driver.title
 Selenium::WebDriver.logger.info "APP <- Page title: #{title}"
 
-raise 'Wrong page title' if title != 'Google'
+raise 'Wrong page title' if title != 'Lords and Knights'
+
+sleep 10
+elem = driver.find_element(:css, 'form.form--login')
+Selenium::WebDriver.logger.info "Check for element #{elem.inspect}"
 
 driver.quit

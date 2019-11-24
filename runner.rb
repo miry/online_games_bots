@@ -15,25 +15,42 @@ require_relative 'bot/lords_and_knights_v2'
 require_relative 'bot/lords_and_knights_v3'
 require_relative 'bot/travian'
 
-choose_driver = ARGV.first || :chrome
+choose_driver = ARGV.first || :chrome_headless
 
 logger = Logger.new(STDOUT)
-
 level = ENV['LOG_LEVEL'] || 'INFO'
 logger.level = Logger.const_get level.upcase
 
-::Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+Selenium::WebDriver.logger.level = 0 if level == 'TRACE'
+
+
+Capybara.register_driver :chrome_headless do |app|
+  Capybara::Selenium::Driver.load_selenium
+  chromedriver_opts = {}
+  chromedriver_opts = {verbose: true, log_path: '/dev/stdout'} if level == 'TRACE'
+  service = Selenium::WebDriver::Chrome::Service.new(args: chromedriver_opts)
+  browser_options = ::Selenium::WebDriver::Chrome::Options.new.tap do |opts|
+    opts.args << '--headless'
+    opts.args << '--window-size=1440,1050'
+    opts.args << '--disable-gpu'
+    # Workaround https://bugs.chromium.org/p/chromedriver/issues/detail?id=2650&q=load&sort=-id&colspec=ID%20Status%20Pri%20Owner%20Summary
+    opts.args << '--disable-site-isolation-trials'
+    # NOTICE: Required for containers to not have out of memory crashes
+    opts.args << '--disable-dev-shm-usage'
+    opts.args << '--verbose' if level == 'TRACE'
+  end
+  Capybara::Selenium::Driver.new(app, browser: :chrome, service: service, options: browser_options)
 end
 
 if defined? Capybara::Screenshot
-  ::Capybara::Screenshot.register_driver(:chrome) do |driver, path|
-    logger.debug("path: #{path.inspect}")
+  ::Capybara::Screenshot.register_driver(choose_driver) do |driver, path|
+    logger.debug("screenshot path: #{path.inspect}")
     driver.browser.save_screenshot(path)
   end
 end
 
 Capybara.current_driver = choose_driver
+Capybara.current_session.driver.resize_to(1440, 1050) rescue nil
 
 Capybara.configure do |config|
   # config.asset_root = 'tmp'
@@ -54,30 +71,13 @@ if defined? Capybara::Webkit
   end
 end
 
-# Capybara.register_driver :poltergeist do |app|
-#   Capybara::Poltergeist::Driver.new(app, {
-#     js_errors: false,
-# #    debug: true,
-# #    inspector: true,
-#     phantomjs_options: ['--load-images=no', '--disk-cache=true'],
-#     url_blacklist: [/.*google.*/]
-#   })
-# end
-
-if Capybara.current_driver == :selenium
-  Capybara.current_session.driver.browser.manage.window.maximize rescue nil
-else
-  Capybara.current_session.driver.resize_to(1440, 1050) rescue nil
-#  Capybara.current_session.driver.browser.timeout = 1320
-#  Capybara.current_session.driver.browser.set_skip_image_loading(true)
-  Capybara.current_session.driver.header 'User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2828.0 Safari/537.36' rescue nil
-end
-
-servers = []
-if !ENV['SERVERS_JSON'].nil?
-  servers = JSON.parse(ENV['SERVERS_JSON'])
-elsif File.exists?('config/servers.yml')
-  servers = YAML.load_file('config/servers.yml')
+def servers
+  if ENV.key?('SERVERS_JSON')
+    return JSON.parse(ENV['SERVERS_JSON'])
+  elsif File.exists?('config/servers.yml')
+    return YAML.load_file('config/servers.yml')
+  end
+  []
 end
 
 servers.each do |name, opts|
