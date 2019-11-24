@@ -53,7 +53,7 @@ module Bot
     end
 
     def choose_building_list
-      return if has_selector?('.menu--content-section')
+      return if has_selector?('#menu-section-general-container > .menu-section')
       first('div.top-bar-button--HabitatBuildings').click()
     end
 
@@ -70,7 +70,7 @@ module Bot
     end
 
     def build_next
-      within '.menu--content-section' do
+      within '#menu-section-general-container > .menu-section > .menu--content-section' do
         current_buildings = all('.widget--upgrades-in-progress--list > .menu-list-element.with-icon-right')
         if current_buildings.size > 0
           logger.info "Nothing todo. Workers are busy."
@@ -84,8 +84,10 @@ module Bot
         available_buildings.each do |building|
           building_name = building.first('.menu-list-element-basic--title').text()
           build_button = building.first('button')
-          #break unless build_link
-          buildings[building_name] = build_button
+          #break unless build_button
+          unless build_button['class'].include?('disabled')
+            buildings[building_name] = build_button
+          end
         end
 
         if buildings.empty?

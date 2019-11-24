@@ -62,6 +62,7 @@ module Bot
 
         while choose_next_castle
           run_commands
+          timeout
         end
 
         processing = @enable_loop
