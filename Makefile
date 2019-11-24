@@ -10,7 +10,7 @@ run:
 release: docker.build docker.push
 
 docker.run: docker.build
-	docker run -it -e LOG_LEVEL=${LOG_LEVEL} -v $(pwd)/config:/app/config -v $(pwd)/tmp:/app/tmp ${IMAGE}:${VERSION}
+	docker run -it -e LOG_LEVEL=${LOG_LEVEL} -v $(pwd)/config:/app/config -v $(pwd)/tmp:/app/tmp ${IMAGE}:latest
 
 docker.build:
 	docker build -t $(IMAGE):$(VERSION) -t $(IMAGE):latest .
