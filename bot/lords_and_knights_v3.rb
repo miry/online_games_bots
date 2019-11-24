@@ -5,27 +5,24 @@ module Bot
 
     def login
       visit '/'
-
-      Capybara::Screenshot.screenshot_and_save_page
-
-      play_now_button = find('button.button.button-direct-play')
-      play_now_button.click
-
-      within 'form#login' do
-        fill_in 'loginEmail', with: options[:email]
-        fill_in 'loginPassword', with: options[:password]
+      timeout
+      logger.info(">>> Fill login information")
+      within 'form.form--login' do
+        fill_in 'login-name', with: options[:email]
+        fill_in 'login-password', with: options[:password]
         find('button').click
       end
 
+      logger.info(">>> Choose the server")
       locator = nil
-      within '#connected-worlds' do
-        locator = find('a', text: options[:server_name]) if options[:server_name]
-        locator ||= first('a')
-        logger.info ">>> Chose #{locator.text}"
+      within '#choose-world-scene' do
+        locator = first('div.button-game-world--title', text: options[:server_name]) if options[:server_name]
+        locator ||= first('div.button-game-world--title')
         locator.click
       end
 
-      find('div.version', text: '4.4.7 / built on: Wed, 13 Apr 2016 09:33:56 +0800')
+      timeout
+      find('canvas#game-canvas', text: 'Browser strategy game Lords and Knights')
       timeout
     end
 
