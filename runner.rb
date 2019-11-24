@@ -8,21 +8,37 @@ require 'logger'
 
 Bundler.require
 
+require 'capybara-screenshot'
+
 require_relative 'bot/base'
 require_relative 'bot/lords_and_knights_v2'
+require_relative 'bot/lords_and_knights_v3'
 require_relative 'bot/travian'
 
-choose_driver = ARGV.first || :poltergeist
+choose_driver = ARGV.first || :chrome
 
-Capybara.register_driver :chrome do |app|
+logger = Logger.new(STDOUT)
+
+level = ENV['LOG_LEVEL'] || 'INFO'
+logger.level = Logger.const_get level.upcase
+
+::Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, :browser => :chrome)
 end
+
+if defined? Capybara::Screenshot
+  ::Capybara::Screenshot.register_driver(:chrome) do |driver, path|
+    logger.debug("path: #{path.inspect}")
+    driver.browser.save_screenshot(path)
+  end
+end
+
+Capybara.current_driver = choose_driver
 
 Capybara.configure do |config|
   # config.asset_root = 'tmp'
   config.save_path = 'tmp'
   config.run_server = false
-  config.current_driver = choose_driver.to_sym
   config.default_max_wait_time = 10
 end
 
@@ -38,15 +54,15 @@ if defined? Capybara::Webkit
   end
 end
 
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, {
-    js_errors: false,
-#    debug: true,
-#    inspector: true,
-    phantomjs_options: ['--load-images=no', '--disk-cache=true'],
-    url_blacklist: [/.*google.*/]
-  })
-end
+# Capybara.register_driver :poltergeist do |app|
+#   Capybara::Poltergeist::Driver.new(app, {
+#     js_errors: false,
+# #    debug: true,
+# #    inspector: true,
+#     phantomjs_options: ['--load-images=no', '--disk-cache=true'],
+#     url_blacklist: [/.*google.*/]
+#   })
+# end
 
 if Capybara.current_driver == :selenium
   Capybara.current_session.driver.browser.manage.window.maximize rescue nil
@@ -64,11 +80,6 @@ elsif File.exists?('config/servers.yml')
   servers = YAML.load_file('config/servers.yml')
 end
 
-logger = Logger.new(STDOUT)
-
-level = ENV['LOG_LEVEL'] || 'INFO'
-logger.level = Logger.const_get level.upcase
-
 servers.each do |name, opts|
   opts = opts.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
   opts[:logger] = logger
@@ -85,6 +96,8 @@ servers.each do |name, opts|
           Bot::LordsAndKnights
         when 'lords_and_kinghts_v2'
           Bot::LordsAndKnightsV2
+        when 'lords_and_kinghts_v3'
+          Bot::LordsAndKnightsV3
         else
           puts 'Could not detect the bot'
           next

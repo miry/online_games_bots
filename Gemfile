@@ -1,8 +1,6 @@
 source 'http://rubygems.org'
 
-#gem 'capybara-webkit'
-gem 'poltergeist', require: 'capybara/poltergeist'
-#gem 'phantomjs', :require => 'phantomjs/poltergeist'
-gem 'capybara-screenshot'
+gem 'capybara'
+gem 'capybara-screenshot', require: false
+gem 'selenium-webdriver', '~> 3'
 gem 'launchy'
-#gem 'selenium-webdriver', '~> 2.41.0'

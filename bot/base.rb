@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'capybara/dsl'
+
 module Bot
   class Base
     MAX_RETRIES = 3
