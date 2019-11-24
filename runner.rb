@@ -105,5 +105,4 @@ servers.each do |name, opts|
 
   bot = bot_factory.new opts
   bot.run
-  sleep 10
 end

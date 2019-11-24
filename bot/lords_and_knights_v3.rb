@@ -57,6 +57,17 @@ module Bot
       first('div.top-bar-button--HabitatBuildings').click()
     end
 
+    def choose_tavern
+      choose_building_list
+      available_buildings = all('#menu-section-general-container > .menu-section > .menu--content-section .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right')
+      available_buildings.each do |building|
+        building_name = building.first('.menu-list-element-basic--title').text()
+        next unless building_name == "Tavern"
+        building.click()
+        return
+      end
+    end
+
     def logout
       find(".Logout").trigger('click')
       find('.win.dialog.frame-container .button', text: 'OK').trigger('click')
@@ -79,7 +90,7 @@ module Bot
 
         buildings_range = (options[:buildings] || [])
         buildings = {}
-        available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right')
+        available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
 
         available_buildings.each do |building|
           building_name = building.first('.menu-list-element-basic--title').text()
@@ -121,7 +132,6 @@ module Bot
 
       locator = first(".habitat-chooser--title-row .arrow-right")
       locator.click()
-      logger.debug("Locator: #{locator}")
       logger.info ">> Selected castle: #{get_selected_castle}"
 
       true
@@ -134,17 +144,15 @@ module Bot
     end
 
     def send_troops_to_missions
-      return true
       logger.info ">>> Sending troops to missions"
-      choose_building 'tavern'
+      choose_tavern
 
-      buttons = all(".missionContainer .missionListItem .button:not(.speedup):not(.disabled)")
-
-      buttons.size.times do |i|
-        node = first(".missionContainer .missionListItem .button:not(.speedup):not(.disabled)")
-        break if node.nil?
-        node.click
-        timeout
+      within('#menu-section-drill-container .menu--content-section > div:last-child') do
+        buttons = all('button:not(.disabled)')
+        buttons.each do |button|
+          button.click if button.has_selector?('div.icon-mission')
+          timeout
+        end
       end
     end
   end
