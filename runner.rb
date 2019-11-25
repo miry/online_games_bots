@@ -39,6 +39,7 @@ Capybara.register_driver :chrome_headless do |app|
     # NOTICE: Required for containers to not have out of memory crashes
     opts.args << '--disable-dev-shm-usage'
     opts.args << '--verbose' if level == 'TRACE'
+    opts.args << '--no-sandbox'
   end
   Capybara::Selenium::Driver.new(app, browser: :chrome, service: service, options: browser_options)
 end
