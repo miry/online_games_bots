@@ -6,25 +6,25 @@ module Bot
     def login
       visit '/'
       timeout
-      logger.info(">>> Fill login information")
+      logger.debug("Fill login information: #{options[:email]}")
       within 'form.form--login' do
         fill_in 'login-name', with: options[:email]
         fill_in 'login-password', with: options[:password]
         find('button').click
       end
 
-      logger.info(">>> Choose the server")
-      locator = nil
+      logger.info("Choose the server: #{options[:server_name]}")
       within '#choose-world-scene' do
+        locator = nil
         locator = first('div.button-game-world--title', text: options[:server_name]) if options[:server_name]
         locator ||= first('div.button-game-world--title')
         locator.click
       end
 
-      logger.info(">>> Waiting when page is ready")
-      timeout
+      logger.debug("Waiting when page is ready")
+      timeout(20)
       find('canvas#game-canvas', text: 'Browser strategy game Lords and Knights')
-      timeout
+      timeout(2)
     end
 
     def choose_page(title)
@@ -43,29 +43,29 @@ module Bot
     end
 
     def choose_building(title)
-      choose_tab('visitCastle')
-
-      within ".habitat" do
-        find("polygon.#{title}").trigger('click')
+      logger.debug(": choose_building #{title}")
+      result = nil
+      available_buildings = all('#menu-section-general-container > .menu-section > .menu--content-section .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right')
+      available_buildings.each do |building|
+        building_name = building.first('.menu-list-element-basic--title').text()
+        next unless building_name == title
+        result = building
+        building.click()
+        break
       end
-
       timeout
+      result
     end
 
     def choose_building_list
+      logger.debug(": choose_building_list")
       return if has_selector?('#menu-section-general-container > .menu-section')
       first('div.top-bar-button--HabitatBuildings').click()
     end
 
     def choose_tavern
       choose_building_list
-      available_buildings = all('#menu-section-general-container > .menu-section > .menu--content-section .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right')
-      available_buildings.each do |building|
-        building_name = building.first('.menu-list-element-basic--title').text()
-        next unless building_name == "Tavern"
-        building.click()
-        return
-      end
+      choose_building("Tavern")
     end
 
     def logout
@@ -74,7 +74,7 @@ module Bot
     end
 
     def build_first
-      logger.debug ">> Building first"
+      logger.info ">> Building first"
       choose_building_list
       build_next
       logger.debug "<< Finished Building"
@@ -123,17 +123,18 @@ module Bot
       logger.debug(": choose_first_castle")
       # Enabled by default
       # choose_building_list
-      logger.info ">> Selected castle: #{get_selected_castle}"
+      logger.info "> Selected castle: #{get_selected_castle}"
       true
     end
 
     def choose_next_castle
-      logger.debug ">> Switch to the next castle"
+      logger.debug ": choose_next_castle"
 
       locator = first(".habitat-chooser--title-row .arrow-right")
       locator.click()
-      logger.info ">> Selected castle: #{get_selected_castle}"
+      timeout(1)
 
+      logger.info "> Selected castle: #{get_selected_castle}"
       true
     end
 
@@ -144,7 +145,7 @@ module Bot
     end
 
     def send_troops_to_missions
-      logger.info ">>> Sending troops to missions"
+      logger.info ">> Sending troops to missions"
       choose_tavern
 
       within('#menu-section-drill-container .menu--content-section > div:last-child') do

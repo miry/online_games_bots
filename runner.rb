@@ -85,7 +85,7 @@ servers.each do |name, opts|
   opts = opts.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
   opts[:logger] = logger
 
-  logger.info ">>> Started bot:#{opts[:bot]} on #{name}"
+  logger.info "Started bot #{opts[:bot]} on #{name}"
 
   Capybara.app_host = opts[:server_url]
   Capybara.default_max_wait_time = opts[:timeout] || 2

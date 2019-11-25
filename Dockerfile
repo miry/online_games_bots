@@ -7,6 +7,9 @@ WORKDIR /app
 
 VOLUME /app/config
 VOLUME /app/tmp
+VOLUME /opt/google
+VOLUME /usr/share/fonts
+VOLUME /var/cache/fontconfig
 
 COPY Gemfile Gemfile.lock /app/
 RUN bundle install -j 4

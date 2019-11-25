@@ -52,7 +52,6 @@ module Bot
     end
 
     def run
-      logger.debug "> Login"
       login
 
       processing = true
