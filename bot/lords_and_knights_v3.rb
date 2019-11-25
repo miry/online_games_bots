@@ -5,8 +5,9 @@ module Bot
 
     def login
       visit '/'
-      timeout
+
       logger.debug("Fill login information: #{options[:email]}")
+      wait_until('form.form--login', 10)
       within 'form.form--login' do
         fill_in 'login-name', with: options[:email]
         fill_in 'login-password', with: options[:password]
@@ -22,9 +23,8 @@ module Bot
       end
 
       logger.debug("Waiting when page is ready")
-      timeout(20)
+      wait_until('canvas#game-canvas')
       find('canvas#game-canvas', text: 'Browser strategy game Lords and Knights')
-      timeout(2)
     end
 
     def choose_page(title)

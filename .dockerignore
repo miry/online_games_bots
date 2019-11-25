@@ -1,6 +1,7 @@
 .git
 .bundle
 .gitignore
+.env
 vendor/bundle
 tmp/
 config/

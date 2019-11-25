@@ -2,3 +2,4 @@ config/servers.yml
 tmp
 .bundle
 vendor/bundle
+.env

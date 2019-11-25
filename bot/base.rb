@@ -89,6 +89,13 @@ module Bot
       sleep(val || @timeout)
     end
 
+    def wait_until(selector, retries=MAX_RETRIES)
+      while retries > 0 && !has_selector?('form.form--login')
+        timeout
+        retries -= 1
+      end
+    end
+
     def logger
       @logger
     end
