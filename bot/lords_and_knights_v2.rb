@@ -76,7 +76,7 @@ module Bot
 
         available_buildings.each do |building|
           building_name = building.first('.title.buildingName').text
-          build_link = building.first('.button.buildbutton') 
+          build_link = building.first('.button.buildbutton')
           break unless build_link
           unless build_link['class'].include?('disabled')
             buildings[building_name] = build_link
@@ -101,7 +101,7 @@ module Bot
     end
 
     def choose_first_castle
-      unless has_selector?('.win.castleList .content-container .inner-frame .castleHabitatOverview .castleListItem')
+      unless hasselector?('.win.castleList .content-container .inner-frame .castleHabitatOverview .castleListItem')
         first('.topbar .container .controls > .topbarImageContainer').trigger('click')
         timeout
       end
@@ -141,7 +141,7 @@ module Bot
       choose_building 'tavern'
 
       buttons = all(".missionContainer .missionListItem .button:not(.speedup):not(.disabled)")
-        
+
       buttons.size.times do |i|
         node = first(".missionContainer .missionListItem .button:not(.speedup):not(.disabled)")
         break if node.nil?

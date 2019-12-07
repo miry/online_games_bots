@@ -120,6 +120,7 @@ module Bot
     end
 
     def choose_first_castle
+      popup_close
       logger.debug(": choose_first_castle")
       # Enabled by default
       # choose_building_list
@@ -155,6 +156,13 @@ module Bot
           timeout
         end
       end
+    end
+
+    def popup_close
+      locator = find("#game-pop-up-layer .event-pop-up-button.ButtonRedAccept")
+      return unless locator
+      logger.info "Popup is open"
+      locator.click
     end
   end
 end
