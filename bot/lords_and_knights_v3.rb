@@ -159,7 +159,7 @@ module Bot
     end
 
     def popup_close
-      locator = find("#game-pop-up-layer .event-pop-up-button.ButtonRedAccept")
+      locator = all("#game-pop-up-layer .event-pop-up-button.ButtonRedAccept")[0]
       return unless locator
       logger.info "Popup is open"
       locator.click
