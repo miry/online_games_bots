@@ -92,13 +92,17 @@ module Bot
         buildings = {}
         available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
 
+        # Available: button button--default button-with-icon  menu-element--button--action button--action button--in-building-list--construct-tavern
+        # All finished: There are no button element
+        # Not enough resources: button button--default button-with-icon disabled  menu-element--button--action button--action button--in-building-list--construct-lumberjack
         available_buildings.each do |building|
           building_name = building.first('.menu-list-element-basic--title').text()
+          next unless building.has_selector?('button')
           build_button = building.first('button')
-          #break unless build_button
-          unless build_button['class'].include?('disabled')
-            buildings[building_name] = build_button
-          end
+          next if build_button['class'].include?('disabled')
+
+          # Add to building list
+          buildings[building_name] = build_button
         end
 
         if buildings.empty?
