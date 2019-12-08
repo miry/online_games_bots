@@ -1,8 +1,8 @@
 VERSION=$(shell date +%F)
 IMAGE=miry/online_games_bot
 BUILD_NAME=$(IMAGE):$(VERSION)
-LOG_LEVEL="DEBUG"
-SHELL=zsh
+LOG_LEVEL=debug
+SHELL=bash
 
 .PHONY: run
 run:

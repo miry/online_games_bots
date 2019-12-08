@@ -105,6 +105,11 @@ module Bot
         # If there are no buildings to build, build all available
         buildings_range = @build_list || buildings.keys.map {|b| {name: b}}
 
+        logger.debug "buildings:"
+        logger.debug buildings
+        logger.debug "buildings_range:"
+        logger.debug buildings_range
+
         buildings_range.each do |building_name|
           name = building_name
           level = nil
@@ -112,7 +117,7 @@ module Bot
             name = building_name[:name]
             level = building_name[:level]
           end
-          logger.debug("Check if #{building_name} with level #{level} available")
+          logger.debug("Check if #{name} with level #{level} available")
           if buildings.key?(name) && (level.nil? || level > buildings[name][:level])
             logger.info "* Upgrade #{name} with level #{buildings[name][:level]}"
             buildings[name][:button].click()
@@ -172,7 +177,13 @@ module Bot
 
     def get_available_buildings
       buildings = {}
-      available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
+      available_buildings = []
+      if has_selector?('.widget--upgrades-in-progress--list')
+        upgrade_section = first('.widget--upgrades-in-progress--list')
+        available_buildings = all('.widget--upgrades-in-progress--list + .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
+      else
+        available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
+      end
 
       # Available: button button--default button-with-icon  menu-element--button--action button--action button--in-building-list--construct-tavern
       # All finished: There are no button element

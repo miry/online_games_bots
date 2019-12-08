@@ -77,7 +77,7 @@ def servers
   if ENV.key?('SERVERS_JSON')
     return JSON.parse(ENV['SERVERS_JSON'], symbolize_names: true)
   elsif File.exists?('config/servers.yml')
-    return YAML.load_file('config/servers.yml')
+    return YAML.load(File.read('config/servers.yml'), symbolize_names: true)
   end
   []
 end

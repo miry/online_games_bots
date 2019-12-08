@@ -74,7 +74,7 @@ module Bot
     # rescue Capybara::ElementNotFound => e
       logger.debug "FAILED: #{self.class.inspect}"
       screenshot_and_save_page rescue nil
-      logger.debug '--- Eception'
+      logger.debug '--- Exception'
       logger.debug e.class
       logger.debug e.message
       logger.debug e.backtrace.join("\n")
