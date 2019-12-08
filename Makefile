@@ -8,6 +8,10 @@ SHELL=zsh
 run:
 	while true ; do ; LOG_LEVEL=${LOG_LEVEL} bundle exec ruby runner.rb selenium_chrome ; sleep 5m ; done
 
+.PHONY: run.daemon
+run.daemon:
+	while [ true ] ; do bundle exec ruby runner.rb; echo Exited; sleep 10m; done
+
 .PHONY: release
 release: docker.build docker.push
 
