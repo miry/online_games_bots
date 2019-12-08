@@ -11,11 +11,38 @@ miry_us:
     - Lumberjack
 
 miry_ru:
-  :bot: lords_and_kinghts
+  :bot: lords_and_kinghts_v3
   :email: miry@example.com
   :password: changeme
-  :server_url: http://lordsandknights.com/en/
-  :server_id: 45
+  :server_url: http://lordsandknights.com/
+  :server_name: Germanien III (DE) - empfohlen
+  :actions:
+    - build_first
+    - send_troops_to_missions
+  :buildings:
+    - Ore store:
+        level: 5
+    - Wood store:
+        level: 5
+    - Stone store:
+        level: 5
+    - Quarry
+    - Lumberjack
+    - Ore mine
+    - Tavern:
+        level: 3
+    - Keep
+    - Farm
+    - Ore store
+    - Wood store
+    - Stone store
+    - Arsenal
+    - Fortifications
+    - Library
+    - Tavern:
+        level: 4
+    - Market:
+        level: 5
 
 miry_ts5_com:
   :bot: travian

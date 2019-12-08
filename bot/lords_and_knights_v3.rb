@@ -3,6 +3,13 @@
 module Bot
   class LordsAndKnightsV3 < Bot::Base
 
+    def initialize(options)
+      super
+      @build_list = building_list
+      logger.debug "Building List:"
+      logger.debug @build_list
+    end
+
     def login
       visit '/'
 
@@ -88,33 +95,27 @@ module Bot
           return
         end
 
-        buildings_range = (options[:buildings] || [])
-        buildings = {}
-        available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
-
-        # Available: button button--default button-with-icon  menu-element--button--action button--action button--in-building-list--construct-tavern
-        # All finished: There are no button element
-        # Not enough resources: button button--default button-with-icon disabled  menu-element--button--action button--action button--in-building-list--construct-lumberjack
-        available_buildings.each do |building|
-          building_name = building.first('.menu-list-element-basic--title').text()
-          next unless building.has_selector?('button')
-          build_button = building.first('button')
-          next if build_button['class'].include?('disabled')
-
-          # Add to building list
-          buildings[building_name] = build_button
-        end
+        buildings = get_available_buildings
 
         if buildings.empty?
           logger.info 'There are no buildings to upgrade'
           return
         end
 
+        # If there are no buildings to build, build all available
+        buildings_range = @build_list || buildings.keys.map {|b| {name: b}}
+
         buildings_range.each do |building_name|
-          logger.debug("Check if #{building_name} available")
-          if buildings.key?(building_name)
-            logger.info "* Build #{building_name}"
-            buildings[building_name].click()
+          name = building_name
+          level = nil
+          if building_name.is_a?(Hash)
+            name = building_name[:name]
+            level = building_name[:level]
+          end
+          logger.debug("Check if #{building_name} with level #{level} available")
+          if buildings.key?(name) && (level.nil? || level > buildings[name][:level])
+            logger.info "* Upgrade #{name} with level #{buildings[name][:level]}"
+            buildings[name][:button].click()
             break
           end
         end
@@ -167,6 +168,51 @@ module Bot
       return unless locator
       logger.info "Popup is open"
       locator.click
+    end
+
+    def get_available_buildings
+      buildings = {}
+      available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
+
+      # Available: button button--default button-with-icon  menu-element--button--action button--action button--in-building-list--construct-tavern
+      # All finished: There are no button element
+      # Not enough resources: button button--default button-with-icon disabled  menu-element--button--action button--action button--in-building-list--construct-lumberjack
+      available_buildings.each do |building|
+        building_name = building.first('.menu-list-element-basic--title').text()
+        building_description = building.first('.menu-list-element-basic--description').text()
+        building_level = 0
+        if building_description.include?("Upgrade level ")
+          building_level = building_description[14..].to_i
+        end
+
+        # Skip building when there are no upgrades
+        next unless building.has_selector?('button')
+
+        build_button = building.first('button')
+
+        # Skip building when there are not enough resources
+        next if build_button['class'].include?('disabled')
+
+        # Add to building list
+        buildings[building_name] = {button: build_button, level: building_level, name: building_name, description: building_description}
+      end
+      buildings
+    end
+
+    def building_list
+      buildings_range = options[:buildings]
+      return nil if buildings_range.nil?
+
+      buildings_range.flat_map do |building_name|
+        case building_name
+        when Hash
+          building_name.keys.map do |name|
+            building_name[name].merge({name: name.to_s})
+          end
+        else
+          {level: nil, name: building_name.to_s}
+        end
+      end
     end
   end
 end
