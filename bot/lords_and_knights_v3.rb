@@ -190,7 +190,10 @@ module Bot
       # Not enough resources: button button--default button-with-icon disabled  menu-element--button--action button--action button--in-building-list--construct-lumberjack
       available_buildings.each do |building|
         building_name = building.first('.menu-list-element-basic--title').text()
-        building_description = building.first('.menu-list-element-basic--description').text()
+        building_description = ""
+        if building.has_selector?('.menu-list-element-basic--description')
+          building_description = building.first('.menu-list-element-basic--description').text()
+        end
         building_level = 0
         if building_description.include?("Upgrade level ")
           building_level = building_description[14..].to_i
