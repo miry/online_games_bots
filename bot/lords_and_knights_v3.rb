@@ -75,6 +75,24 @@ module Bot
       choose_building("Tavern")
     end
 
+    def choose_library
+      choose_building_list
+      choose_building("Library")
+    end
+
+    def research
+      logger.info ">> Research"
+      choose_library
+      within('#menu-section-drill-container .menu--content-section > div:last-child') do
+        buttons = all('button:not(.disabled)')
+        buttons.each do |button|
+          next if button.has_selector?('div.icon-research-speedup')
+          button.click
+          timeout
+        end
+      end
+    end
+
     def logout
       find(".Logout").trigger('click')
       find('.win.dialog.frame-container .button', text: 'OK').trigger('click')
@@ -162,7 +180,8 @@ module Bot
       within('#menu-section-drill-container .menu--content-section > div:last-child') do
         buttons = all('button:not(.disabled)')
         buttons.each do |button|
-          button.click if button.has_selector?('div.icon-mission')
+          next unless button.has_selector?('div.icon-mission')
+          button.click
           timeout
         end
       end

@@ -19,6 +19,7 @@ miry_ru:
   :actions:
     - build_first
     - send_troops_to_missions
+    - research
   :buildings:
     - Ore store:
         level: 5

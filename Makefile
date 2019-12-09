@@ -6,7 +6,11 @@ SHELL=bash
 
 .PHONY: run
 run:
-	while true ; do ; LOG_LEVEL=${LOG_LEVEL} bundle exec ruby runner.rb selenium_chrome ; sleep 5m ; done
+	LOG_LEVEL=${LOG_LEVEL} bundle exec ruby runner.rb selenium_chrome
+
+.PHONY: run.headless
+run.headless:
+	LOG_LEVEL=${LOG_LEVEL} bundle exec ruby runner.rb
 
 .PHONY: run.daemon
 run.daemon:
