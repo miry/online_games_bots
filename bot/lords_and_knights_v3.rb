@@ -89,7 +89,7 @@ module Bot
       within('#menu-section-drill-container .menu--content-section > div:last-child') do
         buttons = all('button:not(.disabled)')
         buttons.each do |button|
-          next if button.has_selector?('div.icon-research-speedup') || buttons.has_selector?('div.icon-research-finish')
+          next if button.has_selector?('div.icon-research-speedup') || button.has_selector?('div.icon-research-finish')
           button.click
           timeout
         end
