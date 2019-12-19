@@ -170,6 +170,22 @@ module Bot
       true
     end
 
+    def choose_bottom_menu_item(title)
+      logger.debug(": choose_bottom_menu_item #{title}")
+      result = nil
+      available_buildings = all('#game-bar-bottom .bar-bottom--content--gaming .bar-bottom--content--gaming-item')
+      available_buildings.each do |building|
+        menu_title = building.first('.button-for-bars--title').text()
+        next unless menu_title == title
+        result = building
+        building.click() unless building.has_selector?(".button-for-bars.active")
+
+        break
+      end
+      timeout
+      result
+    end
+
     def get_selected_castle
       logger.debug(": get_selected_castle")
       locator = first(".habitat-chooser .habitat-chooser--title span")
@@ -188,6 +204,30 @@ module Bot
           timeout
         end
       end
+    end
+
+    def send_troops_from_all_castles
+      logger.info ">> Send troops from all castles"
+      choose_bottom_menu_item("Mass functions")
+      timeout
+      choose_building("Carry out mission")
+      timeout
+
+      # select_all_castles
+      button = find('#menu-section-drill-container .menu--content-section > div:first-child')
+      if button.text != "Deselect all castles"
+        button.click
+        timeout
+        # check if no mission selected
+        button = find('#menu-section-drill-container .menu--content-section > div:first-child')
+        return if button.text != "Deselect all castles"
+      end
+
+      # carry_out_mission
+      button = find('#menu-section-drill-container .menu--content-section > div.last .menu-list-element-basic--title')
+      logger.debug "click on #{button.text}"
+      button.click
+      timeout
     end
 
     def popup_close
