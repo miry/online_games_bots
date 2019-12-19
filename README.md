@@ -1,6 +1,5 @@
-**THIS PROJECT IS NOT MAINTAINED ANYMORE**
-
 A simple bot for autobuilding and missions. Tested on Linux and MacOS.
+Supports Lords and Knights 2020 version.
 
 ## Settings
 
@@ -76,3 +75,8 @@ miry_us:
 ## Logging
 
 To increase log level, you need to specify the `LOG_LEVEL` env variable. Possible values: debug, info, warn, error
+
+
+# Alternatives
+
+- [LoK: War Bot](https://lordsandknightsbot.com/)
