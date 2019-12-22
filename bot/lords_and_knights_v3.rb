@@ -80,9 +80,14 @@ module Bot
       choose_building("Library")
     end
 
+    def choose_university
+      choose_building_list
+      choose_building("University")
+    end
+
     def research
       logger.info ">> Research"
-      return unless choose_library
+      return unless choose_library || choose_university
 
       return if has_selector?('#menu-section-drill-container .menu--content-section > div:last-child .icon-research-finish')
 
