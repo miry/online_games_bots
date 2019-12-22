@@ -30,7 +30,7 @@ module Bot
       end
 
       logger.debug("Waiting when page is ready")
-      wait_until('canvas#game-canvas')
+      wait_until('canvas#game-canvas', 10)
       find('canvas#game-canvas', text: 'Browser strategy game Lords and Knights')
     end
 
@@ -58,15 +58,15 @@ module Bot
         next unless building_name == title
         result = building
         building.click()
+        timeout
         break
       end
-      timeout
       result
     end
 
     def choose_building_list
       logger.debug(": choose_building_list")
-      return if has_selector?('#menu-section-general-container > .menu-section')
+      return if has_selector?('div.top-bar-button--HabitatBuildings.active')
       first('div.top-bar-button--HabitatBuildings').click()
     end
 
@@ -82,7 +82,7 @@ module Bot
 
     def research
       logger.info ">> Research"
-      choose_library
+      return unless choose_library
 
       return if has_selector?('#menu-section-drill-container .menu--content-section > div:last-child .icon-research-finish')
 
@@ -220,14 +220,25 @@ module Bot
         timeout
         # check if no mission selected
         button = find('#menu-section-drill-container .menu--content-section > div:first-child')
-        return if button.text != "Deselect all castles"
+      end
+
+      # select_all_fortresses
+      button = find('#menu-section-drill-container .menu--content-section > div:nth-child(2)')
+      if button.text != "Deselect all fortresses"
+        button.click
+        timeout
+        # check if no mission selected
+        button = find('#menu-section-drill-container .menu--content-section > div:nth-child(2)')
       end
 
       # carry_out_mission
       button = find('#menu-section-drill-container .menu--content-section > div.last .menu-list-element-basic--title')
-      logger.debug "click on #{button.text}"
-      button.click
-      timeout
+      count = find('#menu-section-drill-container .menu--content-section > div.last .menu-list-element-basic--value')
+      if count && count.text.to_i > 0
+        logger.debug "Click on #{button.text} with #{count.text} missions"
+        button.click
+        timeout
+      end
     end
 
     def popup_close
