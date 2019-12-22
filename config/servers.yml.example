@@ -44,6 +44,18 @@ miry_ru:
         level: 4
     - Market:
         level: 5
+    - Sawmill
+    - Stonecutter
+    - Forge
+    - Wood Storage
+    - Stone Storage
+    - Ore Storage
+    - Townhall
+    - Barracks
+    - University
+    - Fortress Wall
+    - Marketplace
+    - Tavern Quarter
 
 miry_ts5_com:
   :bot: travian
