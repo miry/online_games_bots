@@ -90,7 +90,14 @@ module Bot
     end
 
     def wait_until(selector, retries=MAX_RETRIES)
-      while retries > 0 && !has_selector?('form.form--login')
+      while retries > 0 && !has_selector?(selector)
+        timeout
+        retries -= 1
+      end
+    end
+
+    def wait_while(selector, retries=MAX_RETRIES)
+      while retries > 0 && has_selector?(selector)
         timeout
         retries -= 1
       end

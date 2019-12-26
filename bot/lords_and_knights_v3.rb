@@ -30,6 +30,7 @@ module Bot
       end
 
       logger.debug("Waiting when page is ready")
+      wait_while('.loading-spinner.loading-spinner--pending', 10)
       wait_until('canvas#game-canvas', 10)
       find('canvas#game-canvas', text: 'Browser strategy game Lords and Knights')
     end
@@ -217,6 +218,7 @@ module Bot
       timeout
       choose_building("Carry out mission")
       timeout
+      wait_while("#over-layer--game-pending")
 
       # select_all_castles
       button = find('#menu-section-drill-container .menu--content-section > div:first-child')
