@@ -43,7 +43,8 @@ miry_us:
 
 ### Buildings
 
-Setup a list allowed to build buildings and the order. Depends on ui version it could be different number for buildings.
+Setup a list allowed to build buildings and the order.
+Depends on ui version it could be different number for buildings.
 
 ```yaml
 miry_us:
@@ -71,6 +72,8 @@ miry_us:
     - Tavern
     - Market
 ```
+
+Check `config/servers.yml.example` for more options and strategies.
 
 ## Logging
 
