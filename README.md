@@ -1,5 +1,105 @@
-A simple bot for autobuilding and missions. Tested on Linux and MacOS.
-Supports Lords and Knights 2020 version.
+# Online Games Bot Engine
+
+A simple bot for auto-building and gain resources via missions. Tested on **Linux** and **MacOS**. Available a container version to run on different platforms.
+Supports the "Lords and Knights" 2020 version.
+
+# Lords and Knights
+
+Website: https://lordsandknights.com
+Naive bot solution to optimize your nights and days.
+Spent more time on what is matters than do a routine job.
+
+## Features
+
+### Automate buildings
+
+Do continuous buildings in any order that you specify. Feel free to use my strategy from [config/servers.yml.example](config/servers.yml.example).
+
+### Research
+
+Do research in **Library** or **University**. Dumb approach - the first available research.
+
+### Missions
+
+Continuously send troops to missions. **WARNING**: Disable it manually, if you have a war or require forces for something.
+
+## Quick Usage
+
+Run the bot on your machine or in cloud, you should [install Docker](https://docs.docker.com/install/).
+The container has all required packages to run bots: Chrome and Ruby environment.
+
+Provide settings via environment variable `SERVERS_JSON`.
+
+```shell
+$ export SERVERS_JSON=$(cat <<JSON
+{
+  "miry_de": {
+    "timeout": 2,
+    "bot": "lords_and_kinghts_v3",
+    "email": "<your@example.com>",
+    "password": "<your password>",
+    "server_url": "https://lordsandknights.com",
+    "server_name": "Germanien III (DE) - empfohlen",
+    "actions": [
+      "build_first",
+      "send_troops_to_missions",
+      "research"
+    ],
+    "buildings": [
+      "Sawmill",
+      "Stonecutter",
+      "Forge",
+      {
+        "Ore store": {
+          "level": 3
+        }
+      },
+      {
+        "Wood store": {
+          "level": 3
+        }
+      },
+      {
+        "Stone store": {
+          "level": 3
+        }
+      },
+      "Lumberjack",
+      "Quarry",
+      "Ore mine",
+      "Library",
+      "Wood store",
+      "Stone store",
+      "Ore store",
+      {
+        "Tavern": {
+          "level": 4
+        }
+      },
+      "Farm",
+      "Arsenal",
+      "Market",
+      "Fortifications",
+      "Wood Storage",
+      "Stone Storage",
+      "Ore Storage",
+      "Townhall",
+      "Barracks",
+      "University",
+      "Fortress Wall",
+      "Marketplace",
+      "Tavern Quarter"
+    ]
+  }
+}
+JSON
+$ docker run -e SERVERS_JSON="${SERVERS_JSON}" miry/online_games_bot make run.daemon
+```
+
+> HINT: You can use `docker run` option `--env-file <file>`, where you can store environment variables.
+
+The process would run forewer. When there is some problem with bot, it would stop for 10 minutes, and then starts again.
+It is good, if you loged in in same time and do modifications onself.
 
 ## Settings
 
@@ -24,14 +124,16 @@ lak_us:
 
 ### Actions
 
-`build_first` - Create a first building in the list. The order of buidlings get from `:buildings`
-`send_troops_to_missions` - Send troops to missions for each castle
+- `build_first` - Create a first building in the list. The order of buidlings get from `:buildings`
+- `send_troops_to_missions` - Send troops to missions for each castle.
+- `research` - Research 1 topic in Library or University. If there is research in progress, does not add a new to the queue.
+- `send_troops_from_all_castles` - Send troops to missions cross all castles and fortress (faster than `send_troops_to_missions`). Requires Mass Functions enabled after you conquer few castles.
 
 Example:
 
 ```yaml
 miry_us:
-  :email: user@mailinator.com
+  :email: user@example.com
   :password: securepassword
   :bot: lords_and_kinghts_v3
   :server_name: Germanien III (DE) - empfohlen
@@ -39,6 +141,7 @@ miry_us:
   :actions:
     - build_first
     - send_troops_to_missions
+    - research
 ```
 
 ### Buildings
@@ -73,6 +176,38 @@ miry_us:
     - Market
 ```
 
+You can specify max required level for building. It gives more granular upgrades and provides different kind of strategies.
+
+```yaml
+:buildings:
+  - Ore store:
+      level: 3
+  - Wood store:
+      level: 3
+  - Stone store:
+      level: 3
+
+  - Lumberjack:
+      level: 5
+  - Quarry:
+      level: 5
+  - Ore mine:
+      level: 5
+
+  - Library:
+      level: 2
+
+  - Lumberjack:
+      level: 6
+  - Quarry:
+      level: 6
+  - Ore mine:
+      level: 6
+  - Ore store
+  - Wood store
+  - Stone store
+```
+
 Check `config/servers.yml.example` for more options and strategies.
 
 ## Logging
@@ -83,3 +218,4 @@ To increase log level, you need to specify the `LOG_LEVEL` env variable. Possibl
 # Alternatives
 
 - [LoK: War Bot](https://lordsandknightsbot.com/)
+
