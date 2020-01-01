@@ -85,6 +85,7 @@ end
 servers.each do |name, opts|
   opts = opts.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
   opts[:logger] = logger
+  opts[:bot] ||= 'lords_and_kinghts_v3'
 
   logger.info "Started bot #{opts[:bot]} on #{name}"
 

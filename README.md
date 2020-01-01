@@ -35,7 +35,6 @@ $ export SERVERS_JSON=$(cat <<JSON
 {
   "miry_de": {
     "timeout": 2,
-    "bot": "lords_and_kinghts_v3",
     "email": "<your@example.com>",
     "password": "<your password>",
     "server_url": "https://lordsandknights.com",
@@ -218,4 +217,3 @@ To increase log level, you need to specify the `LOG_LEVEL` env variable. Possibl
 # Alternatives
 
 - [LoK: War Bot](https://lordsandknightsbot.com/)
-

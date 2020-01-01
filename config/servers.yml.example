@@ -1,15 +1,14 @@
-miry_ru:
-  :bot: lords_and_kinghts_v3
+miry_de:
   :email: miry@example.com
   :password: changeme
   :server_url: http://lordsandknights.com/
   :server_name: Germanien III (DE) - empfohlen
   :actions:
     - build_first
-    # Send troops from each castle separatly 
+    # Send troops from each castle separatly
     - send_troops_to_missions
     - research
-    # Send troops cross all castles and fortress 
+    # Send troops cross all castles and fortress
     - send_troops_from_all_castles
   :buildings:
     - Sawmill
@@ -254,7 +253,8 @@ miry_ru:
     - University
     - Fortress Wall
     - Marketplace
-    - Tavern Quarter
+    - Tavern Quarter:
+        level: 1
 
 miry_ts5_com:
   :bot: travian
