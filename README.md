@@ -1,3 +1,5 @@
+[![patrons](http://img.shields.io/liberapay/goal/miry.svg?logo=liberapay)](https://liberapay.com/miry/)
+
 # Online Games Bot Engine
 
 A simple bot for auto-building and gain resources via missions. Tested on **Linux** and **MacOS**. Available a container version to run on different platforms.
