@@ -13,6 +13,10 @@ module Bot
     def login
       visit '/'
 
+      if has_selector?('.form--data--logout')
+        first('.form--data--logout').click
+      end
+
       logger.debug("Fill login information: #{options[:email]}")
       wait_until('form.form--login', 10)
       within 'form.form--login' do
@@ -118,8 +122,17 @@ module Bot
       within '#menu-section-general-container > .menu-section > .menu--content-section' do
         current_buildings = all('.widget--upgrades-in-progress--list > .menu-list-element.with-icon-right')
         if current_buildings.size > 0
-          logger.info "Nothing todo. Workers are busy."
-          return
+          # Check if there is Free build
+          first_building = current_buildings.first
+          if first_building.find('button .icon')[:class].include?('icon-build-finish-free')
+            first_building_title = first_building.find('.menu-list-element-basic--title').text()
+            logger.info "Finish Free speedup #{first_building_title}"
+            first_building.find(:button).click
+            return if current_buildings.size > 1
+          else
+            logger.info "Nothing todo. Workers are busy."
+            return
+          end
         end
 
         buildings = get_available_buildings
@@ -131,11 +144,6 @@ module Bot
 
         # If there are no buildings to build, build all available
         buildings_range = @build_list || buildings.keys.map {|b| {name: b}}
-
-        logger.debug "buildings:"
-        logger.debug buildings
-        logger.debug "buildings_range:"
-        logger.debug buildings_range
 
         buildings_range.each do |building_name|
           name = building_name
