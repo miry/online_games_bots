@@ -16,6 +16,7 @@ Spent more time on what is matters than do a routine job.
 ### Automate buildings
 
 Do continuous buildings in any order that you specify. Feel free to use my strategy from [config/servers.yml.example](config/servers.yml.example).
+Use Free speedup building if it is available.
 
 ### Research
 
