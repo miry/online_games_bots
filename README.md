@@ -1,4 +1,5 @@
 [![patrons](http://img.shields.io/liberapay/goal/miry.svg?logo=liberapay)](https://liberapay.com/miry/)
+[![Gitter](https://badges.gitter.im/Lords-and-Knights-Bot/community.svg)](https://gitter.im/Lords-and-Knights-Bot/community)
 
 # Online Games Bot Engine
 
