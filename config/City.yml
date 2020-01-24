@@ -1,0 +1,385 @@
+miry_de:
+    :email: Your email
+    :password: Your password
+    :server_url: http://lordsandknights.com/
+    :server_name: Germanien III (DE) - empfohlen
+    :actions:
+      - build_first
+      # Send troops from each city separatly
+      - send_troops_to_missions
+      - research
+      # Send troops cross all castles, fortress and cities
+      - send_troops_from_all_cities
+    :buildings:
+      - Carpentry           
+      - Stonecutter 
+      - Foundry
+  
+      - University area:
+          level: 10
+  
+      - Residential Quarter:
+          level: 10
+  
+      - Tavern Quarter:
+          level: 9
+  
+      - Wood workshop:
+          level: 2
+      - Stone workshop:
+          level: 2
+      - Ore workshop:
+          level: 2
+
+      - Wood workshop:
+          level: 3
+      - Stone workshop:
+          level: 3
+      - Ore workshop:
+          level: 3
+          
+      - Wood workshop:
+          level: 4
+      - Stone workshop:
+          level: 4
+      - Ore workshop:
+          level: 4
+       
+      - Wood workshop:
+          level: 5
+      - Stone workshop:
+          level: 5
+      - Ore workshop:
+          level: 5
+          
+      - Wood workshop:
+          level: 6
+      - Stone workshop: 
+          level: 6
+        - Oreworkshop: 
+          level: 6
+    
+      - Wood workshop: 
+          level: 7
+      - Stone workshop:
+          level: 7
+      - Ore workshop:
+          level: 7
+       
+      - Wood workshop:
+          level: 8
+      - Stone workshop:
+          level: 8
+      - Ore workshop:
+          level: 8
+
+      - Wood workshop:
+          level: 9
+      - Stone workshop:
+          level: 9
+      - Ore workshop:
+          level: 9
+
+      - Wood workshop:
+          level: 10
+      - Stone workshop:
+          level: 10
+      - Ore workshop:
+          level: 10
+
+      - City Wall:
+          level: 10
+
+      - Tavern Quarter:
+          level: 10
+          
+      - Military academy:
+          level: 10
+          
+      - Wood storehouse:
+          level: 2
+      - Stone storehouse:
+          level: 2
+      - Ore storehouse:
+          level: 2
+
+      - Wood storehouse:
+          level: 3
+      - Stone storehouse:
+          level: 3
+      - Ore storehouse:
+          level: 3    
+          
+      - Wood storehouse:
+          level: 4
+      - Stone storehouse:
+          level: 4
+      - Ore storehouse:
+          level: 4
+      
+      - Wood storehouse:
+          level: 5
+      - Stone storehouse:
+          level: 5
+      - Ore storehouse:
+          level: 5
+      
+      - Wood storehouse:
+          level: 6
+      - Stone storehouse:
+          level: 6
+      - Ore storehouse:
+          level: 6
+      
+      - Wood storehouse:
+          level: 7
+      - Stone storehouse:
+          level: 7
+      - Ore storehouse:
+          level: 7
+      
+      - Wood storehouse:
+          level: 8
+      - Stone storehouse:
+          level: 8
+      - Ore storehouse:
+           level: 8
+      
+      - Wood storehouse:
+          level: 9
+      - Stone storehouse:
+          level: 9
+       - Ore storehouse:
+          level: 9
+      
+      - Wood storehouse:
+          level: 10
+      - Stone storehouse:
+          level: 10
+      - Ore storehouse:
+          level: 10
+      
+      - Embassy:
+          level: 4
+          
+      - University area:
+          level: 15
+       
+      - Residential Quarter:
+          level: 20
+
+      - Military academy:
+              level: 15
+           
+      - Wood storehouse:
+          level: 11
+      - Stone storehouse:
+          level: 11
+      - Ore storehouse:
+          level: 11
+
+      - Wood storehouse:
+            level: 12
+      - Stone storehouse:
+            level: 12
+      - Ore storehouse:
+            level: 12
+            
+      - Wood storehouse:
+          level: 13
+      - Stone storehouse:
+          level: 13
+      - Ore storehouse:
+           level: 13
+    
+      - Wood storehouse:
+          level: 14
+      - Stone storehouse:
+          level: 14
+      - Ore storehouse:
+          level: 14      
+
+      - Wood storehouse:
+          level: 15
+      - Stone storehouse:
+          level: 15
+      - Ore storehouse:
+          level: 15
+      
+      - Military academy:
+          level: 20
+
+      - Residential Quarter:
+          level: 25
+
+      - Wood workshop:
+          level: 16
+      - Stone workshop:
+          level: 16
+      - Ore workshop:
+          level: 16
+      - Wood storehouse:
+          level: 16 
+      - Stone storehouse:
+          level: 16
+      - Ore storehouse:
+          level: 16
+        
+      - Wood workshop:
+          level: 17
+      - Stone workshop:
+          level: 17
+      - Ore workshop:
+          level: 17
+      - Wood storehouse:
+          level: 17 
+      - Stone storehouse:
+          level: 17
+      - Ore storehouse:
+          level: 17  
+      
+      - Wood workshop:
+          level: 18
+      - Stone workshop:
+          level: 18
+      - Ore workshop:
+          level: 18
+      - Wood storehouse:
+          level: 18 
+      - Stone storehouse:
+          level: 18
+      - Ore storehouse:
+          level: 18     
+      
+      - Wood workshop:
+          level: 19
+      - Stone workshop:
+          level: 19
+      - Ore workshop:
+          level: 19
+      - Wood storehouse:
+          level: 19 
+      - Stone storehouse:
+          level: 19
+      - Ore storehouse:
+          level: 19
+      
+      - Wood workshop:
+          level: 20
+      - Stone workshop:
+          level: 20
+      - Ore workshop:
+          level: 20
+      - Wood storehouse:
+          level: 20 
+      - Stone storehouse:
+          level: 20
+      - Ore storehouse:
+          level: 20
+      
+      - University area:
+          level: 20
+          
+      - Residential Quarter:
+          level: 30
+          
+      - Military academy:
+          level: 30
+          
+      - Tavern Quarter:
+          level: 20
+          
+      - City Wall:
+          level: 30
+          
+      - Embassy:
+          level: 10
+       
+      - Wood workshop:
+          level: 21
+      - Stone workshop:
+          level: 21
+      - Ore workshop:
+          level: 21
+
+      - Wood workshop:
+            level: 22
+      - Stone workshop:
+            level: 22
+      - Ore workshop:
+            level: 22
+
+      - Wood workshop:
+          level: 23
+      - Stone workshop:
+          level: 23
+      - Ore workshop:
+          level: 23
+
+      - Wood workshop:
+          level: 24
+      - Stone workshop:
+          level: 24
+      - Ore workshop:
+          level: 24
+
+      - Wood workshop:
+          level: 25
+      - Stone workshop:
+          level: 25
+      - Ore workshop:
+          level: 25
+
+      - Harbour area:
+          level: 15
+
+      - Wood workshop:
+          level: 26
+      - Stone workshop:
+          level: 26
+      - Ore workshop:
+          level: 26
+
+      - Wood workshop:
+          level: 27
+      - Stone workshop:
+          level: 27
+      - Ore workshop:
+          level: 27
+
+      - Wood workshop:
+          level: 28
+      - Stone workshop:
+          level: 28
+      - Ore workshop:
+          level: 28
+      
+      - Wood workshop:
+          level: 29
+      - Stone workshop:
+          level: 29
+      - Ore workshop:
+          level: 29
+      
+      - Wood workshop:
+         level: 30
+      - Stone workshop:
+          level: 30
+      - Ore workshop:
+          level: 30
+
+      - Military camp:
+          level: 20
+
+  miry_ts5_com:
+    :bot: travian
+    :server_url: http://ts1.travian.com
+    :email: miry.sof@gmail.com
+    :name: miry
+    :password: changeme
+    :timeout: 5
+  © 2020 GitHub, Inc.
+  Terms
+  Privacy
+  Security
+  Sta
