@@ -370,11 +370,3 @@ miry_de:
 
     - Military camp:
         level: 20
-
-miry_ts5_com:
-  :bot: travian
-  :server_url: http://ts1.travian.com
-  :email: miry.sof@gmail.com
-  :name: miry
-  :password: changeme
-  :timeout: 5
