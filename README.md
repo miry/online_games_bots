@@ -1,6 +1,17 @@
 [![patrons](http://img.shields.io/liberapay/goal/miry.svg?logo=liberapay)](https://liberapay.com/miry/)
 [![Gitter](https://badges.gitter.im/Lords-and-Knights-Bot/community.svg)](https://gitter.im/Lords-and-Knights-Bot/community)
 
+# Setup environment for MacOS
+
+1. Make an account for docker, after you’ve done that download docker. (https://docs.docker.com/v17.12/docker-for-mac/install/) Make sure to pick the stable version.
+2. Make sure you have downloaded the bot. (https://github.com/miry/online_games_bots) Have the folder on the desktop to make it easy to find.
+3. Open the bot folder, click the config folder and open (servers.yml) with your preferred text editor and fill it out with the correct information. After you’ve done that save the file and close it. (If you don’t have a text editor I recommend Atom) (https://atom.io/)
+4. Go to your terminal and follow theses steps. 
+5. cd desktop (Press enter)
+6. cd online_games_bots-master/ (shortcut key after you typed online press tab it should fill out the name) (press enter) 
+7.  docker run -e LOG_LEVEL=debug -v $(pwd)/config:/app/config -v $(pwd)/tmp:/app/tmp miry/online_games_bot bundle exec ruby runner.rb (Press enter)
+8. If you need help please join the discord. (https://discord.gg/VaEtdbC)
+
 # Online Games Bot Engine
 
 A simple bot for auto-building and gain resources via missions. Tested on **Linux** and **MacOS**. Available a container version to run on different platforms.
