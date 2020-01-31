@@ -88,12 +88,12 @@ module Bot
 
     def choose_university
       choose_building_list
-      choose_building("University")
+      choose_building(["Library", "University", "University area"])
     end
 
     def research
       logger.info ">> Research"
-      return unless choose_library || choose_university
+      return unless choose_university
 
       return if has_selector?('#menu-section-drill-container .menu--content-section > div:last-child .icon-research-finish')
 
