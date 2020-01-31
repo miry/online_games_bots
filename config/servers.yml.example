@@ -1,4 +1,5 @@
 miry_de:
+  :timeout: 5
   :email: miry@example.com
   :password: changeme
   :server_url: http://lordsandknights.com/
