@@ -54,13 +54,14 @@ module Bot
       has_selector?(tab_selector)
     end
 
-    def choose_building(title)
-      logger.debug(": choose_building #{title}")
+    def choose_building(titles)
+      titles = [titles] unless titles.is_a?(Array)
+      logger.debug(": choose_building #{titles.join(', ')}")
       result = nil
       available_buildings = all('#menu-section-general-container > .menu-section > .menu--content-section .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right')
       available_buildings.each do |building|
         building_name = building.first('.menu-list-element-basic--title').text()
-        next unless building_name == title
+        next unless titles.include?(building_name)
         result = building
         building.click()
         timeout
@@ -77,7 +78,7 @@ module Bot
 
     def choose_tavern
       choose_building_list
-      choose_building("Tavern")
+      choose_building(["Tavern", "Tavern Quarter"])
     end
 
     def choose_library
