@@ -56,7 +56,7 @@ miry_de:
         level: 6
     - Stone workshop:
         level: 6
-      - Oreworkshop:
+    - Oreworkshop:
         level: 6
 
     - Wood workshop:
@@ -143,13 +143,13 @@ miry_de:
     - Stone storehouse:
         level: 8
     - Ore storehouse:
-          level: 8
+        level: 8
 
     - Wood storehouse:
         level: 9
     - Stone storehouse:
         level: 9
-      - Ore storehouse:
+    - Ore storehouse:
         level: 9
 
     - Wood storehouse:
@@ -169,7 +169,7 @@ miry_de:
         level: 20
 
     - Military academy:
-            level: 15
+        level: 15
 
     - Wood storehouse:
         level: 11
@@ -179,18 +179,18 @@ miry_de:
         level: 11
 
     - Wood storehouse:
-          level: 12
+        level: 12
     - Stone storehouse:
-          level: 12
+        level: 12
     - Ore storehouse:
-          level: 12
+        level: 12
 
     - Wood storehouse:
         level: 13
     - Stone storehouse:
         level: 13
     - Ore storehouse:
-          level: 13
+        level: 13
 
     - Wood storehouse:
         level: 14
@@ -303,11 +303,11 @@ miry_de:
         level: 21
 
     - Wood workshop:
-          level: 22
+        level: 22
     - Stone workshop:
-          level: 22
+        level: 22
     - Ore workshop:
-          level: 22
+        level: 22
 
     - Wood workshop:
         level: 23
