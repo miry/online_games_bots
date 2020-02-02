@@ -12,10 +12,7 @@ miry_de:
     # Send troops cross all castles and fortress
     - send_troops_from_all_castles
   :buildings:
-    - Sawmill
-    - Stonecutter
-    - Forge
-
+  
     - Ore store:
         level: 3
     - Wood store:
