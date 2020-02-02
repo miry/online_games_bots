@@ -11,10 +11,7 @@ miry_de:
     # Send troops cross all castles, fortress and cities
     - send_troops_from_all_cities
   :buildings:
-    - Carpentry
-    - Stonecutter
-    - Foundry
-
+  
     - University area:
         level: 10
 
