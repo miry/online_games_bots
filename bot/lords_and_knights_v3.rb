@@ -11,6 +11,20 @@ module Bot
       logger.debug(@build_list || "Any available")
     end
 
+    def events
+      logger.info ">> events"
+      choose_bottom_menu_item("Events")
+      timeout
+
+      within '#menu-section-general-container .menu--content-section' do
+        selector = 'div.icon.icon-right.event-list.success'
+        if has_selector?(selector)
+          button = find(selector)
+          button.click
+        end
+      end
+    end
+
     def login
       visit '/'
 
