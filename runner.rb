@@ -82,10 +82,19 @@ def servers
   []
 end
 
-servers.each do |name, opts|
+connections = servers
+
+if connections.size == 0
+  puts "\n\nWARNING No servers provided. Pls check that you have config/servers.yml or SERVERS_JSON environment variable."
+  exit 1
+end
+
+connections.each do |name, opts|
   opts = opts.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
   opts[:logger] = logger
   opts[:bot] ||= 'lords_and_kinghts_v3'
+  opts[:server_url] ||= 'http://lordsandknights.com'
+  opts[:server_url].chop! if opts[:server_url][-1] == '/'
 
   logger.info "Started bot #{opts[:bot]} on #{name}"
 

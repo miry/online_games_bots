@@ -5,9 +5,10 @@ module Bot
 
     def initialize(options)
       super
+      @actions = options[:actions] || [:build_first, :research, :send_troops_to_missions]
       @build_list = building_list
       logger.debug "Building List:"
-      logger.debug @build_list
+      logger.debug(@build_list || "Any available")
     end
 
     def login
@@ -18,7 +19,7 @@ module Bot
       end
 
       logger.debug("Fill login information: #{options[:email]}")
-      wait_until('form.form--login', 10)
+      wait_until('form.form--login', 30)
       within 'form.form--login' do
         fill_in 'login-name', with: options[:email]
         fill_in 'login-password', with: options[:password]
@@ -113,7 +114,7 @@ module Bot
     end
 
     def build_first
-      logger.info ">> Building first"
+      logger.info ">> Building"
       choose_building_list
       build_next
       logger.debug "<< Finished Building"
@@ -144,7 +145,7 @@ module Bot
         end
 
         # If there are no buildings to build, build all available
-        buildings_range = @build_list || buildings.keys.map {|b| {name: b}}
+        buildings_range = @build_list || buildings.keys.map {|b| {name: b}}.reverse
 
         buildings_range.each do |building_name|
           name = building_name
@@ -177,9 +178,11 @@ module Bot
     def choose_next_castle
       logger.debug ": choose_next_castle"
 
-      locator = first(".habitat-chooser--title-row .arrow-right")
-      locator.click()
-      timeout(1)
+      locator = all(".habitat-chooser--title-row .arrow-right")[0]
+      if locator
+        locator.click()
+        timeout(1)
+      end
 
       logger.info "> Selected castle: #{get_selected_castle}"
       true
@@ -258,10 +261,24 @@ module Bot
     end
 
     def popup_close
-      locator = all("#game-pop-up-layer .event-pop-up-button.ButtonRedAccept")[0]
-      return unless locator
+      return false if all('#game-pop-up-layer', visible: true).size == 0
       logger.info "Popup is open"
-      locator.click
+
+      selectors = [
+        "#game-pop-up-layer .event-pop-up-button.ButtonRedAccept",
+        "#game-pop-up-layer .event-pop-up-button.Back",
+      ]
+
+      selectors.each do |selector|
+        locator = all(selector)[0]
+        if locator
+          locator.click
+          timeout
+          return popup_close
+        end
+      end
+
+      return false
     end
 
     def get_available_buildings
