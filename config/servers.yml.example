@@ -11,8 +11,10 @@ miry_de:
     - research
     # Send troops cross all castles and fortress
     - send_troops_from_all_castles
+    # Collect prizes from completed events
+    - events
   :buildings:
-  
+
     - Ore store:
         level: 3
     - Wood store:

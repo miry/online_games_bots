@@ -109,9 +109,9 @@ It is good, if you loged in in same time and do modifications onself.
 1. Make an account for docker, after you’ve done that download docker. (https://docs.docker.com/v17.12/docker-for-mac/install/) Make sure to pick the stable version.
 2. Make sure you have downloaded the bot. (https://github.com/miry/online_games_bots) Have the folder on the desktop to make it easy to find.
 3. Open the bot folder, click the config folder and open (servers.yml) with your preferred text editor and fill it out with the correct information. After you’ve done that save the file and close it. (If you don’t have a text editor I recommend Atom) (https://atom.io/)
-4. Go to your terminal and follow theses steps. 
+4. Go to your terminal and follow theses steps.
 5. cd desktop (Press enter)
-6. cd online_games_bots-master/ (shortcut key after you typed online press tab it should fill out the name) (press enter) 
+6. cd online_games_bots-master/ (shortcut key after you typed online press tab it should fill out the name) (press enter)
 7.  docker run -e LOG_LEVEL=debug -v $(pwd)/config:/app/config -v $(pwd)/tmp:/app/tmp miry/online_games_bot bundle exec ruby runner.rb (Press enter)
 8. If you need help please join the discord. (https://discord.gg/VaEtdbC)
 
@@ -142,20 +142,19 @@ lak_us:
 - `send_troops_to_missions` - Send troops to missions for each castle.
 - `research` - Research 1 topic in Library or University. If there is research in progress, does not add a new to the queue.
 - `send_troops_from_all_castles` - Send troops to missions cross all castles and fortress (faster than `send_troops_to_missions`). Requires Mass Functions enabled after you conquer few castles.
-
+- `events` - Collect the prizes for completed events.
 Example:
 
 ```yaml
-miry_us:
+de3:
   :email: user@example.com
   :password: securepassword
-  :bot: lords_and_kinghts_v3
   :server_name: Germanien III (DE) - empfohlen
-  :server_url: http://lordsandknights.com/
   :actions:
     - build_first
     - send_troops_to_missions
     - research
+    - events
 ```
 
 ### Buildings
