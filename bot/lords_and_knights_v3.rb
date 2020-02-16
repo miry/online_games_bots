@@ -5,24 +5,29 @@ module Bot
 
     def initialize(options)
       super
-      @actions = options[:actions] || [:build_first, :research, :send_troops_to_missions]
+      @actions = options[:actions] || [:build_first, :research, :send_troops_to_missions, :events]
       @build_list = building_list
       logger.debug "Building List:"
       logger.debug(@build_list || "Any available")
     end
 
     def events
-      logger.info ">> events"
+      logger.info ">> Events"
       choose_bottom_menu_item("Events")
       timeout
 
       within '#menu-section-general-container .menu--content-section' do
-        selector = 'div.icon.icon-right.event-list.success'
+        selector = '.menu-list-element.menu-list-element-basic.clickable.with-icon-right:not(.color-red)'
         if has_selector?(selector)
-          button = find(selector)
+          button = all(selector)[0]
+          logger.info "* Collect the prize for the event #{button.text()}"
           button.click
         end
       end
+
+      wait_until('#game-pop-up-layer', visible: true)
+      popup_close
+      wait_until('#game-pop-up-layer', visible: false)
     end
 
     def login

@@ -29,6 +29,10 @@ module Bot
       raise NotImplementedError
     end
 
+    def events
+      raise NotImplementedError
+    end
+
     def send_troops_to_missions
       raise NotImplementedError
     end
@@ -89,8 +93,8 @@ module Bot
       sleep(val || @timeout)
     end
 
-    def wait_until(selector, retries=MAX_RETRIES)
-      while retries > 0 && !has_selector?(selector)
+    def wait_until(selector, retries=MAX_RETRIES, **options)
+      while retries > 0 && !has_selector?(selector, options)
         timeout
         retries -= 1
       end
