@@ -85,6 +85,7 @@ module Bot
         result = building
         building.click()
         timeout
+        wait_while '#over-layer--game-pending.in'
         break
       end
       result
