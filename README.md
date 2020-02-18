@@ -1,3 +1,7 @@
+<a href="https://paypal.me/miry">
+  <img align="right" alt="Donate with PayPal" style="float:right" width="200" src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png">
+</a>
+
 [![patrons](http://img.shields.io/liberapay/goal/miry.svg?logo=liberapay)](https://liberapay.com/miry/)
 [![Gitter](https://badges.gitter.im/Lords-and-Knights-Bot/community.svg)](https://gitter.im/Lords-and-Knights-Bot/community)
 
