@@ -244,13 +244,21 @@ module Bot
       end
     end
 
-    def send_troops_from_all_castles
-      logger.info ">> Send troops from all castles"
+    def choose_mass_functions
       choose_bottom_menu_item("Mass functions")
       timeout
+    end
+
+    def choose_carry_out_mission
+      choose_mass_functions
       choose_building("Carry out mission")
       timeout
       wait_while("#over-layer--game-pending")
+    end
+
+    def send_troops_from_all_castles
+      logger.info ">> Send troops from all castles"
+      choose_carry_out_mission
 
       # select_all_castles
       button = find('#menu-section-drill-container .menu--content-section > div:first-child')
