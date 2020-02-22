@@ -14,6 +14,7 @@ module Bot
       @timeout = options[:timeout] || 5
       @actions = options[:actions] || [:build_first, :send_troops_to_missions]
       @logger  = options[:logger] || Logger.new(STDOUT)
+      @first_castle = ""
       @enable_loop = options[:loop]
     end
 

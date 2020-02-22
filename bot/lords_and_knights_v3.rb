@@ -47,6 +47,7 @@ module Bot
         find('button').click
       end
 
+      wait_until '#choose-world-scene'
       logger.info("Choose the server: #{options[:server_name]}")
       within '#choose-world-scene' do
         locator = nil
@@ -193,7 +194,8 @@ module Bot
       logger.debug(": choose_first_castle")
       # Enabled by default
       # choose_building_list
-      logger.info "> Selected castle: #{get_selected_castle}"
+      @first_castle = get_selected_castle
+      logger.info "> Selected castle: #{@first_castle}"
       true
     end
 
@@ -311,6 +313,14 @@ module Bot
     end
 
     def choose_exchange_silver_with_ox
+      logger.debug ': choose_exchange_silver_with_ox'
+      choose_mass_functions
+
+      if has_selector?('#menu-section-drill-container .menu--top-bar-section .menu--title-bar-main--title')
+        page_title = find('#menu-section-drill-container .menu--top-bar-section .menu--title-bar-main--title').text
+        return if page_title == 'Exchange resources'
+      end
+
       choose_exchange_silver
 
       button = find('#menu-section-drill-container .menu--content-section > div:last-child')
