@@ -201,6 +201,7 @@ module Bot
 
     def choose_next_castle
       logger.debug ": choose_next_castle"
+      wait_while '#over-layer--game-pending', visible: true
 
       locator = all(".habitat-chooser--title-row .arrow-right")[0]
       if locator

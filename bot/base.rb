@@ -101,8 +101,8 @@ module Bot
       end
     end
 
-    def wait_while(selector, retries=MAX_RETRIES)
-      while retries > 0 && has_selector?(selector)
+    def wait_while(selector, retries=MAX_RETRIES, **options)
+      while retries > 0 && has_selector?(selector, options)
         timeout
         retries -= 1
       end
