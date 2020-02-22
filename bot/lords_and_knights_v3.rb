@@ -3,6 +3,8 @@
 module Bot
   class LordsAndKnightsV3 < Bot::Base
 
+    BARTER_SILVER_THRESHOLD = 100
+
     def initialize(options)
       super
       @actions = options[:actions] || [:build_first, :research, :send_troops_to_missions, :events]
@@ -250,8 +252,17 @@ module Bot
     end
 
     def choose_carry_out_mission
+      logger.debug(": choose_carry_out_mission")
       choose_mass_functions
       choose_building("Carry out mission")
+      timeout
+      wait_while("#over-layer--game-pending")
+    end
+
+    def choose_exchange_resources
+      logger.debug(": choose_exchange_resources")
+      choose_mass_functions
+      choose_building("Exchange resources")
       timeout
       wait_while("#over-layer--game-pending")
     end
@@ -286,6 +297,60 @@ module Bot
         button.click
         timeout
       end
+    end
+
+    def choose_exchange_silver
+      logger.debug ': choose_exchange_silver'
+      choose_exchange_resources
+
+      button = find('#menu-section-drill-container .menu--content-section > div:last-child')
+      logger.debug ": choose resource " + button.find('.menu-list-element-basic--content-box').text
+      button.click
+
+      timeout
+    end
+
+    def choose_exchange_silver_with_ox
+      choose_exchange_silver
+
+      button = find('#menu-section-drill-container .menu--content-section > div:last-child')
+      logger.debug ": choose unit " + button.find('.menu-list-element-basic--content-box').text
+      button.click
+
+      timeout
+    end
+
+    def exchange_silver
+      logger.info ">> Exchange Silver"
+      choose_exchange_silver_with_ox
+
+      # select_all_castles
+      button = find('#menu-section-drill-container .menu--content-section > div.menu-list-element-basic.first:first-child')
+      button_title = button.text
+      if button_title.include?('castles') && button_title != "Deselect all castles"
+        button.click
+        timeout
+      end
+
+      # select_all_fortresses
+      button = find('#menu-section-drill-container .menu--content-section > div:nth-child(2)')
+      button_title = button.text
+      if button_title.include?('fortresses') && button_title != "Deselect all fortresses"
+        button.click
+        timeout
+      end
+
+      button = find('#menu-section-drill-container .menu--content-section > .menu-list-element-basic.clickable.last')
+      barter_silver = button.find('.menu-list-element-basic--value').text.to_i rescue 0
+
+      if barter_silver < BARTER_SILVER_THRESHOLD
+        logger.debug ": not enough silver to send : #{barter_silver} silver"
+        return
+      end
+
+      logger.info ">>> Exchange #{barter_silver} silver"
+      button.click
+      timeout
     end
 
     def popup_close

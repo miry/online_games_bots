@@ -31,6 +31,14 @@ Do research in **Library** or **University**. Dumb approach - the first availabl
 
 Continuously send troops to missions. **WARNING**: Disable it manually, if you have a war or require forces for something.
 
+### Events
+
+Get automaticaly rewards if it them available in the Task list.
+
+### Exchange Silver
+
+Use Mass functions to exchange silver from each castle and fortress.
+
 ## Quick Usage
 
 Run the bot on your machine or in cloud, you should [install Docker](https://docs.docker.com/install/).
@@ -42,15 +50,15 @@ Provide settings via environment variable `SERVERS_JSON`.
 $ export SERVERS_JSON=$(cat <<JSON
 {
   "miry_de": {
-    "timeout": 2,
+    "timeout": 5,
     "email": "<your@example.com>",
     "password": "<your password>",
-    "server_url": "https://lordsandknights.com",
     "server_name": "Germanien III (DE) - empfohlen",
     "actions": [
       "build_first",
       "send_troops_to_missions",
-      "research"
+      "research",
+      "events"
     ],
     "buildings": [
       "Sawmill",
@@ -147,6 +155,8 @@ lak_us:
 - `research` - Research 1 topic in Library or University. If there is research in progress, does not add a new to the queue.
 - `send_troops_from_all_castles` - Send troops to missions cross all castles and fortress (faster than `send_troops_to_missions`). Requires Mass Functions enabled after you conquer few castles.
 - `events` - Collect the prizes for completed events.
+- `exchange_silver` - Exchange resources from all castles to silver.
+
 Example:
 
 ```yaml
@@ -159,6 +169,7 @@ de3:
     - send_troops_to_missions
     - research
     - events
+    - exchange_silver
 ```
 
 ### Buildings
@@ -170,9 +181,7 @@ Depends on ui version it could be different number for buildings.
 miry_us:
   :email: user@mailinator.com
   :password: securepassword
-  :bot: lords_and_kinghts_v3
   :server_name: Germanien III (DE) - empfohlen
-  :server_url: http://lordsandknights.com
   :actions:
     - build_first
     - send_troops_to_missions
