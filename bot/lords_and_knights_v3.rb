@@ -3,7 +3,7 @@
 module Bot
   class LordsAndKnightsV3 < Bot::Base
 
-    BARTER_SILVER_THRESHOLD = 100
+    BARTER_SILVER_THRESHOLD = 30000
 
     def initialize(options)
       super
@@ -11,6 +11,15 @@ module Bot
       @build_list = building_list
       logger.debug "Building List:"
       logger.debug(@build_list || "Any available")
+
+      # Conditions
+      # actions: ....
+      #   - <action name>
+      #   - <action_name>:
+      #       on: once_per_loop
+      #       on: 12:00
+      #       on: always
+      #       on: <castle name>
     end
 
     def events
