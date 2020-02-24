@@ -95,6 +95,7 @@ module Bot
     end
 
     def wait_until(selector, retries=MAX_RETRIES, **options)
+      logger.debug ":: wait_until #{selector}"
       while retries > 0 && !has_selector?(selector, options)
         timeout
         retries -= 1
@@ -102,6 +103,7 @@ module Bot
     end
 
     def wait_while(selector, retries=MAX_RETRIES, **options)
+      logger.debug ":: wait_while #{selector}"
       while retries > 0 && has_selector?(selector, options)
         timeout
         retries -= 1

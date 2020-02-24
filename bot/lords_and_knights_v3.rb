@@ -3,7 +3,7 @@
 module Bot
   class LordsAndKnightsV3 < Bot::Base
 
-    BARTER_SILVER_THRESHOLD = 30000
+    BARTER_SILVER_THRESHOLD = 17000
 
     def initialize(options)
       super
@@ -230,11 +230,12 @@ module Bot
         menu_title = building.first('.button-for-bars--title').text()
         next unless menu_title == title
         result = building
-        building.click() unless building.has_selector?(".button-for-bars.active")
-
+        unless building.has_selector?(".button-for-bars.active")
+          building.click()
+          timeout
+        end
         break
       end
-      timeout
       result
     end
 
@@ -260,20 +261,20 @@ module Bot
 
     def choose_mass_functions
       choose_bottom_menu_item("Mass functions")
-      timeout
     end
 
     def choose_carry_out_mission
       logger.debug(": choose_carry_out_mission")
       choose_mass_functions
       choose_building("Carry out mission")
-      timeout
       wait_while("#over-layer--game-pending")
     end
 
     def choose_exchange_resources
       logger.debug(": choose_exchange_resources")
       choose_mass_functions
+      choose_building("Exchange resources")
+      timeout
       choose_building("Exchange resources")
       timeout
       wait_while("#over-layer--game-pending")
@@ -324,13 +325,6 @@ module Bot
 
     def choose_exchange_silver_with_ox
       logger.debug ': choose_exchange_silver_with_ox'
-      choose_mass_functions
-
-      if has_selector?('#menu-section-drill-container .menu--top-bar-section .menu--title-bar-main--title')
-        page_title = find('#menu-section-drill-container .menu--top-bar-section .menu--title-bar-main--title').text
-        return if page_title == 'Exchange resources'
-      end
-
       choose_exchange_silver
 
       button = find('#menu-section-drill-container .menu--content-section > div:last-child')
