@@ -153,6 +153,7 @@ module Bot
     end
 
     def build_next
+      logger.debug ': build_next'
       within '#menu-section-general-container > .menu-section > .menu--content-section' do
         current_buildings = all('.widget--upgrades-in-progress--list > .menu-list-element.with-icon-right')
         if current_buildings.size > 0
@@ -164,7 +165,7 @@ module Bot
             first_building.find(:button).click
             return if current_buildings.size > 1
           else
-            logger.info "Nothing todo. Workers are busy."
+            logger.info '  >> Nothing todo. Workers are busy.'
             return
           end
         end
@@ -172,7 +173,7 @@ module Bot
         buildings = get_available_buildings
 
         if buildings.empty?
-          logger.info 'There are no buildings to upgrade'
+          logger.info '  >> There are no buildings to upgrade'
           return
         end
 
@@ -190,12 +191,11 @@ module Bot
           if buildings.key?(name) && (level.nil? || level > buildings[name][:level])
             logger.info "* Upgrade #{name} with level #{buildings[name][:level]}"
             buildings[name][:button].click()
+            timeout
             break
           end
         end
       end
-
-      timeout
     end
 
     def choose_first_castle
@@ -389,8 +389,12 @@ module Bot
     end
 
     def get_available_buildings
+      logger.debug ': get_available_buildings'
       buildings = {}
       available_buildings = []
+
+      return [] unless has_selector?('.menu-list-element.clickable.with-icon-right button.button')
+
       if has_selector?('.widget--upgrades-in-progress--list')
         upgrade_section = first('.widget--upgrades-in-progress--list')
         available_buildings = all('.widget--upgrades-in-progress--list + .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
@@ -423,6 +427,7 @@ module Bot
         # Add to building list
         buildings[building_name] = {button: build_button, level: building_level, name: building_name, description: building_description}
       end
+      logger.debug ':: /get_available_buildings'
       buildings
     end
 
