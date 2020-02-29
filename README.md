@@ -38,6 +38,16 @@ Get automaticaly rewards if it them available in the Task list.
 ### Exchange Silver
 
 Use Mass functions to exchange silver from each castle and fortress.
+By default, it would exchange resources to more than 1000 silver.
+There is an option to modify it `threshold: BARTER_SILVER_THRESHOLD`.
+
+Example of config to exchange silver and custom threshold:
+
+```yaml
+  :actions:
+    - exchange_silver:
+        threshold: 18000
+```
 
 ## Quick Usage
 

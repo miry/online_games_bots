@@ -13,8 +13,10 @@ miry_de:
     - send_troops_from_all_castles
     # Collect prizes from completed events
     - events
-    # Exchange silver from each castles with Ox carts 
-    # - exchange_silver
+    # Exchange silver from each castles with Ox carts
+    # - exchange_silver:
+    #     threshold: 18000
+
   :buildings:
 
     - Ore store:

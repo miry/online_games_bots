@@ -46,7 +46,14 @@ module Bot
       logger.debug ">> Running actions for selected castle"
 
       @actions.each do |action|
-        self.send action
+        if action.is_a?(Hash)
+          action.each do |action_name, action_options|
+            next if action_options.key?(:enable) && action_options[:enable] != true
+            self.send(action_name, action_options)
+          end
+        else
+          self.send action
+        end
       end
 
       logger.debug "<< Finished for selected castle"
