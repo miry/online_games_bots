@@ -368,8 +368,8 @@ module Bot
       button = find('#menu-section-drill-container .menu--content-section > .menu-list-element-basic.clickable.last')
       barter_silver = button.find('.menu-list-element-basic--value').text.to_i rescue 0
 
-      if barter_silver < BARTER_SILVER_THRESHOLD
-        logger.debug ": not enough silver to send : #{barter_silver} silver"
+      if barter_silver < options[:threshold]
+        logger.debug ": not enough silver to send : #{barter_silver} silver of #{options[:threshold]} "
         return
       end
 
