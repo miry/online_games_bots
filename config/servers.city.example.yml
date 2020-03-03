@@ -12,8 +12,12 @@ miry_de:
     - send_troops_from_all_cities
     # Collect prizes from completed events
     - events
+    # Exchange silver from each castles with Ox carts
+    - exchange_silver:
+        threshold: 18000
+
   :buildings:
-  
+
     - University area:
         level: 10
 
