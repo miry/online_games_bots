@@ -15,6 +15,7 @@ module Bot
       @actions = options[:actions] || [:build_first, :send_troops_to_missions]
       @logger  = options[:logger] || Logger.new(STDOUT)
       @first_castle = ""
+      @castle = ""
       @enable_loop = options[:loop]
     end
 
@@ -121,5 +122,8 @@ module Bot
       @logger
     end
 
+    def first_castle?
+      @castle == @first_castle
+    end
   end
 end

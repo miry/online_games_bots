@@ -29,7 +29,7 @@ module Bot
       logger.debug(@build_list || "Any available")
     end
 
-    def events
+    def events(options={})
       logger.info ">> Events"
       choose_bottom_menu_item("Events")
       timeout
@@ -131,7 +131,7 @@ module Bot
       choose_building(["Library", "University", "University area"])
     end
 
-    def research
+    def research(options={})
       logger.info ">> Research"
       return unless choose_university
 
@@ -152,7 +152,7 @@ module Bot
       find('.win.dialog.frame-container .button', text: 'OK').trigger('click')
     end
 
-    def build_first
+    def build_first(options={})
       logger.info ">> Building"
       choose_building_list
       build_next
@@ -211,7 +211,8 @@ module Bot
       # Enabled by default
       # choose_building_list
       @first_castle = get_selected_castle
-      logger.info "> Selected castle: #{@first_castle}"
+      @castle = @first_castle
+      logger.info "> Selected castle: #{@castle}"
       true
     end
 
@@ -225,7 +226,8 @@ module Bot
         timeout(1)
       end
 
-      logger.info "> Selected castle: #{get_selected_castle}"
+      @castle = get_selected_castle
+      logger.info "> Selected castle: #{@castle}"
       true
     end
 
@@ -252,7 +254,7 @@ module Bot
       return locator.text rescue "--"
     end
 
-    def send_troops_to_missions
+    def send_troops_to_missions(options={})
       logger.info ">> Sending troops to missions"
       if under_attack?
         logger.info ">>> Skip because under attack"
@@ -292,7 +294,7 @@ module Bot
       wait_while("#over-layer--game-pending")
     end
 
-    def send_troops_from_all_castles
+    def send_troops_from_all_castles(options={})
       logger.info ">> Send troops from all castles"
       if under_attack?
         logger.info ">>> Skip because under attack"
