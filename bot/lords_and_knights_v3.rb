@@ -254,6 +254,11 @@ module Bot
 
     def send_troops_to_missions
       logger.info ">> Sending troops to missions"
+      if under_attack?
+        logger.info ">>> Skip because under attack"
+        return false
+      end
+
       choose_tavern
 
       within('#menu-section-drill-container .menu--content-section > div:last-child') do
@@ -289,6 +294,11 @@ module Bot
 
     def send_troops_from_all_castles
       logger.info ">> Send troops from all castles"
+      if under_attack?
+        logger.info ">>> Skip because under attack"
+        return false
+      end
+
       choose_carry_out_mission
 
       # select_all_castles
@@ -456,6 +466,11 @@ module Bot
           {level: nil, name: building_name.to_s}
         end
       end
+    end
+
+    def under_attack?
+      logger.debug(": under_attack?")
+      has_selector?('#game-bar-toggle .toggle-buttons--content__buttons [title="Castle"] .buttons--alert')
     end
   end
 end
