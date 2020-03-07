@@ -3,3 +3,4 @@ tmp
 .bundle
 vendor/bundle
 .env
+Brewfile.lock.json
