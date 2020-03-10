@@ -359,6 +359,11 @@ module Bot
       return false unless options[:enable]
 
       logger.info ">> Exchange Silver"
+      unless first_castle?
+        logger.info ">>> Skip because only for first castle available"
+        return false
+      end
+
       choose_exchange_silver_with_ox
 
       # select_all_castles
