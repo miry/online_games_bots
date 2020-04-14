@@ -180,7 +180,16 @@ de3:
     - research
     - events
     - exchange_silver
+        unit: Handcart
+        threshold: 1000
+    - exchange_silver
+        unit: Ox cart
+        threshold: 10000
+
 ```
+
+Actions could be specified more than once, with different options. In previous example the action `exchange_silver` specified twice.
+First time it checks silver for Handcart unit, and then checks for Ox cart.
 
 ### Buildings
 

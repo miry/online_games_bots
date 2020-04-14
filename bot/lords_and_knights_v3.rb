@@ -8,6 +8,7 @@ module Bot
     EXCHANGE_SILVER_OPTIONS = {
       enable: true,
       threshold: BARTER_SILVER_THRESHOLD,
+      unit: '',
     }
 
     # Configuration
@@ -347,11 +348,25 @@ module Bot
       logger.debug ': choose_exchange_silver_with_ox'
       choose_exchange_silver
 
-      button = find('#menu-section-drill-container .menu--content-section > div:last-child')
+      button = find('#menu-section-drill-container .menu--content-section > div.menu-list-element-basic:last-child')
       logger.debug ": choose unit " + button.find('.menu-list-element-basic--content-box').text
       button.click
 
       timeout
+    end
+
+    def choose_menu_drill_item(title="Ox cart")
+      logger.debug ": choose_menu_drill_item #{title}"
+      buttons = all('#menu-section-drill-container .menu--content-section > div.menu-list-element-basic')
+      buttons.each do |button|
+        item = button.find('.menu-list-element-basic--content-box').text
+        if item == title
+          logger.debug ": select option " + item
+          button.click
+          timeout
+          return
+        end
+      end
     end
 
     # Mass functions to exchange silver with Ox
@@ -359,13 +374,17 @@ module Bot
       options = EXCHANGE_SILVER_OPTIONS.merge(options)
       return false unless options[:enable]
 
-      logger.info ">> Exchange Silver"
       unless first_castle?
-        logger.info ">>> Skip because only for first castle available"
         return false
       end
 
-      choose_exchange_silver_with_ox
+      logger.info ">> Exchange Silver"
+      if options[:unit].nil? || options[:unit] == ''
+        choose_exchange_silver_with_ox
+      else
+        choose_exchange_silver
+        choose_menu_drill_item(options[:unit])
+      end
 
       # select_all_castles
       button = find('#menu-section-drill-container .menu--content-section > div.menu-list-element-basic.first:first-child')

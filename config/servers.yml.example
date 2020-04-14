@@ -16,6 +16,12 @@ miry_de:
     # Exchange silver from each castles with Ox carts
     # - exchange_silver:
     #     threshold: 18000
+    # - exchange_silver:
+    #     unit: Ox cart
+    #     threshold: 18000
+    # - exchange_silver:
+    #     unit: Handcart
+    #     threshold: 18000
 
   :buildings:
 
