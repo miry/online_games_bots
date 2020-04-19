@@ -499,5 +499,19 @@ module Bot
       logger.debug(": under_attack?")
       has_selector?('#game-bar-toggle .toggle-buttons--content__buttons [title="Castle"] .buttons--alert')
     end
+
+    def recruit_units(options={})
+      return false unless first_castle?
+
+      logger.info ">>> Mass unit recruitment"
+      choose_mass_functions
+      choose_building("Mass unit recruitment")
+      timeout
+      unit = options[:unit] || "Lancer horseman"
+      max = options[:max] || 100
+      habitat_type = "Castle"
+
+      choose_menu_drill_item(unit)
+    end
   end
 end

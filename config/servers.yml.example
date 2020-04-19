@@ -10,7 +10,7 @@ miry_de:
     - send_troops_to_missions
     - research
     # Send troops cross all castles and fortress
-    - send_troops_from_all_castles
+    # - send_troops_from_all_castles
     # Collect prizes from completed events
     - events
     # Exchange silver from each castles with Ox carts
