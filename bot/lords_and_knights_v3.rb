@@ -136,8 +136,7 @@ module Bot
       logger.info ">> Research"
       return unless choose_university
 
-      return if has_selector?('#menu-section-drill-container .menu--content-section > div:last-child .icon-research-finish')
-      return if has_selector?('#menu-section-drill-container .menu--content-section > div:last-child .icon-research-speedup')
+      return if has_selector?('#menu-section-drill-container .menu--content-section .icon-research-finish,.icon-research-speedup')
 
       within('#menu-section-drill-container .menu--content-section > div:last-child') do
         buttons = all('button:not(.disabled)')
