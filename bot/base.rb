@@ -44,8 +44,6 @@ module Bot
     end
 
     def run_commands
-      logger.debug ">> Running actions for selected castle"
-
       @actions.each do |action|
         if action.is_a?(Hash)
           action.each do |action_name, action_options|
@@ -56,8 +54,6 @@ module Bot
           self.send action
         end
       end
-
-      logger.debug "<< Finished for selected castle"
     end
 
     def choose_first_castle
