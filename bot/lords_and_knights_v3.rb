@@ -297,31 +297,15 @@ module Bot
     end
 
     def send_troops_from_all_castles(options={})
+      return false if under_attack?
+
       logger.info ">> Send troops from all castles"
-      if under_attack?
-        logger.info ">>> Skip because under attack"
-        return false
-      end
 
       choose_carry_out_mission
 
-      # select_all_castles
-      button = find('#menu-section-drill-container .menu--content-section > div:first-child')
-      if button.text != "Deselect all castles"
-        button.click
-        timeout
-        # check if no mission selected
-        button = find('#menu-section-drill-container .menu--content-section > div:first-child')
-      end
-
-      # select_all_fortresses
-      button = find('#menu-section-drill-container .menu--content-section > div:nth-child(2)')
-      if button.text != "Deselect all fortresses"
-        button.click
-        timeout
-        # check if no mission selected
-        button = find('#menu-section-drill-container .menu--content-section > div:nth-child(2)')
-      end
+      choose_menu_drill_item("Select all castles")
+      choose_menu_drill_item("Select all fortresses")
+      choose_menu_drill_item("Select all cities")
 
       # carry_out_mission
       button = find('#menu-section-drill-container .menu--content-section > div.last .menu-list-element-basic--title')
