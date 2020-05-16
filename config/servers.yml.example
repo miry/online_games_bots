@@ -22,6 +22,7 @@ miry_de:
     # - exchange_silver:
     #     unit: Handcart
     #     threshold: 18000
+    # - alliance_help
 
   :buildings:
 

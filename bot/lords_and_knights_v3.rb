@@ -278,6 +278,10 @@ module Bot
       choose_bottom_menu_item("Mass functions")
     end
 
+    def choose_forum
+      choose_bottom_menu_item("Forum")
+    end
+
     def choose_carry_out_mission
       logger.debug(": choose_carry_out_mission")
       choose_mass_functions
@@ -495,6 +499,20 @@ module Bot
       habitat_type = "Castle"
 
       choose_menu_drill_item(unit)
+    end
+
+    def alliance_help(options={})
+      return false unless first_castle?
+
+      logger.info ">>> Alliance Help"
+      choose_forum
+      choose_building("Alliance help")
+
+      buttons = all('#menu-section-drill-container .menu--content-section > div:first-child > div.menu-list-element:not(.disabled)')
+      if buttons.size > 0
+        logger.info ">>> Initinilize alliance help"
+        buttons.first.click
+      end
     end
   end
 end

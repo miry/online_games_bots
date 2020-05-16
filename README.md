@@ -166,6 +166,7 @@ lak_us:
 - `send_troops_from_all_castles` - Send troops to missions cross all castles and fortress (faster than `send_troops_to_missions`). Requires Mass Functions enabled after you conquer few castles.
 - `events` - Collect the prizes for completed events.
 - `exchange_silver` - Exchange resources from all castles to silver.
+- `alliance_help` - Once per round check if some of Alliance require help and click on Free help button
 
 Example:
 
