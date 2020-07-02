@@ -373,22 +373,39 @@ module Bot
         choose_menu_drill_item(options[:unit])
       end
 
-      # select_all_castles
-      button = find('#menu-section-drill-container .menu--content-section > div.menu-list-element-basic.first:first-child')
-      button_title = button.text
-      if button_title.include?('castles') && button_title != "Deselect all castles"
-        button.click
-        timeout
-      end
+      # find all buttons to itterate over them 
+      buttons = all('#menu-section-drill-container .menu--content-section > div.menu-list-element-basic')
+      for button in buttons
+        # select_all_castles
+        button_title = button.text
+        if button_title.include?('castles') && button_title != "Deselect all castles"
+          button.click
+          logger.debug ": clicked on button : #{button_title}"
+          wait_while '#over-layer--game-pending', visible: true
+          timeout
+          next
+        end
 
-      # select_all_fortresses
-      button = find('#menu-section-drill-container .menu--content-section > div:nth-child(2)')
-      button_title = button.text
-      if button_title.include?('fortresses') && button_title != "Deselect all fortresses"
-        button.click
-        timeout
+        # select_all_fortresses
+        button_title = button.text
+        if button_title.include?('fortresses') && button_title != "Deselect all fortresses"
+          button.click
+          logger.debug ": clicked on button : #{button_title}"
+          wait_while '#over-layer--game-pending', visible: true
+          timeout
+          next
+        end
+        # select_all_cities
+        button_title = button.text
+        if button_title.include?('cities') && button_title != "Deselect all cities"
+          button.click
+          logger.debug ": clicked on button : #{button_title}"
+          wait_while '#over-layer--game-pending', visible: true
+          timeout
+          next
+        end
       end
-
+      
       button = find('#menu-section-drill-container .menu--content-section > .menu-list-element-basic.clickable.last')
       barter_silver = button.find('.menu-list-element-basic--value').text.to_i rescue 0
 
