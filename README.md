@@ -171,6 +171,14 @@ The default path servers config is `config/servers.yml`. It could be overide via
 $ bundle exec ruby runner.rb -c config.yml
 ```
 
+It could be used to run multiple bots in same time:
+
+```
+$ bundle exec ruby runner.rb -c config_eu.yml
+$ bundle exec ruby runner.rb -c config_us.yml
+$ bundle exec ruby runner.rb -c config_ua.yml
+```
+
 ### Actions
 
 - `build_first` - Create a first building in the list. The order of buidlings get from `:buildings`
