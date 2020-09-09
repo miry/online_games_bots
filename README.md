@@ -163,6 +163,14 @@ lak_us:
 - `server_name` is the text name that you can copy from the login page after you inpuit the credentials.
 - `server_url` is the login url
 
+# Config path
+
+The default path servers config is `config/servers.yml`. It could be overide via option `--config` or `-c`:
+
+```
+$ bundle exec ruby runner.rb -c config.yml
+```
+
 ### Actions
 
 - `build_first` - Create a first building in the list. The order of buidlings get from `:buildings`

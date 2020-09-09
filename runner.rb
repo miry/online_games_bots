@@ -15,6 +15,21 @@ require_relative 'bot/lords_and_knights_v2'
 require_relative 'bot/lords_and_knights_v3'
 require_relative 'bot/travian'
 
+# Parse options
+require 'optparse'
+
+options = {
+  config: 'config/servers.yml'
+}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: runner.rb [options]"
+
+  opts.on("-cCONFIG", "--config=CONFIG", "Path to servers config. Default: config/servers.yml") do |c|
+    options[:config] = c
+  end
+end.parse!
+
 choose_driver = ARGV.first || :chrome_headless
 choose_driver = choose_driver.to_sym
 
@@ -73,16 +88,16 @@ if defined? Capybara::Webkit
   end
 end
 
-def servers
+def servers(options)
   if ENV.key?('SERVERS_JSON')
     return JSON.parse(ENV['SERVERS_JSON'], symbolize_names: true)
-  elsif File.exists?('config/servers.yml')
-    return YAML.load(File.read('config/servers.yml'), symbolize_names: true)
+  elsif File.exists?(options[:config])
+    return YAML.load(File.read(options[:config]), symbolize_names: true)
   end
   []
 end
 
-connections = servers
+connections = servers(options)
 
 if connections.size == 0
   puts "\n\nWARNING No servers provided. Pls check that you have config/servers.yml or SERVERS_JSON environment variable."
