@@ -35,7 +35,9 @@ choose_driver = choose_driver.to_sym
 
 logger = Logger.new(STDOUT)
 level = ENV['LOG_LEVEL'] || 'INFO'
-logger.level = Logger.const_get level.upcase
+
+
+logger.level = level == 'TRACE' ? Logger::DEBUG : Logger.const_get(level.upcase)
 
 Selenium::WebDriver.logger.level = 0 if level == 'TRACE'
 
@@ -43,7 +45,7 @@ Selenium::WebDriver.logger.level = 0 if level == 'TRACE'
 Capybara.register_driver :chrome_headless do |app|
   Capybara::Selenium::Driver.load_selenium
   chromedriver_opts = {}
-  chromedriver_opts = {verbose: true, log_path: '/dev/stdout'} if level == 'TRACE'
+  chromedriver_opts = {verbose: true, log_path: '/dev/stderr'} if level == 'TRACE'
   service = Selenium::WebDriver::Chrome::Service.new(args: chromedriver_opts)
   browser_options = ::Selenium::WebDriver::Chrome::Options.new.tap do |opts|
     opts.args << '--headless'
@@ -53,8 +55,12 @@ Capybara.register_driver :chrome_headless do |app|
     opts.args << '--disable-site-isolation-trials'
     # NOTICE: Required for containers to not have out of memory crashes
     opts.args << '--disable-dev-shm-usage'
-    opts.args << '--verbose' if level == 'TRACE'
     opts.args << '--no-sandbox'
+    if level == 'TRACE'
+      opts.args << '--verbose'
+      opts.args << '--enable-logging=stderr'
+      opts.args << '--v=1'
+    end
   end
   Capybara::Selenium::Driver.new(app, browser: :chrome, service: service, options: browser_options)
 end
