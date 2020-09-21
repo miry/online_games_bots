@@ -1,4 +1,4 @@
-FROM jetthoughts/ruby-chrome:2.7.0-v1
+FROM jetthoughts/ruby-chrome:2.7.1-v1
 
 LABEL maintainer="Michael Nikitochkin <miry.sof@gmail.com>"
 LABEL app=online_games_bot
