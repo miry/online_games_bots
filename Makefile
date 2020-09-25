@@ -3,6 +3,11 @@ IMAGE=miry/online_games_bot
 BUILD_NAME=$(IMAGE):$(VERSION)
 LOG_LEVEL=debug
 SHELL=bash
+NAME=
+CPATH=
+EXTENSION=
+TIMEOUT=
+LOOP='while [ true ] ; do bundle exec ruby runner.rb -c ${CPATH}/${NAME}.${EXTENSION} ; echo Exited ; sleep ${TIMEOUT}; done'
 
 .PHONY: run
 run:
@@ -23,6 +28,10 @@ release: docker.build docker.push
 docker.run:
 	docker pull ${IMAGE}:latest
 	docker run -it -e LOG_LEVEL=${LOG_LEVEL} -v $$(pwd)/config:/app/config -v $$(pwd)/tmp:/app/tmp ${IMAGE}:latest
+ 
+.PHONY: docker.run.loop
+docker.run.loop:
+	docker run --detach --rm --name ${NAME} -v /root/online_games_bots/config:/app/config -v /root/online_games_bots/tmp:/app/tmp -it miry/online_games_bot bash -c ${LOOP}
 
 .PHONY: docker.build
 docker.build:
