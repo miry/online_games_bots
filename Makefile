@@ -3,11 +3,10 @@ IMAGE=miry/online_games_bot
 BUILD_NAME=$(IMAGE):$(VERSION)
 LOG_LEVEL=debug
 SHELL=bash
-NAME=
-CPATH=
-EXTENSION=
-TIMEOUT=
-LOOP='while [ true ] ; do bundle exec ruby runner.rb -c ${CPATH}/${NAME}.${EXTENSION} ; echo Exited ; sleep ${TIMEOUT}; done'
+NAME?=bot
+CPATH? =config
+TIMEOUT?=10
+LOOP='while [ true ] ; do bundle exec ruby runner.rb -c ${CPATH}/${NAME}.yml ; echo Exited ; sleep ${TIMEOUT}; done'
 
 .PHONY: run
 run:
