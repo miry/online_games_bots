@@ -30,7 +30,7 @@ docker.run:
  
 .PHONY: docker.run.loop
 docker.run.loop:
-	docker run --detach --rm --name ${NAME} -v /root/online_games_bots/config:/app/config -v /root/online_games_bots/tmp:/app/tmp -it miry/online_games_bot bash -c ${LOOP}
+	docker run --detach --rm --name ${NAME} -v $$(pwd)/config:/app/config -v $$(pwd)/tmp:/app/tmp -it miry/online_games_bot bash -c ${LOOP}
 
 .PHONY: docker.build
 docker.build:
