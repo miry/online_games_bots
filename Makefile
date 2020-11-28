@@ -4,7 +4,7 @@ BUILD_NAME=$(IMAGE):$(VERSION)
 LOG_LEVEL=debug
 SHELL=bash
 NAME?=bot
-CPATH? =config
+CPATH?=config
 TIMEOUT?=10
 LOOP='while [ true ] ; do bundle exec ruby runner.rb -c ${CPATH}/${NAME}.yml ; echo Exited ; sleep ${TIMEOUT}; done'
 
