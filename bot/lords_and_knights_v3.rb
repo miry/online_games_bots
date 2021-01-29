@@ -99,7 +99,7 @@ module Bot
       titles = [titles] unless titles.is_a?(Array)
       
       logger.debug "   * choose_building #{titles.join(', ')}"
-      available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right') 
+      available_buildings = all('#menu-section-general-container .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right') 
       
       available_buildings.each do |building|
         building_name = building.first('.menu-list-element-basic--title').text()
