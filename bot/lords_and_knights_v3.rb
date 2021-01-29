@@ -99,7 +99,7 @@ module Bot
       titles = [titles] unless titles.is_a?(Array)
       
       logger.debug "   * choose_building #{titles.join(', ')}"
-      available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right') 
+      available_buildings = all('#menu-section-general-container .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right')
       
       available_buildings.each do |building|
         building_name = building.first('.menu-list-element-basic--title').text()
@@ -110,7 +110,7 @@ module Bot
         wait_while '#over-layer--game-pending.in'
         return true
       end
-      return false
+      false
     end
 
     def choose_building_list
@@ -121,17 +121,17 @@ module Bot
 
     def choose_tavern
       choose_building_list
-      return choose_building(["Tavern", "Tavern Quarter"])
+      choose_building(["Tavern", "Tavern Quarter"])
     end
 
     def choose_library
       choose_building_list
-      return choose_building("Library")
+      choose_building("Library")
     end
 
     def choose_university
       choose_building_list
-      return choose_building(["Library", "University", "University area"])
+      choose_building(["Library", "University", "University area"])
     end
 
     def research(options={})
@@ -229,9 +229,7 @@ module Bot
       end
 
       @castle = get_selected_castle
-      if @castle == @first_castle
-        return false
-      end
+      return false if @castle == @first_castle
 
       logger.info "> Selected castle: #{@castle}"
       true
@@ -367,10 +365,7 @@ module Bot
     def exchange_silver(options={})
       options = EXCHANGE_SILVER_OPTIONS.merge(options)
       return false unless options[:enable]
-
-      unless first_castle?
-        return false
-      end
+      return false unless first_castle?
 
       logger.info " > Exchange Silver"
       if options[:unit].nil? || options[:unit] == ''
@@ -444,7 +439,7 @@ module Bot
         end
       end
 
-      return false
+      false
     end
 
     def get_available_buildings
