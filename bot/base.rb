@@ -63,8 +63,7 @@ module Bot
     def run
       login
 
-      processing = true
-      while processing
+      loop do
         choose_first_castle
         run_commands
 
@@ -73,19 +72,19 @@ module Bot
           timeout
         end
 
-        processing = @enable_loop
+        break if @enable_loop == false
         timeout
       end
 
-      logger.debug "> Logout"
-      logout
+      logger.info "> Logout"
+      logger.info " "
     rescue => e
     # rescue Capybara::ElementNotFound => e
-      logger.debug "FAILED: #{self.class.inspect}"
+      logger.info "FAILED: #{self.class.inspect}"
       screenshot_and_save_page rescue nil
       logger.debug '--- Exception'
       logger.debug e.class
-      logger.debug e.message
+      logger.info e.message
       logger.debug e.backtrace.join("\n")
       logger.debug '---- Console'
       logger.debug(page.driver.console_messages) rescue nil
@@ -99,7 +98,7 @@ module Bot
     end
 
     def wait_until(selector, retries=MAX_RETRIES, **options)
-      logger.debug ":: wait_until #{selector}"
+      logger.debug "   * wait_until #{selector}"
       while retries > 0 && !has_selector?(selector, options)
         timeout
         retries -= 1
@@ -107,7 +106,7 @@ module Bot
     end
 
     def wait_while(selector, retries=MAX_RETRIES, **options)
-      logger.debug ":: wait_while #{selector}"
+      logger.debug "   * wait_while #{selector}"
       while retries > 0 && has_selector?(selector, options)
         timeout
         retries -= 1

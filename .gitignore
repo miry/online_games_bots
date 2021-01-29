@@ -2,5 +2,6 @@ config/servers.yml
 tmp
 .bundle
 vendor/bundle
+vendor/cache
 .env
 Brewfile.lock.json

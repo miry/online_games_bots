@@ -31,7 +31,7 @@ module Bot
     end
 
     def events(options={})
-      logger.info ">> Events"
+      logger.info " > Events"
       choose_bottom_menu_item("Events")
       timeout
 
@@ -39,7 +39,7 @@ module Bot
         selector = '.menu-list-element.menu-list-element-basic.clickable.with-icon-right:not(.color-red)'
         if has_selector?(selector)
           button = all(selector)[0]
-          logger.info "* Collect the prize for the event #{button.text()}"
+          logger.info "   * Collect the prize for the event #{button.text().tr("\n"," ").tr("\r","")}"
           button.click
         end
       end
@@ -56,6 +56,7 @@ module Bot
         first('.form--data--logout').click
       end
 
+      logger.info "Account: #{options[:email]}"
       logger.debug("Fill login information: #{options[:email]}")
       wait_until('form.form--login', 30)
       within 'form.form--login' do
@@ -87,7 +88,7 @@ module Bot
     end
 
     def choose_tab(title)
-      logger.debug ">>> Choose Tab: #{title}"
+      logger.debug "   * Choose Tab: #{title}"
       tab_selector = ".habitat .#{title}.tab"
       find(tab_selector).click
       timeout
@@ -96,23 +97,24 @@ module Bot
 
     def choose_building(titles)
       titles = [titles] unless titles.is_a?(Array)
-      logger.debug(": choose_building #{titles.join(', ')}")
-      result = nil
-      available_buildings = all('#menu-section-general-container > .menu-section > .menu--content-section .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right')
+      
+      logger.debug "   * choose_building #{titles.join(', ')}"
+      available_buildings = all('#menu-section-general-container .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right')
+      
       available_buildings.each do |building|
         building_name = building.first('.menu-list-element-basic--title').text()
         next unless titles.include?(building_name)
-        result = building
+        logger.debug "   * click building #{building_name}"
         building.click()
         timeout
         wait_while '#over-layer--game-pending.in'
-        break
+        return true
       end
-      result
+      false
     end
 
     def choose_building_list
-      logger.debug(": choose_building_list")
+      logger.debug("   * choose_building_list")
       return if has_selector?('div.top-bar-button--HabitatBuildings.active')
       first('div.top-bar-button--HabitatBuildings').click()
     end
@@ -133,7 +135,7 @@ module Bot
     end
 
     def research(options={})
-      logger.info ">> Research"
+      logger.info " > Research"
       return unless choose_university
 
       return if has_selector?('#menu-section-drill-container .menu--content-section .icon-research-finish,.icon-research-speedup')
@@ -149,31 +151,30 @@ module Bot
     end
 
     def logout
-      find(".Logout").trigger('click')
-      find('.win.dialog.frame-container .button', text: 'OK').trigger('click')
+
     end
 
     def build_first(options={})
-      logger.info ">> Building"
+      logger.info " > Building"
       choose_building_list
       build_next
-      logger.debug "<< Finished Building"
+      logger.debug "   * Finished Building"
     end
 
     def build_next
-      logger.debug ': build_next'
+      logger.debug '   * build_next'
       within '#menu-section-general-container > .menu-section > .menu--content-section' do
         current_buildings = all('.widget--upgrades-in-progress--list > .menu-list-element.with-icon-right')
+        logger.info "   * #{current_buildings.size} buildings in progress"
         if current_buildings.size > 0
           # Check if there is Free build
           first_building = current_buildings.first
           if first_building.find('button .icon')[:class].include?('icon-build-finish-free')
             first_building_title = first_building.find('.menu-list-element-basic--title').text()
-            logger.info "Finish Free speedup #{first_building_title}"
+            logger.info "   * Finish Free speedup #{first_building_title}"
             first_building.find(:button).click
-            return if current_buildings.size > 1
-          else
-            logger.info '  >> Nothing todo. Workers are busy.'
+          elsif current_buildings.size == 2
+            logger.info '   * Nothing todo. Workers are busy.'
             return
           end
         end
@@ -181,8 +182,8 @@ module Bot
         buildings = get_available_buildings
 
         if buildings.empty?
-          logger.info '  >> There are no buildings to upgrade'
-          return
+          logger.info '   * There are no buildings to upgrade'
+          return 
         end
 
         # If there are no buildings to build, build all available
@@ -195,9 +196,9 @@ module Bot
             name = building_name[:name]
             level = building_name[:level]
           end
-          logger.debug("Check if #{name} with level #{level} available")
+          logger.debug "   * Check if #{name} with level #{level} available"
           if buildings.key?(name) && (level.nil? || level > buildings[name][:level])
-            logger.info "* Upgrade #{name} with level #{buildings[name][:level]}"
+            logger.info "   * Upgrade #{name} with level #{buildings[name][:level]}"
             buildings[name][:button].click()
             timeout
             break
@@ -208,7 +209,7 @@ module Bot
 
     def choose_first_castle
       popup_close
-      logger.debug(": choose_first_castle")
+      logger.debug("   * choose_first_castle")
       # Enabled by default
       # choose_building_list
       @first_castle = get_selected_castle
@@ -218,7 +219,7 @@ module Bot
     end
 
     def choose_next_castle
-      logger.debug ": choose_next_castle"
+      logger.debug "   * choose_next_castle"
       wait_while '#over-layer--game-pending', visible: true
 
       locator = all(".habitat-chooser--title-row .arrow-right")[0]
@@ -228,12 +229,14 @@ module Bot
       end
 
       @castle = get_selected_castle
+      return false if @castle == @first_castle
+
       logger.info "> Selected castle: #{@castle}"
       true
     end
 
     def choose_bottom_menu_item(title)
-      logger.debug(": choose_bottom_menu_item #{title}")
+      logger.debug("   * choose_bottom_menu_item #{title}")
       result = nil
       available_buildings = all('#game-bar-bottom .bar-bottom--content--gaming .bar-bottom--content--gaming-item')
       available_buildings.each do |building|
@@ -250,30 +253,32 @@ module Bot
     end
 
     def get_selected_castle
-      logger.debug(": get_selected_castle")
+      logger.debug("   * get_selected_castle")
       locator = first(".habitat-chooser .habitat-chooser--title span")
       return locator.text rescue "--"
     end
 
     def send_troops_to_missions(options={})
-      logger.info ">> Sending troops to missions"
+      logger.info " > Sending troops to missions"
       if under_attack?
-        logger.info ">>> Skip because under attack"
+        logger.info "   * Skip because under attack"
         return false
       end
 
-      choose_tavern
-
+      return unless choose_tavern
+      
       within('#menu-section-drill-container .menu--content-section > div:last-child') do
         buttons = all('button:not(.disabled)')
         buttons.each do |button|
           next unless button.has_selector?('div.icon-mission')
+          logger.debug "   * start mission"
           button.click
           timeout
         end
       end
+      timeout(3)
     end
-
+  
     def choose_mass_functions
       choose_bottom_menu_item("Mass functions")
     end
@@ -283,14 +288,14 @@ module Bot
     end
 
     def choose_carry_out_mission
-      logger.debug(": choose_carry_out_mission")
+      logger.debug("   * choose_carry_out_mission")
       choose_mass_functions
       choose_building("Carry out mission")
       wait_while("#over-layer--game-pending")
     end
 
     def choose_exchange_resources
-      logger.debug(": choose_exchange_resources")
+      logger.debug("   * choose_exchange_resources")
       choose_mass_functions
       choose_building("Exchange resources")
       timeout
@@ -302,7 +307,7 @@ module Bot
     def send_troops_from_all_castles(options={})
       return false if under_attack?
 
-      logger.info ">> Send troops from all castles"
+      logger.info " > Send troops from all castles"
 
       choose_carry_out_mission
 
@@ -321,7 +326,7 @@ module Bot
     end
 
     def choose_exchange_silver
-      logger.debug ': choose_exchange_silver'
+      logger.debug '   * choose_exchange_silver'
       choose_exchange_resources
 
       button = find('#menu-section-drill-container .menu--content-section > div:last-child')
@@ -332,7 +337,7 @@ module Bot
     end
 
     def choose_exchange_silver_with_ox
-      logger.debug ': choose_exchange_silver_with_ox'
+      logger.debug '   * choose_exchange_silver_with_ox'
       choose_exchange_silver
 
       button = find('#menu-section-drill-container .menu--content-section > div.menu-list-element-basic:last-child')
@@ -360,12 +365,9 @@ module Bot
     def exchange_silver(options={})
       options = EXCHANGE_SILVER_OPTIONS.merge(options)
       return false unless options[:enable]
+      return false unless first_castle?
 
-      unless first_castle?
-        return false
-      end
-
-      logger.info ">> Exchange Silver"
+      logger.info " > Exchange Silver"
       if options[:unit].nil? || options[:unit] == ''
         choose_exchange_silver_with_ox
       else
@@ -414,14 +416,14 @@ module Bot
         return
       end
 
-      logger.info ">>> Exchange #{barter_silver} silver"
+      logger.info "   * Exchange #{barter_silver} silver"
       button.click
       timeout
     end
 
     def popup_close
       return false if all('#game-pop-up-layer', visible: true).size == 0
-      logger.info "Popup is open"
+      logger.debug "Popup is open"
 
       selectors = [
         "#game-pop-up-layer .event-pop-up-button.ButtonRedAccept",
@@ -437,49 +439,60 @@ module Bot
         end
       end
 
-      return false
+      false
     end
 
     def get_available_buildings
-      logger.debug ': get_available_buildings'
+      logger.debug '   * get_available_buildings'
       buildings = {}
       available_buildings = []
+      is_building_list = true
 
       return [] unless has_selector?('.menu-list-element.clickable.with-icon-right button.button')
 
       if has_selector?('.widget--upgrades-in-progress--list')
         upgrade_section = first('.widget--upgrades-in-progress--list')
-        available_buildings = all('.widget--upgrades-in-progress--list + .menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
-      else
-        available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)')
       end
 
-      # Available: button button--default button-with-icon  menu-element--button--action button--action button--in-building-list--construct-tavern
-      # All finished: There are no button element
-      # Not enough resources: button button--default button-with-icon disabled  menu-element--button--action button--action button--in-building-list--construct-lumberjack
+      available_buildings = all('.menu-list-element.menu-list-element-basic.clickable.with-icon-left.with-icon-right:not(.disabled)') 
+      
       available_buildings.each do |building|
-        building_name = building.first('.menu-list-element-basic--title').text()
-        building_description = ""
-        if building.has_selector?('.menu-list-element-basic--description')
-          building_description = building.first('.menu-list-element-basic--description').text()
-        end
-        building_level = 0
-        if building_description.include?("Upgrade level ")
-          building_level = building_description[14..].to_i
-        end
-
         # Skip building when there are no upgrades
         next unless building.has_selector?('button')
 
         build_button = building.first('button')
 
+        if is_building_list
+          # Skip building when in build list to finish or speedup
+          is_building_list = build_button.has_selector?('.icon-build-finish') || build_button.has_selector?('.icon-build-speedup')
+          next if is_building_list
+        end 
+
         # Skip building when there are not enough resources
         next if build_button['class'].include?('disabled')
 
+        building_name = building.first('.menu-list-element-basic--title').text()
+        building_description = ""
+        if building.has_selector?('.menu-list-element-basic--description')
+          building_description = building.first('.menu-list-element-basic--description').text()
+        end
+
+        building_level = 0
+        if building_description.include?("Upgrade level ")
+          building_level = building_description[14..].to_i
+        elsif building_description.include?("Level ")
+          building_level = building_description[6..8].to_i
+          building_level + 1;
+        end
+
+        next if building_level == 0
+
         # Add to building list
         buildings[building_name] = {button: build_button, level: building_level, name: building_name, description: building_description}
-      end
-      logger.debug ':: /get_available_buildings'
+      end      
+
+      logger.debug "   * found #{buildings.size} possible buildings"
+      
       buildings
     end
 
@@ -500,14 +513,15 @@ module Bot
     end
 
     def under_attack?
-      logger.debug(": under_attack?")
-      has_selector?('#game-bar-toggle .toggle-buttons--content__buttons [title="Castle"] .buttons--alert')
+      is_unter_attack = has_selector?('#game-bar-toggle .toggle-buttons--content__buttons [title="Castle"] .buttons--alert')
+      logger.debug("   * under_attack: #{is_unter_attack}")
+      return is_unter_attack
     end
 
     def recruit_units(options={})
       return false unless first_castle?
 
-      logger.info ">>> Mass unit recruitment"
+      logger.info " > Mass unit recruitment"
       choose_mass_functions
       choose_building("Mass unit recruitment")
       timeout
@@ -521,13 +535,13 @@ module Bot
     def alliance_help(options={})
       return false unless first_castle?
 
-      logger.info ">>> Alliance Help"
+      logger.info " > Alliance Help"
       choose_forum
       choose_building("Alliance help")
 
       buttons = all('#menu-section-drill-container .menu--content-section > div:first-child > div.menu-list-element:not(.disabled)')
       if buttons.size > 0
-        logger.info ">>> Initinilize alliance help"
+        logger.info "   * Initinilize alliance help"
         buttons.first.click
       end
     end
