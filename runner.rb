@@ -123,13 +123,6 @@ loop do
 
     logger.info "Started bot #{opts[:bot]} on #{name}"
 
-    if level == 'INFO'
-      Dir.foreach('tmp') do |f|
-        fn = File.join('tmp', f)
-        File.delete(fn) if f != '.' && f != '..'
-      end
-    end
-
     Capybara.app_host = opts[:server_url]
     Capybara.default_max_wait_time = opts[:timeout] || 2
 
@@ -149,5 +142,12 @@ loop do
 
     bot = bot_factory.new opts
     bot.run
+  end
+
+  if level == 'INFO'
+    Dir.foreach('tmp') do |f|
+      fn = File.join('tmp', f)
+      File.delete(fn) if f != '.' && f != '..'
+    end
   end
 end
