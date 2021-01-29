@@ -91,6 +91,7 @@ if defined? Capybara::Webkit
     config.block_unknown_urls
     config.block_url("fonts.googleapis.com")
     config.block_url("www.youtube.com")
+    config.block_url("ssl.gstatic.com")
   end
 end
 
@@ -110,32 +111,43 @@ if connections.size == 0
   exit 1
 end
 
-connections.each do |name, opts|
-  opts = opts.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
-  opts[:logger] = logger
-  opts[:bot] ||= 'lords_and_kinghts_v3'
-  opts[:server_url] ||= 'http://lordsandknights.com'
-  opts[:server_url].chop! if opts[:server_url][-1] == '/'
 
-  logger.info "Started bot #{opts[:bot]} on #{name}"
+loop do
+  connections.each do |name, opts|
+    opts = opts.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+    opts[:logger] = logger
+    opts[:bot] ||= 'lords_and_kinghts_v3'
+    opts[:server_url] ||= 'http://lordsandknights.com'
+    opts[:server_url].chop! if opts[:server_url][-1] == '/'
+    opts[:loop] = connections.size == 1
 
-  Capybara.app_host = opts[:server_url]
-  Capybara.default_max_wait_time = opts[:timeout] || 2
+    logger.info "Started bot #{opts[:bot]} on #{name}"
 
-  bot_factory = case opts[:bot]
-        when 'travian'
-          Bot::Travian
-        when 'lords_and_kinghts'
-          Bot::LordsAndKnights
-        when 'lords_and_kinghts_v2'
-          Bot::LordsAndKnightsV2
-        when 'lords_and_kinghts_v3'
-          Bot::LordsAndKnightsV3
-        else
-          puts 'Could not detect the bot'
-          next
-        end
+    if level == 'INFO'
+      Dir.foreach('tmp') do |f|
+        fn = File.join('tmp', f)
+        File.delete(fn) if f != '.' && f != '..'
+      end
+    end
 
-  bot = bot_factory.new opts
-  bot.run
+    Capybara.app_host = opts[:server_url]
+    Capybara.default_max_wait_time = opts[:timeout] || 2
+
+    bot_factory = case opts[:bot]
+          when 'travian'
+            Bot::Travian
+          when 'lords_and_kinghts'
+            Bot::LordsAndKnights
+          when 'lords_and_kinghts_v2'
+            Bot::LordsAndKnightsV2
+          when 'lords_and_kinghts_v3'
+            Bot::LordsAndKnightsV3
+          else
+            puts 'Could not detect the bot'
+            next
+          end
+
+    bot = bot_factory.new opts
+    bot.run
+  end
 end
