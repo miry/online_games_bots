@@ -229,9 +229,7 @@ module Bot
       end
 
       @castle = get_selected_castle
-      if @castle == @first_castle
-        return false
-      end
+      return false if @castle == @first_castle
 
       logger.info "> Selected castle: #{@castle}"
       true
