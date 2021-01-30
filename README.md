@@ -35,6 +35,10 @@ Continuously send troops to missions. **WARNING**: Disable it manually, if you h
 
 Get automaticaly rewards if it them available in the Task list.
 
+### Free Gifts
+
+Collect automaticaly free gifts if it them available
+
 ### Exchange Silver
 
 Use Mass functions to exchange silver from each castle and fortress.
@@ -145,18 +149,24 @@ docker run -e LOG_LEVEL=debug -v $(pwd)/config:/app/config -v $(pwd)/tmp:/app/tm
 ## Settings
 
 The config file located in `config/servers.yml`. The structure is simple. First you should specify the custom server name example `lak_us` and bot.
+Note: if you want to use more than one account (for example for multiple servers), just use more definitions in servers.yml file
 
 ```yaml
-lak_us:
+lak_germanien_3:
   :bot: lords_and_kinghts_v3
 ```
 
 Now we know what kind of game you want to connect. For Lords and Knights we need to specify the server.
 
 ```yaml
-lak_us:
+lak_germanien_3:
   :bot: lords_and_kinghts_v3
-  :server_name: Germanien III (DE) - empfohlen
+  :server_name: Germanien III (DE)
+  :server_url: http://lordsandknights.com
+
+lak_germanien_4:
+  :bot: lords_and_kinghts_v3
+  :server_name: Germanien IV (DE) 
   :server_url: http://lordsandknights.com
 ```
 
@@ -201,6 +211,7 @@ de3:
     - send_troops_to_missions
     - research
     - events
+    - free_gift
     - exchange_silver
         unit: Handcart
         threshold: 1000
@@ -227,6 +238,7 @@ miry_us:
     - build_first
     - send_troops_to_missions
     - research
+    - free_gift
   :buildings:
     - Quarry
     - Lumberjack

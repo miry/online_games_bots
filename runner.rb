@@ -127,18 +127,18 @@ loop do
     Capybara.default_max_wait_time = opts[:timeout] || 2
 
     bot_factory = case opts[:bot]
-          when 'travian'
-            Bot::Travian
-          when 'lords_and_kinghts'
-            Bot::LordsAndKnights
-          when 'lords_and_kinghts_v2'
-            Bot::LordsAndKnightsV2
-          when 'lords_and_kinghts_v3'
-            Bot::LordsAndKnightsV3
-          else
-            puts 'Could not detect the bot'
-            next
-          end
+      when 'travian'
+        Bot::Travian
+      when 'lords_and_kinghts'
+        Bot::LordsAndKnights
+      when 'lords_and_kinghts_v2'
+        Bot::LordsAndKnightsV2
+      when 'lords_and_kinghts_v3'
+        Bot::LordsAndKnightsV3
+      else
+        puts 'Could not detect the bot'
+        next
+      end
 
     bot = bot_factory.new opts
     bot.run
