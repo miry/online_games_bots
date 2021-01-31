@@ -1,14 +1,286 @@
-miry_de:
+miry_germanien_iii:
   :timeout: 5
   :email: miry@example.com
   :password: changeme
   :server_url: http://lordsandknights.com/
-  :server_name: Germanien III (DE) - empfohlen
+  :server_name: Germanien III (DE)
   :actions:
     - build_first
     # Send troops from each castle separatly
     - send_troops_to_missions
     - research
+    - free_gift
+    # Send troops cross all castles and fortress
+    # - send_troops_from_all_castles
+    # Collect prizes from completed events
+    - events
+    # Exchange silver from each castles with Ox carts
+    # - exchange_silver:
+    #     threshold: 18000
+    # - exchange_silver:
+    #     unit: Ox cart
+    #     threshold: 18000
+    # - exchange_silver:
+    #     unit: Handcart
+    #     threshold: 18000
+    # - alliance_help
+
+  :buildings:
+
+    - Ore store:
+        level: 3
+    - Wood store:
+        level: 3
+    - Stone store:
+        level: 3
+
+    - Lumberjack:
+        level: 5
+    - Quarry:
+        level: 5
+    - Ore mine:
+        level: 5
+    - Library:
+        level: 2
+
+    - Lumberjack:
+        level: 6
+    - Quarry:
+        level: 6
+    - Ore mine:
+        level: 6
+
+    - Lumberjack:
+        level: 7
+    - Quarry:
+        level: 7
+    - Ore mine:
+        level: 7
+
+    - Ore store:
+        level: 6
+    - Wood store:
+        level: 6
+    - Stone store:
+        level: 6
+
+
+    - Lumberjack:
+        level: 8
+    - Quarry:
+        level: 8
+    - Ore mine:
+        level: 8
+
+    - Lumberjack:
+        level: 9
+    - Quarry:
+        level: 9
+    - Ore mine:
+        level: 9
+
+    - Farm:
+        level: 7
+    - Ore store:
+        level: 7
+    - Wood store:
+        level: 7
+    - Stone store:
+        level: 7
+
+    - Lumberjack:
+        level: 10
+    - Quarry:
+        level: 10
+    - Ore mine:
+        level: 10
+
+    - Library:
+        level: 3
+    - Tavern:
+        level: 2
+    - Ore store:
+        level: 8
+    - Wood store:
+        level: 8
+    - Stone store:
+        level: 8
+    - Farm:
+        level: 12
+
+    - Lumberjack:
+        level: 11
+    - Quarry:
+        level: 11
+    - Ore mine:
+        level: 11
+
+    - Lumberjack:
+        level: 12
+    - Quarry:
+        level: 12
+    - Ore mine:
+        level: 12
+
+    - Lumberjack:
+        level: 13
+    - Quarry:
+        level: 13
+    - Ore mine:
+        level: 13
+
+    - Lumberjack:
+        level: 14
+    - Quarry:
+        level: 14
+    - Ore mine:
+        level: 14
+
+    - Wood store:
+        level: 9
+    - Stone store:
+        level: 9
+    - Ore store:
+        level: 9
+    - Library:
+        level: 4
+
+    - Lumberjack:
+        level: 15
+    - Quarry:
+        level: 15
+    - Ore mine:
+        level: 15
+
+    - Wood store:
+        level: 12
+    - Stone store:
+        level: 12
+    - Ore store:
+        level: 12
+
+    - Lumberjack:
+        level: 16
+    - Quarry:
+        level: 16
+    - Ore mine:
+        level: 16
+
+    - Lumberjack:
+        level: 17
+    - Quarry:
+        level: 17
+    - Ore mine:
+        level: 17
+
+    - Lumberjack:
+        level: 18
+    - Quarry:
+        level: 18
+    - Ore mine:
+        level: 18
+
+    - Lumberjack:
+        level: 19
+    - Quarry:
+        level: 19
+    - Ore mine:
+        level: 19
+
+    - Lumberjack:
+        level: 20
+    - Quarry:
+        level: 20
+    - Ore mine:
+        level: 20
+
+    - Keep:
+        level: 5
+
+    - Lumberjack:
+        level: 21
+    - Quarry:
+        level: 21
+    - Ore mine:
+        level: 21
+
+    - Keep:
+        level: 6
+
+    - Wood store:
+        level: 15
+    - Stone store:
+        level: 15
+    - Ore store:
+        level: 15
+
+    - Lumberjack:
+        level: 22
+    - Quarry:
+        level: 22
+    - Ore mine:
+        level: 22
+
+    - Keep:
+        level: 8
+    - Market:
+        level: 5
+
+    - Wood store:
+        level: 17
+    - Stone store:
+        level: 17
+    - Ore store:
+        level: 17
+    - Keep:
+        level: 9
+
+    - Wood store
+    - Stone store
+    - Ore store
+    - Keep
+
+    - Farm:
+        level: 12
+    - Library:
+        level: 6
+    - Fortifications:
+        level: 5
+    - Tavern:
+        level: 4
+    - Library:
+        level: 8
+    - Lumberjack
+    - Quarry
+    - Ore mine
+    - Library
+    - Farm
+    - Arsenal
+    - Fortifications
+    - Wood Storage
+    - Stone Storage
+    - Ore Storage
+    - Townhall
+    - Barracks
+    - University
+    - Fortress Wall
+    - Marketplace
+    - Military camp
+    - Tavern Quarter:
+        level: 1
+
+miry_germanien_iv:
+  :timeout: 5
+  :email: miry@example.com
+  :password: changeme
+  :server_url: http://lordsandknights.com/
+  :server_name: Germanien IV (DE)
+  :actions:
+    - build_first
+    # Send troops from each castle separatly
+    - send_troops_to_missions
+    - research
+    - free_gift
     # Send troops cross all castles and fortress
     # - send_troops_from_all_castles
     # Collect prizes from completed events

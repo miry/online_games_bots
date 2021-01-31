@@ -430,6 +430,15 @@ module Bot
         "#game-pop-up-layer .event-pop-up-button.Back",
       ]
 
+      if has_selector?(".not-enough")
+        logger.debug '   * not enogth space in storage'
+        selectors = [
+          "#game-pop-up-layer .event-pop-up-button.Back"
+        ]
+      else
+        logger.debug '   * try to accept' 
+      end
+
       selectors.each do |selector|
         locator = all(selector)[0]
         if locator
@@ -543,6 +552,20 @@ module Bot
       if buttons.size > 0
         logger.info "   * Initinilize alliance help"
         buttons.first.click
+      end
+    end
+
+    def free_gift(options={}) 
+      logger.info " > Free gift"
+
+      if has_selector?(".toggle-general-button--active-gift > .icon-active-gift")
+        first(".toggle-general-button--active-gift").click
+        logger.debug "   * free gift is available"
+        wait_until('#game-pop-up-layer', visible: true)
+        popup_close
+        wait_until('#game-pop-up-layer', visible: false)
+      else
+        logger.debug "   * free gift not available"
       end
     end
   end
