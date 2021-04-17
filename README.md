@@ -146,6 +146,24 @@ docker run -e LOG_LEVEL=debug -v $(pwd)/config:/app/config -v $(pwd)/tmp:/app/tm
 
 8. If you need help please join the discord. (https://discord.gg/VaEtdbC)
 
+## Setup environment for Windows
+
+1. Make an account for docker, after you’ve done that download docker. (https://docs.docker.com/docker-for-windows/install/) Make sure to pick the stable version.
+2. Make sure you have downloaded the bot. (https://github.com/miry/online_games_bots) Have the folder on the desktop to make it easy to find.
+3. Open the bot folder and create a new empty file "servers_env" in it. Open servers_env with your preferred text editor and fill it out according to the following template:
+```
+SERVERS_JSON={"server": {"email": "<your_email>", "password": "<password>", "server_name": "<server_name>", "timeout": 5, ...}}
+```
+(!) Formally, this is almost the same JSON as in the example, only with the whitespaces removed (since Docker is sensitive to them). Otherwise there will be "poorly formatted environment" exception thrown.
+Save the file and close it.
+4. Open powershell and do next steps:
+```
+cd "<bot_folder_path>"
+docker run --name lk_bot --env-file servers_env miry/online_games_bot make run.daemon
+```
+
+If you need help please join the discord. (https://discord.gg/VaEtdbC)
+
 ## Settings
 
 The config file located in `config/servers.yml`. The structure is simple. First you should specify the custom server name example `lak_us` and bot.
