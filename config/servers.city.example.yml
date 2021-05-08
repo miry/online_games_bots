@@ -1,7 +1,7 @@
 miry_de:
   :email: Your email
   :password: Your password
-  :server_url: http://lordsandknights.com/
+  :server_url: https://lordsandknights.com/
   :server_name: Germanien III (DE) - empfohlen
   :actions:
     - build_first
