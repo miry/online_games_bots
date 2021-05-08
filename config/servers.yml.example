@@ -2,7 +2,7 @@ miry_germanien_iii:
   :timeout: 5
   :email: miry@example.com
   :password: changeme
-  :server_url: http://lordsandknights.com/
+  :server_url: https://lordsandknights.com/
   :server_name: Germanien III (DE)
   :actions:
     - build_first
